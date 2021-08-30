@@ -1,9 +1,7 @@
-# ooush-ui
-
-UI component library
+# Ooush-ui component library
 #
-# React
-# Typescript
-# Sass
-# Jest / React Testing Library
-# Storybook
+React
+Typescript
+Sass
+Jest / React Testing Library
+Storybook
