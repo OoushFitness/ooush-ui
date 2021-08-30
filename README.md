@@ -1,6 +1,6 @@
 # ooush-ui
 
-# UI component library
+UI component library
 #
 # React
 # Typescript
