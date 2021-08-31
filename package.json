@@ -10,9 +10,6 @@
   "author": "Pete Smith <petesmith@live.co.uk>",
   "license": "MIT",
   "private": true,
-  "lint-staged" {
-    "**/*": "prettier --write --ignore-unkown"
-  },
   "scripts": {
     "build": "rollup -c",
     "storybook": "start-storybook -p 6006",
