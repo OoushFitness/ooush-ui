@@ -1,0 +1,8 @@
+$font-primary: sans-serif;
+$color-primary: #333;
+
+body {
+    font-family: $font-primary;
+    color: $color-primary;
+    text-rendering: optimizeLegibility;
+}

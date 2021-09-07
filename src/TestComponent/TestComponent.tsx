@@ -1,16 +1,15 @@
 import React from "react";
-
 import { TestComponentProps } from "./TestComponent.types";
-
 import "./TestComponent.scss";
 
-const TestComponent: React.FC<TestComponentProps> = ({ theme }) => (
+const TestComponent: React.FC<TestComponentProps> = ({ theme, borderWidth, borderColor, borderStyle }) => (
   <div
     data-testid="test-component"
     className={`test-component test-component-${theme}`}
+    style={{ borderWidth: borderWidth && `${borderWidth}px`, borderColor: borderColor && borderColor, borderStyle: borderStyle && borderStyle }}
   >
-    <h1 className="heading">I'm the test component</h1>
-    <h2>Made with love by Harvey</h2>
+    <h1 className="heading">Ooush!</h1>
+    <h2>I am the test component</h2>
   </div>
 );
 
