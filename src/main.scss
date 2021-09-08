@@ -1,8 +1,15 @@
-$font-primary: sans-serif;
-$color-primary: #333;
+// $font-primary: sans-serif;
+// $color-primary: #333;
+
+:root {
+	// color variables
+	--color-primary: #333;
+	// font variables
+	--font-primary: sans-serif;
+}
 
 body {
-    font-family: $font-primary;
-    color: $color-primary;
-    text-rendering: optimizeLegibility;
+	font-family: var(--font-primary);
+	color: var(--color-primary);
+	text-rendering: optimizeLegibility;
 }
