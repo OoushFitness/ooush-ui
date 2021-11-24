@@ -17,6 +17,7 @@ export default function Dashboard() {
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [fieldInFocus, setFieldInFocus] = useState("");
+	const [fieldsWithContent, setFieldsWithContent] = useState(new Set);
 
 	const registerUser = () => {
 		let data = {
@@ -42,35 +43,44 @@ export default function Dashboard() {
 	}
 
 	const handleChange = (event: any, source: string) => {
+	    const value = event.target.value;
 		switch (source) {
 			case "firstName":
-				setFirstName(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setFirstName(value);
 				break;
 			case "lastName":
-				setLastName(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setLastName(value);
 				break;
 			case "countryCode":
-				setCountryCode(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setCountryCode(value);
 				break;
 			case "phone":
-				setPhoneNumber(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setPhoneNumber(value);
 				break;
 			case "userName":
-				setUserName(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setUserName(value);
 				break;
 			case "email":
-				const emailAddress = event.target.value;
-				setEmail(emailAddress);
-				validateEmailAddress(emailAddress);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setEmail(value);
+				validateEmailAddress(value);
 				break;
 			case "location":
-				setLocation(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setLocation(value);
 				break;
 			case "password":
-				setPassword(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setPassword(value);
 				break;
 			case "passwordConfirm":
-				setPasswordConfirm(event.target.value);
+                addOrRemoveFieldsWithEntries(value.length, source);
+				setPasswordConfirm(value);
 				break;
 		}
 	}
@@ -82,25 +92,41 @@ export default function Dashboard() {
 		}
 	}
 
+	const addOrRemoveFieldsWithEntries = (entryLength: number, source: string) => {
+	    if(entryLength > 0) {
+	        const updatedFields = fieldsWithContent.add(source);
+	        setFieldsWithContent(updatedFields);
+        } else {
+	        const removedFields = fieldsWithContent;
+	        const fieldWasRemoved = removedFields.delete(source);
+	        if(fieldWasRemoved) {
+                setFieldsWithContent(removedFields);
+            }
+        }
+    }
+
 	const animateLabels = (field: string) => {
 		setFieldInFocus(field);
 	}
+
+	const fieldInUseOrFocus = (field: string) => {
+	    return fieldInFocus === field || fieldsWithContent.has(field);
+    }
 
 	return (
 		<div className={styles.container}>
 			<form className={styles.formRegisterUser}>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("firstName")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "firstName" ? styles.lblFormGroupFocus : styles.lblFormGroup}>First Name</label>
+					<label className={fieldInUseOrFocus("firstName") ? styles.lblFormGroupFocus : styles.lblFormGroup}>First Name</label>
 					<input className={styles.inputFormGroup} id="name-input" type="text" value={firstName} onChange={(e) => handleChange(e, "firstName")} />
 				</div>
-				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("lastName")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "lastName" ? styles.lblFormGroupFocus : styles.lblFormGroup}>Last Name</label>
+				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("lastName")} onMouseLeave={() => animateLabels("")} onFocus={(e) => {console.log('Focused on input');animateLabels("lastName");}}>
+					<label className={fieldInUseOrFocus("lastName") ? styles.lblFormGroupFocus : styles.lblFormGroup}>Last Name</label>
 					<input className={styles.inputFormGroup} id="last-name-input" type="text" value={lastName} onChange={(e) => handleChange(e, "lastName")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("phone")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "phone" ? styles.lblFormGroupPhoneFocus : styles.lblFormGroup}>Phone Number</label>
 					<select className={styles.inputFormCountryCodeGroup} id="phone-input" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
-						<option hidden>Country Code</option>
+						<option className={styles.hiddenSelectOption} hidden>Country Code</option>
 						<option disabled defaultValue="true">Select Country Code</option>
 						{countryCodes.map(countryCode => {
 							return (
@@ -108,26 +134,27 @@ export default function Dashboard() {
 							);
 						})}
 					</select>
-					<input className={styles.inputFormPhoneNumberGroup} id="phone-input" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
+                    <label className={fieldInUseOrFocus("phone") ? styles.lblFormGroupPhoneFocus : styles.lblFormGroup}>Phone Number</label>
+                    <input className={styles.inputFormPhoneNumberGroup} id="phone-input" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("userName")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "userName" ? styles.lblFormGroupFocus : styles.lblFormGroup}>User Name</label>
+					<label className={fieldInUseOrFocus("userName") ? styles.lblFormGroupFocus : styles.lblFormGroup}>User Name</label>
 					<input className={styles.inputFormGroup} id="username-input" type="text" value={userName} onChange={(e) => handleChange(e, "userName")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("email")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "email" ? styles.lblFormGroupFocus : styles.lblFormGroup}>Email Address</label>
+					<label className={fieldInUseOrFocus("email") ? styles.lblFormGroupFocus : styles.lblFormGroup}>Email Address</label>
 					<input className={styles.inputFormGroup} autoComplete="new-password" id="email-input" type="email" value={email} onChange={(e) => handleChange(e, "email")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("location")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "location" ? styles.lblFormGroupFocus : styles.lblFormGroup}>Location</label>
+					<label className={fieldInUseOrFocus("location") ? styles.lblFormGroupFocus : styles.lblFormGroup}>Location</label>
 					<input className={styles.inputFormGroup} id="location-input" type="text" value={location} onChange={(e) => handleChange(e, "location")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("password")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "password" ? styles.lblFormGroupFocus : styles.lblFormGroup}>Password</label>
+					<label className={fieldInUseOrFocus("password") ? styles.lblFormGroupFocus : styles.lblFormGroup}>Password</label>
 					<input className={styles.inputFormGroup} autoComplete="new-password" id="password-input" type="password" value={password} onChange={(e) => handleChange(e, "password")} />
 				</div>
 				<div className={styles.divFormGroupContainer} onMouseEnter={() => animateLabels("passwordConfirm")} onMouseLeave={() => animateLabels("")}>
-					<label className={fieldInFocus === "passwordConfirm" ? styles.lblFormGroupFocus : styles.lblFormGroup}>Confirm Password</label>
+					<label className={fieldInUseOrFocus("passwordConfirm") ? styles.lblFormGroupFocus : styles.lblFormGroup}>{fieldInUseOrFocus("passwordConfirm") ? "Confirm" : "Confirm Password"}</label>
 					<input className={styles.inputFormGroup} autoComplete="new-password" id="confirm-password-input" type="password" value={passwordConfirm} onChange={(e) => handleChange(e, "passwordConfirm")} />
 				</div>
 				<Button text={firstName.length > 0 ? "OOUSH!!!" : ""}
