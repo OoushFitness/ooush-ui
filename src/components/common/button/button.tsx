@@ -56,6 +56,7 @@ const Button: React.FC<ButtonProps> = ({
             color: textColor,
             background: backgroundColor,
             fontSize: textSize,
+            cursor: "pointer",
         }}
     >
         {text}
