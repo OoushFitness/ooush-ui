@@ -19,6 +19,7 @@ export interface ButtonProps {
     customClassName?: string;
     height?: string;
     width?: string;
+    cursor?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -39,6 +40,7 @@ const Button: React.FC<ButtonProps> = ({
     customClassName,
     height,
     width,
+    cursor,
 }) => (
     <button
         type={type}
@@ -56,7 +58,7 @@ const Button: React.FC<ButtonProps> = ({
             color: textColor,
             background: backgroundColor,
             fontSize: textSize,
-            cursor: "pointer",
+            cursor: cursor,
         }}
     >
         {text}

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react"
+import React, {useEffect, useState} from "react"
 
 import registerUser from "../../service/user/userService";
 
@@ -6,13 +6,17 @@ import Button from "../../src/components/common/button/button";
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
 
 import { COUNTRY_CODES } from "../../utils/login/loginUtils";
-import { LOGIN_MESSAGE_TIMEOUT_MILLISECONDS } from "../../utils/constants/ooush-constants";
+import {
+    LOGIN_MESSAGE_TIMEOUT_MILLISECONDS,
+    REGISTRATION_FORM_EMAIL_ADDRESS_NOT_VALID, REGISTRATION_FORM_PASSWORD_NOT_VALID
+} from "../../utils/constants/ooush-constants";
 
 import { validateEmail } from "../../utils/validation/validateEmail";
 
 import styles from "../../styles/registerUser.module.css";
 
 export default function Dashboard() {
+
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -23,26 +27,30 @@ export default function Dashboard() {
 	const [location, setLocation] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
+	const [passwordValidated, setPasswordValidated] = useState(false);
 	const [fieldInFocus, setFieldInFocus] = useState("");
 	const [fieldsWithContent, setFieldsWithContent] = useState(new Set<string>());
     const [registrationMessage, setRegistrationMessage] = useState("");
-    const [error, setError] = useState("");
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        validateFieldsForSubmission();
+    })
 
 	const registerNewUser = () => {
 		let data = {
-			email: "pete@ooushfitness.com",
-			password: "Liverpool1",
-			phoneNumber: "07846967190",
-			userName: "PeteyS",
-			firstName: "Pete",
-			lastName: "Smith",
-			location: "Manchester"
+			email: email,
+			password: password,
+			phoneNumber: phoneNumber,
+			userName: userName,
+			firstName: firstName,
+			lastName: lastName,
+			location: location,
 		};
         registerUser(data).then((response: any) => {
-            console.log(response)
             displayNotification(response.body);
         }).catch((error: string)  => {
-            setError(error);
+            displayNotification(error);
             console.error("Error on registration", error);
         })
 	}
@@ -80,7 +88,6 @@ export default function Dashboard() {
 			case "email":
                 addOrRemoveFieldsWithEntries(value.length, source);
 				setEmail(value);
-				validateEmailAddress(value);
 				break;
 			case "location":
                 addOrRemoveFieldsWithEntries(value.length, source);
@@ -97,14 +104,6 @@ export default function Dashboard() {
 		}
 	}
 
-	const validateEmailAddress = (emailAddress: string) => {
-        if(validateEmail(emailAddress)) {
-            setEmailValidated(true);
-        } else {
-            setEmailValidated(false);
-        }
-	}
-
 	const addOrRemoveFieldsWithEntries = (entryLength: number, source: string) => {
 	    if(entryLength > 0) {
 	        const updatedFields = fieldsWithContent.add(source);
@@ -118,6 +117,14 @@ export default function Dashboard() {
         }
     }
 
+    const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+	    // @ts-ignore
+        const clickOutside = e.target.id === "registerUserFormContainer";
+	    if (clickOutside) {
+            setFieldInFocus("");
+        }
+    }
+
 	const animateLabels = (field: string) => {
 		setFieldInFocus(field);
 	}
@@ -126,8 +133,23 @@ export default function Dashboard() {
 	    return fieldInFocus === field || fieldsWithContent.has(field);
     }
 
+    const validateFieldsForSubmission = () => {
+        const passwordsMatch = password === passwordConfirm;
+        const passwordValidated = password != "" && passwordsMatch;
+        const emailValidated = validateEmail(email);
+
+        setEmailValidated(email == "" || emailValidated);
+        setPasswordValidated(password == "" || passwordValidated);
+
+        if(passwordValidated && emailValidated && firstName && lastName && countryCode && phoneNumber && userName && location) {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    }
+
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} id="registerUserFormContainer" onClick={(e) => handleClickOutside(e)}>
 			<form className={styles.formRegisterUser}>
                 <OoushFieldInput
                     id="name-input"
@@ -211,6 +233,7 @@ export default function Dashboard() {
                     fieldInFocus={fieldInFocus}
                     autoComplete="new-password"
                     value={passwordConfirm}
+                    type="password"
                     fieldsWithContent={fieldsWithContent}
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("passwordConfirm")}
@@ -220,7 +243,7 @@ export default function Dashboard() {
                     text="Register"
 					textColor="white"
 					textSize={20}
-					backgroundColor="#0984AB"
+					backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
 					theme="primary"
 					onClick={() => registerNewUser()}
 					type="button"
@@ -228,12 +251,23 @@ export default function Dashboard() {
 					borderRadius={8}
 					height="10%"
 					width="100%"
-                    disabled={!emailValidated}
+                    cursor={buttonDisabled ? "context-menu" : "pointer"}
+                    disabled={buttonDisabled}
 				/>
 			</form>
             {registrationMessage
                 && <div className={styles.registrationMessage}>
                         {registrationMessage}
+                    </div>
+            }
+            {!emailValidated
+                && <div className={styles.registrationMessage}>
+                        {REGISTRATION_FORM_EMAIL_ADDRESS_NOT_VALID}
+                    </div>
+            }
+            {!passwordValidated
+                && <div className={styles.registrationMessage}>
+                        {REGISTRATION_FORM_PASSWORD_NOT_VALID}
                     </div>
             }
 		</div>
