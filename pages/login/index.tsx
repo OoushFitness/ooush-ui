@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
+import { useRouter } from "next/router";
 
-import styles from "../../styles/registerUser.module.css";
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
 import {LOGIN_MESSAGE_TIMEOUT_MILLISECONDS, VERIFICATION_SUCCESS} from "../../utils/constants/ooush-constants";
 import Button from "../../src/components/common/button/button";
-import {validateEmail} from "../../utils/validation/validateEmail";
+
+import login from "../../service/auth/authService"
+
+import styles from "../../styles/login.module.css";
 
 export default function Login() {
+    const router = useRouter();
 
     const [fieldInFocus, setFieldInFocus] = useState("");
     const [email, setEmail] = useState("");
@@ -54,8 +58,22 @@ export default function Login() {
         }
     }
 
-    const login = () => {
-
+    const loginUser = () => {
+        const params = {
+            userName: email,
+            password: password,
+        }
+        login(params).then((response: any) => {
+            console.log(response)
+            if(response.success) {
+                router.push("/dashboard").then(r => {
+                });
+            } else {
+                displayNotification(response.loginMessage)
+            }
+        }).catch((error: string) => {
+            console.error(error);
+        });
     }
 
     const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -84,10 +102,6 @@ export default function Login() {
         setFieldInFocus(field);
     }
 
-    const fieldInUseOrFocus = (field: string) => {
-        return fieldInFocus === field || fieldsWithContent.has(field);
-    }
-
     return (
         <div className={styles.loginContainer} id="loginFormContainer" onClick={(e) => handleClickOutside(e)}>
             <form className={styles.formLogin}>
@@ -100,6 +114,7 @@ export default function Login() {
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("email")}
                     labelValue="Email"
+                    type="email"
                 />
                 <OoushFieldInput
                     id="password-input"
@@ -110,14 +125,15 @@ export default function Login() {
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("password")}
                     labelValue="Password"
+                    type="password"
                 />
                 <Button
-                    text="Register"
+                    text="Login"
                     textColor="white"
                     textSize={20}
                     backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
                     theme="primary"
-                    onClick={() => login()}
+                    onClick={() => loginUser()}
                     type="button"
                     name="Ooush Button"
                     borderRadius={8}
