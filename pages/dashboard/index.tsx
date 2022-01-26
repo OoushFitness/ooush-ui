@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Props, useEffect, useState} from "react";
 
 import styles from "../../styles/login.module.css";
 
@@ -9,4 +9,5 @@ export default function Dashboard() {
             test
         </div>
     )
+
 }

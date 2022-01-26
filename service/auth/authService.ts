@@ -1,8 +1,10 @@
 import apiPostHelper from "../../utils/api-helpers/apiPostHelper";
 
-import { LOGIN } from "./authEndpointUrls";
+import apiGetHelper from "../../utils/api-helpers/apiGetHelper";
 
-const login = (data: object): any => {
+import { LOGIN, VERIFY } from "./authEndpointUrls";
+
+export const login = (data: object): any => {
     return apiPostHelper(LOGIN, data)
             .then(response => response.json())
             .then(data => {
@@ -10,4 +12,10 @@ const login = (data: object): any => {
             });
 }
 
-export default login;
+export const verify = (token: string) => {
+    return apiGetHelper(VERIFY)
+            .then(response => response.json())
+            .then(data => {
+                return data.data;
+            });
+}
