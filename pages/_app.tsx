@@ -1,14 +1,14 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { AuthProvider } from '../auth/AuthContexts';
-import { ProtectRoute } from '../auth/ProtectRoute';
+import { ProtectRoute } from '../auth/AuthContexts';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <AuthProvider>
-            <ProtectRoute>
+             <ProtectRoute>
                 <Component {...pageProps} />
-            </ProtectRoute>
+             </ProtectRoute>
         </AuthProvider>
     )
 }

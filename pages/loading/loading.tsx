@@ -6,7 +6,7 @@ export default function LoadingPage() {
 
     return (
         <div className={styles.loginContainer} id="loading">
-            loading
+            WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh
         </div>
     )
 

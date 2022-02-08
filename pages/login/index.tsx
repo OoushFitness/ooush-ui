@@ -1,15 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useRouter } from "next/router";
 
+import { AuthContext } from "../../auth/AuthContexts";
+
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
-import {LOGIN_MESSAGE_TIMEOUT_MILLISECONDS, VERIFICATION_SUCCESS} from "../../utils/constants/ooush-constants";
 import Button from "../../src/components/common/button/button";
 
-import login from "../../service/auth/authService"
+import { login } from "../../service/auth/authService";
+
+import {
+    VERIFICATION_SUCCESS,
+    LOGIN_MESSAGE_TIMEOUT_MILLISECONDS
+} from "../../utils/constants/ooush-constants";
 
 import styles from "../../styles/login.module.css";
 
 export default function Login() {
+    // @ts-ignore
+    const { loginUser, user } = useContext(AuthContext);
     const router = useRouter();
 
     const [fieldInFocus, setFieldInFocus] = useState("");
@@ -58,22 +66,21 @@ export default function Login() {
         }
     }
 
-    const loginUser = () => {
+    const login = () => {
         const params = {
             userName: email,
             password: password,
         }
-        login(params).then((response: any) => {
-            console.log(response)
-            if(response.success) {
+        loginUser(params);
+        console.log(user)
+        if(user) {
+            if(user.success) {
                 router.push("/dashboard").then(r => {
                 });
             } else {
-                displayNotification(response.loginMessage)
+                displayNotification(user.loginMessage)
             }
-        }).catch((error: string) => {
-            console.error(error);
-        });
+        }
     }
 
     const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -133,7 +140,7 @@ export default function Login() {
                     textSize={20}
                     backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
                     theme="primary"
-                    onClick={() => loginUser()}
+                    onClick={() => login()}
                     type="button"
                     name="Ooush Button"
                     borderRadius={8}

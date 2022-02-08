@@ -1,14 +1,19 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import Cookies from 'js-cookie';
+
+import LoadingPage from '../pages/loading/loading'
+
 import Router, { useRouter } from "next/router";
 import {login, verify} from "../service/auth/authService";
 
-const AuthContext = createContext({});
+export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
 
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	const router = useRouter();
 
 	useEffect(() => {
 		async function loadUserFromCookies() {
@@ -23,6 +28,8 @@ export const AuthProvider = ({ children }) => {
 				if (user) {
 					setUser(user);
 				}
+			} else {
+				router.push('login');
 			}
 			setLoading(false);
 		}
@@ -30,18 +37,18 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 
 	const loginUser = (data) => {
-		let user = {};
+		let userLogin = {};
 		let token = "";
 		login(data).then(response => {
-			user = response;
+			userLogin = response;
 			token = response.token;
+			setUser(userLogin);
+			if (token) {
+				Cookies.set('token', token, { expires: 60 });
+			}
 		}).catch(error => {
 			console.error(error);
 		});
-		if (token) {
-			Cookies.set('token', token, { expires: 60 });
-			setUser(user);
-		}
 	}
 
 	return (
@@ -51,3 +58,21 @@ export const AuthProvider = ({ children }) => {
 	)
 
 }
+
+const isAuthenticatedOnAuthRequiredPage = () => {
+	const { isAuthenticated } = useAuth();
+	if(typeof window !== "undefined") {
+		return (!isAuthenticated && window.location.pathname !== '/login');
+	}
+	return false;
+}
+
+export const ProtectRoute = ({ children }) => {
+	const { loading } = useAuth();
+	if (loading || !isAuthenticatedOnAuthRequiredPage){
+		return <LoadingPage />;
+	}
+	return children;
+};
+
+export const useAuth = () => useContext(AuthContext);
