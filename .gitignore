@@ -1,6 +1,7 @@
 node_modules
 build
 .vscode
+.next
 package-lock.json
 .idea/vcs.xml
 .idea/runConfigurations.xml
