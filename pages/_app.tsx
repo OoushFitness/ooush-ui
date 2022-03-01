@@ -1,26 +1,10 @@
 import '../styles/globals.css'
+import '../src/main.scss'
 import type { AppProps } from 'next/app'
+import Layout from '../src/components/layout/layout'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return <Layout><Component {...pageProps} /></Layout>
 }
 
 export default MyApp
-
-
-
-
-
-
-
-
-
-let nestedArr = [
-  'level1',
-  [
-    'level2',
-  ['level3',
-  'level4',
-  'level5',]
-]
-]

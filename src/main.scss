@@ -3,13 +3,70 @@
 
 :root {
 	// color variables
-	--color-primary: #333;
+	--font-color-primary: #333;
+	--font-color-white: #F5F5F5;
+	--font-color-red: #B6244F;
+	--font-color-green: #4EA699;
+	--font-color-blue: #0091AD;
 	// font variables
-	--font-primary: sans-serif;
+	--font-family-primary: sans-serif;
+	// font size variables
+	--font-size-base: 1.2rem;
+	// h1
+	--font-size-h1-small: 1.8rem;
+	--font-size-h1-medium: 2rem;
+	--font-size-h1-large: 2.4rem;
+	// h2
+	--font-size-h2-small: 1.4rem;
+	--font-size-h2-medium: 1.8rem;
+	--font-size-h2-large: 2rem;
+	// h3
+	--font-size-h3-small: 1.2rem;
+	--font-size-h3-medium: 1.6rem;
+	--font-size-h3-large: 1.8rem;
+	// h4
+	--font-size-h4-small: 1rem;
+	--font-size-h4-medium: 1.4rem;
+	--font-size-h4-large: 1.6rem;
+	// p
+	--font-size-p-small: 0.6rem;
+	--font-size-p-medium: 0.8rem;
+	--font-size-p-large: 1rem;
+	// font weight variables
+	--font-weight-base: 300;
+	--font-weight-light: 100;
+	--font-weight-bold: 600;
 }
 
 body {
-	font-family: var(--font-primary);
-	color: var(--color-primary);
+	font-family: var(--font-family-primary);
+	line-height: 1.4;
+	color: var(--font-color-primary);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-base);
 	text-rendering: optimizeLegibility;
+}
+
+p {
+	font-size: var(--font-size-p-medium);
+}
+
+h1,h2,h3,h4 {
+	font-weight: var(--font-weight-bold);
+}
+
+h1 {
+	font-size: var(--font-size-h1-medium);
+}
+
+h2 {
+	font-size: var(--font-size-h2-medium);
+}
+
+h3 {
+	font-size: var(--font-size-h3-medium);
+}
+
+h4 {
+	font-size: var(--font-size-h4-medium);
 }
