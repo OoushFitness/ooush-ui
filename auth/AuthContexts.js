@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 import LoadingPage from '../pages/loading/loading'
 
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import {login, verify} from "../service/auth/authService";
 
 export const AuthContext = createContext({});
@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
 			setLoading(false);
 		}
 		loadUserFromCookies();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const loginUser = (data) => {
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }) => {
 }
 
 const isAuthenticatedOnAuthRequiredPage = () => {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { isAuthenticated } = useAuth();
 	if(typeof window !== "undefined") {
 		return (!isAuthenticated && window.location.pathname !== '/login');

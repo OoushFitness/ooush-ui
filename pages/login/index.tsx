@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import { useRouter } from "next/router";
 
 import { AuthContext } from "../../auth/AuthContexts";
@@ -122,6 +122,7 @@ export default function Login() {
                     animateLabels={() => animateLabels("email")}
                     labelValue="Email"
                     type="email"
+                    autoComplete="email"
                 />
                 <OoushFieldInput
                     id="password-input"
@@ -133,6 +134,7 @@ export default function Login() {
                     animateLabels={() => animateLabels("password")}
                     labelValue="Password"
                     type="password"
+                    autoComplete="password"
                 />
                 <Button
                     text="Login"

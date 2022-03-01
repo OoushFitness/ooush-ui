@@ -14,12 +14,6 @@ const Layout: React.FC = ({ children }) => {
                     url: "/about",
                     icon: "about"
                 },
-                {
-                    text: "Login",
-                    title: "Login",
-                    url: "/login",
-                    icon: "login"
-                }
             ]
         } else {
             return [
@@ -41,12 +35,6 @@ const Layout: React.FC = ({ children }) => {
                     url: "/routines",
                     icon: "routines"
                 },
-                {
-                    text: "Logout",
-                    title: "logout",
-                    url: "/logout",
-                    icon: "logout"
-                }
             ]
         }
     }
