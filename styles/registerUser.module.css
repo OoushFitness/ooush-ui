@@ -1,0 +1,98 @@
+.container {
+	min-width: 100vw;
+	padding: 0 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+}
+
+.formRegisterUser {
+	width: 40%;
+	height: 40%;
+	min-width: 580px;
+}
+
+.divFormGroupContainer {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 5px;
+	width: 100%;
+	height: 10%;
+}
+
+.lblFormGroup {
+	position: absolute;
+	left: 42%;
+	width: fit-content;
+	transition: left 0.5s ease-in;
+	font-family: Trebuchet MS, sans-serif;
+	font-weight: bold;
+	color: #888888;
+	z-index: -1;
+}
+
+.lblFormGroupFocus {
+	position: absolute;
+	left: 0%;
+	width: fit-content;
+	transition: left 0.5s ease-in;
+	font-family: Trebuchet MS, sans-serif;
+	font-weight: bold;
+	color: #888888;
+	z-index: -1;
+}
+
+.lblFormGroupPhoneFocus {
+	position: absolute;
+	left: 0%;
+	width: fit-content;
+	transition: left 0.5s ease-in;
+	font-family: Trebuchet MS, sans-serif;
+	font-weight: bold;
+	color: #888888;
+}
+
+.inputFormGroup {
+	width: 60%;
+	height: 80%;
+	border: 2px solid #0984AB;
+	border-radius: 5px;
+	font-family: Trebuchet MS, sans-serif;
+	font-weight: bold;
+	color: #000000;
+	padding: 0 10% 0 10%;
+	background: none;
+}
+
+.inputFormCountryCodeGroup {
+	width: 18%;
+	height: 80%;
+	border: 2px solid #0984AB;
+	border-radius: 5px;
+	text-align: center;
+	margin-right: 2%;
+	background: none;
+}
+
+.inputFormPhoneNumberGroup {
+	width: 40%;
+	height: 80%;
+	color: #000000;
+	border: 2px solid #0984AB;
+	font-family: Trebuchet MS, sans-serif;
+	font-weight: bold;
+	color: #000000;
+	border-radius: 5px;
+	padding-left: 10%;
+	background: none;
+}
+
+.registrationMessage {
+	position: fixed;
+	top: 75%;
+}

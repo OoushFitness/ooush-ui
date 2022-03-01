@@ -1,33 +1,160 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.scss'
+import React, {useContext, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+
+import { AuthContext } from "../../auth/AuthContexts";
+
+import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
+import Button from "../../src/components/common/button/button";
+
+import { login } from "../../service/auth/authService";
+
+import {
+    VERIFICATION_SUCCESS,
+    LOGIN_MESSAGE_TIMEOUT_MILLISECONDS
+} from "../../utils/constants/ooush-constants";
+
+import styles from "../../styles/login.module.css";
 
 export default function Login() {
+    // @ts-ignore
+    const { loginUser, user } = useContext(AuthContext);
+    const router = useRouter();
+
+    const [fieldInFocus, setFieldInFocus] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fieldsWithContent, setFieldsWithContent] = useState(new Set<string>());
+    const [loginMessage, setLoginMessage] = useState("");
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        validateFieldsForLogin();
+    })
+
+    useEffect(() => {
+        const verifySuccess = window.location.search;
+        if (verifySuccess) {
+            displayNotification(VERIFICATION_SUCCESS);
+        }
+    }, [])
+
+    const validateFieldsForLogin = () => {
+        if(email && password) {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    }
+
+    const displayNotification = (message: string) => {
+        setLoginMessage(message);
+        setTimeout(() => {
+            setLoginMessage("");
+        }, LOGIN_MESSAGE_TIMEOUT_MILLISECONDS);
+    }
+
+    const addOrRemoveFieldsWithEntries = (entryLength: number, source: string) => {
+        if(entryLength > 0) {
+            const updatedFields = fieldsWithContent.add(source);
+            setFieldsWithContent(updatedFields);
+        } else {
+            const removedFields = fieldsWithContent;
+            const fieldWasRemoved = removedFields.delete(source);
+            if(fieldWasRemoved) {
+                setFieldsWithContent(removedFields);
+            }
+        }
+    }
+
+    const login = () => {
+        const params = {
+            userName: email,
+            password: password,
+        }
+        loginUser(params);
+        console.log(user)
+        if(user) {
+            if(user.success) {
+                router.push("/dashboard").then(r => {
+                });
+            } else {
+                displayNotification(user.loginMessage)
+            }
+        }
+    }
+
+    const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
+        // @ts-ignore
+        const clickOutside = e.target.id === "loginFormContainer";
+        if (clickOutside) {
+            setFieldInFocus("");
+        }
+    }
+
+    const handleChange = (event: any, source: string) => {
+        const value = event.target.value;
+        switch (source) {
+            case "email":
+                addOrRemoveFieldsWithEntries(value.length, source);
+                setEmail(value);
+                break;
+            case "password":
+                addOrRemoveFieldsWithEntries(value.length, source);
+                setPassword(value);
+                break;
+        }
+    }
+
+    const animateLabels = (field: string) => {
+        setFieldInFocus(field);
+    }
+
     return (
-        <div className={styles.container}>
-            <Head>
-                <title>Ooush Home</title>
-                <meta name="description" content="Welcome to Ooush - your next workout tool" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <main className={styles.main}>
-                <section className={styles.section_one}>
-                    <div className={styles.image_container}><Image
-                        alt="Next.js logo"
-                        src="/images/image3.jpeg"
-                        width={'500px'}
-                        height={'500px'}
-                        layout="fixed"
-                        loading="lazy"
-                    /></div>
-                </section>
-                <section className={styles.section_two}>
-
-                </section>
-                <section className={styles.section_three}>
-
-                </section>
-            </main>
+        <div className={styles.loginContainer} id="loginFormContainer" onClick={(e) => handleClickOutside(e)}>
+            <form className={styles.formLogin}>
+                <OoushFieldInput
+                    id="email-input"
+                    fieldName="email"
+                    fieldInFocus={fieldInFocus}
+                    value={email}
+                    fieldsWithContent={fieldsWithContent}
+                    handleChange={handleChange}
+                    animateLabels={() => animateLabels("email")}
+                    labelValue="Email"
+                    type="email"
+                />
+                <OoushFieldInput
+                    id="password-input"
+                    fieldName="password"
+                    fieldInFocus={fieldInFocus}
+                    value={password}
+                    fieldsWithContent={fieldsWithContent}
+                    handleChange={handleChange}
+                    animateLabels={() => animateLabels("password")}
+                    labelValue="Password"
+                    type="password"
+                />
+                <Button
+                    text="Login"
+                    textColor="white"
+                    textSize={20}
+                    backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
+                    theme="primary"
+                    onClick={() => login()}
+                    type="button"
+                    name="Ooush Button"
+                    borderRadius={8}
+                    height="10%"
+                    width="100%"
+                    cursor={buttonDisabled ? "context-menu" : "pointer"}
+                    disabled={buttonDisabled}
+                />
+            </form>
+            {loginMessage
+                && <div className={styles.loginMessage}>
+                        {loginMessage}
+                    </div>
+            }
         </div>
     )
 }

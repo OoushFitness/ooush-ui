@@ -1,3 +1,9 @@
 node_modules
 build
 .vscode
+package-lock.json
+.idea/vcs.xml
+.idea/runConfigurations.xml
+.idea/ooush-ui.iml
+.idea/modules.xml
+.idea/misc.xml
