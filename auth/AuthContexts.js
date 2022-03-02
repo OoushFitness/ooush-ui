@@ -5,6 +5,7 @@ import LoadingPage from '../pages/loading/loading'
 
 import Router, { useRouter } from "next/router";
 import {login, verify} from "../service/auth/authService";
+import storageService from "../service/storage/storageService";
 
 export const AuthContext = createContext({});
 
@@ -40,8 +41,10 @@ export const AuthProvider = ({ children }) => {
 		let userLogin = {};
 		let token = "";
 		login(data).then(response => {
-			userLogin = response;
-			token = response.token;
+			userLogin = response.data;
+			console.log(userLogin)
+			token = userLogin.token;
+			storageService.saveToken(token);
 			setUser(userLogin);
 			if (token) {
 				Cookies.set('token', token, { expires: 60 });
