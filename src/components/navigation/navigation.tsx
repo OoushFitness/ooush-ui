@@ -29,6 +29,13 @@ const Navigation: React.FC<NavigationProps> = ({ navItems }) => {
                                 </Link>
                             </li>
                         ))}
+                        <li key="login" className={styles.navbar_menu_item}>
+                                <Link href="/login">
+                                    <a className={styles.navbar_menu_link}>
+                                        Login
+                                    </a>
+                                </Link>
+                            </li>
                     </ul>
                 </div>
             </nav>
