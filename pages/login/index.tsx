@@ -17,7 +17,7 @@ import styles from "../../styles/login.module.css";
 
 export default function Login() {
     // @ts-ignore
-    const { loginUser, user } = useContext(AuthContext);
+    const { saveUserTokenAndUser } = useContext(AuthContext);
     const router = useRouter();
 
     const [fieldInFocus, setFieldInFocus] = useState("");
@@ -66,21 +66,25 @@ export default function Login() {
         }
     }
 
-    const login = () => {
+    const loginPlatformUser = () => {
         const params = {
             userName: email,
             password: password,
         }
-        loginUser(params);
-        console.log(user)
-        if(user) {
-            if(user.success) {
-                router.push("/dashboard").then(r => {
-                });
-            } else {
-                displayNotification(user.loginMessage)
+        login(params).then((response: any) => {
+            let userLogin = response;
+            saveUserTokenAndUser(userLogin);
+            if(userLogin) {
+                if(userLogin.success) {
+                    router.push("/dashboard").then(r => {
+                    });
+                } else {
+                    displayNotification(userLogin.loginMessage)
+                }
             }
-        }
+        }).catch((error: any) => {
+            console.error(error);
+        });
     }
 
     const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -140,7 +144,7 @@ export default function Login() {
                     textSize={20}
                     backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
                     theme="primary"
-                    onClick={() => login()}
+                    onClick={() => loginPlatformUser()}
                     type="button"
                     name="Ooush Button"
                     borderRadius={8}
