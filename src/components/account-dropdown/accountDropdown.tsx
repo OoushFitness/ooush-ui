@@ -21,6 +21,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({toggleAccountDropdown}
         }).catch(error => {
             console.error(error);
         }).finally(() => {
+            toggleAccountDropdown(false);
             router.push('login');
         })
     }
