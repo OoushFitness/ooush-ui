@@ -6,30 +6,35 @@ import LoadingPage from '../pages/loading/loading'
 import { useRouter } from "next/router";
 import {login, verify} from "../service/auth/authService";
 import storageService from "../service/storage/storageService";
+import {UNAUTHENTICATED_URLS} from "../utils/constants/ooush-constants";
 
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
 
-	const [user, setUser] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [user, setUser] = useState({authenticated: false});
+	const [loading, setLoading] = useState(false);
 
 	const router = useRouter();
 
 	useEffect(() => {
-		async function loadUserFromCookies() {
-			const token = Cookies.get('token');
-			verify(token).then(response => {
-				setUser(response);
-				if (!response.success) {
-					router.push('login');
-				};
-			}).catch(error => {
-				console.error(error);
-			});
-			setLoading(false);
+		if(typeof window !== undefined && !UNAUTHENTICATED_URLS.includes(window.location.pathname)) {
+			setLoading(true);
+			async function loadUserFromCookies() {
+				const token = Cookies.get('token');
+				verify(token).then(response => {
+					setUser(response);
+					if (!response.success) {
+						router.push('login');
+					}
+					;
+				}).catch(error => {
+					console.error(error);
+				});
+				setLoading(false);
+			};
+			loadUserFromCookies();
 		}
-		loadUserFromCookies();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -43,14 +48,13 @@ export const AuthProvider = ({ children }) => {
 	}
 
 	const clearUserTokenAndUser = () => {
-		console.log("I'm here")
 		setUser(null);
 		storageService.clearToken();
 		Cookies.remove('token');
 	}
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, saveUserTokenAndUser, clearUserTokenAndUser}}>
+		<AuthContext.Provider value={{ isAuthenticated: user?.authenticated, user, loading, saveUserTokenAndUser, clearUserTokenAndUser}}>
 			{children}
 		</AuthContext.Provider>
 	)
@@ -60,8 +64,8 @@ export const AuthProvider = ({ children }) => {
 const isAuthenticatedOnAuthRequiredPage = () => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { isAuthenticated } = useAuth();
-	if(typeof window !== "undefined") {
-		return (!isAuthenticated && window.location.pathname !== '/login');
+	if(typeof window !== undefined) {
+		return (!isAuthenticated && !UNAUTHENTICATED_URLS.includes(window.location.pathname));
 	}
 	return false;
 }

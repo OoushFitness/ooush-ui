@@ -7,6 +7,8 @@ export const VERIFICATION_SUCCESS = "Your account has been successfully verified
 
 export const NAVIGATION_ITEM_ACCOUNT = "Account";
 
+export const UNAUTHENTICATED_URLS = ['/login', '/registerUser', '/', '/about'];
+
 export const NAV_ITEMS = [
 	{
 		authenticatedOnly: false,
@@ -35,6 +37,13 @@ export const NAV_ITEMS = [
 		title: "Routines",
 		url: "/routines",
 		icon: "routines"
+	},
+	{
+		authenticatedOnly: false,
+		text: "Register",
+		title: "Register",
+		url: "/registerUser",
+		icon: "register"
 	},
 	{
 		authenticatedOnly: false,
