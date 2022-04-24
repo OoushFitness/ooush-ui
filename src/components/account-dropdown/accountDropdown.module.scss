@@ -1,0 +1,22 @@
+.accountDropdownContainer {
+	position: fixed;
+	padding: 4px;
+	display: flex;
+	justify-content: center;
+	width: 300px;
+	z-index: 999;
+	background-color: white;
+	right: 0;
+	top: 62px;
+	text-align: center;
+	border-radius: 6px;
+}
+
+.accountDropdownItem {
+	width: 100%;
+	border-radius: 6px;
+	&:hover {
+		background: #82bef6;
+		cursor: pointer;
+	}
+}

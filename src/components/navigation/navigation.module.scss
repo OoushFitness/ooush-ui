@@ -47,12 +47,27 @@
             align-items: center;
             padding: 0 20px;
             list-style-type: none;
+
+			&_dropdown {
+				position: relative;
+				width: 200px;
+				border: 1px solid;
+
+				&_item {
+					border: 1px solid;
+				}
+			}
         }
 
         &_item {
             padding: 0 8px;
             font-size: 1.2rem;
             font-weight: 300;
+			border-radius: 4px;
+			&:hover {
+				background-color: #82bef6;
+			}
         }
+
     }
 }

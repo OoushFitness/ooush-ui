@@ -18,6 +18,7 @@ import styles from "../../styles/login.module.css";
 export default function Login() {
     // @ts-ignore
     const { saveUserTokenAndUser } = useContext(AuthContext);
+
     const router = useRouter();
 
     const [fieldInFocus, setFieldInFocus] = useState("");
@@ -149,7 +150,7 @@ export default function Login() {
                     onClick={() => loginPlatformUser()}
                     type="button"
                     name="Ooush Button"
-                    borderRadius={8}
+                    borderRadius={4}
                     height="10%"
                     width="100%"
                     cursor={buttonDisabled ? "context-menu" : "pointer"}

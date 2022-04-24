@@ -6,14 +6,16 @@ import styles from '../styles/Home.module.scss'
 import image1 from '../public/images/image1.webp'
 import image2 from '../public/images/image2.jpeg'
 import image3 from '../public/images/image3.jpeg'
-import { useState } from 'react';
+import {useContext, useState} from 'react';
+import {AuthContext} from "../auth/AuthContexts";
 
 export default function Home() {
-  const [name, setName] = useState("");
+
+    const [name, setName] = useState("");
     const [nameData, setNameData] = useState(null);
     const [loginMessage, setLoginMessage] = useState("");
     const [error, setError] = useState("");
-  const getName = () => {
+    const getName = () => {
     let data = {
         userName: "pete@ooushfitness.com",
         password: "Liverpool1",

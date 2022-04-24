@@ -4,3 +4,50 @@ export const REGISTRATION_FORM_EMAIL_ADDRESS_NOT_VALID = "Please enter a valid e
 export const REGISTRATION_FORM_PASSWORD_NOT_VALID = "Please confirm your password confirmation matches your chosen password";
 
 export const VERIFICATION_SUCCESS = "Your account has been successfully verified";
+
+export const NAVIGATION_ITEM_ACCOUNT = "Account";
+
+export const NAV_ITEMS = [
+	{
+		authenticatedOnly: false,
+		text: "About",
+		title: "About",
+		url: "/about",
+		icon: "about"
+	},
+	{
+		authenticatedOnly: false,
+		text: "Home",
+		title: "Home",
+		url: "/",
+		icon: "home"
+	},
+	{
+		authenticatedOnly: true,
+		text: "Dashboard",
+		title: "Dashboard",
+		url: "/dashboard",
+		icon: "dashboard"
+	},
+	{
+		authenticatedOnly: true,
+		text: "Routines",
+		title: "Routines",
+		url: "/routines",
+		icon: "routines"
+	},
+	{
+		authenticatedOnly: false,
+		text: "Login",
+		title: "Login",
+		url: "/login",
+		icon: "login"
+	},
+	{
+		authenticatedOnly: true,
+		text: "Account",
+		title: "Account",
+		url: "",
+		icon: "account",
+	},
+];

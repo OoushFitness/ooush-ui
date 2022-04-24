@@ -1,8 +1,10 @@
-import React from "react";
+import React, {MouseEventHandler, useContext, useState} from "react";
 import Link from "next/link";
 import styles from "./navigation.module.scss";
+import {NAVIGATION_ITEM_ACCOUNT} from "../../../utils/constants/ooush-constants";
 
 interface NavigationItem {
+    authenticatedOnly: boolean,
     text: string;
     title: string;
     url: string;
@@ -11,9 +13,18 @@ interface NavigationItem {
 
 export interface NavigationProps {
     navItems: NavigationItem[];
+    toggleAccountDropdown: (showAccountDropdown : boolean) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ navItems }) => {
+const Navigation: React.FC<NavigationProps> = ({ navItems , toggleAccountDropdown}) => {
+
+    const handleMouseOverAccountDropdown = (item : NavigationItem) => {
+        if (item.text === NAVIGATION_ITEM_ACCOUNT) {
+            toggleAccountDropdown(true);
+        } else {
+            toggleAccountDropdown(false);
+        }
+    }
 
     return (
         <>
@@ -21,7 +32,11 @@ const Navigation: React.FC<NavigationProps> = ({ navItems }) => {
                 <div className={styles.navbar_container}>
                     <ul className={styles.navbar_menu_list}>
                         {navItems && navItems.map((item, index) => (
-                            <li key={index} className={styles.navbar_menu_item}>
+                            <li
+                                key={index}
+                                className={styles.navbar_menu_item}
+                                onMouseEnter={() => handleMouseOverAccountDropdown(item)}
+                            >
                                 <Link href={item.url}>
                                     <a className={styles.navbar_menu_link}>
                                         {item.text}
@@ -29,13 +44,6 @@ const Navigation: React.FC<NavigationProps> = ({ navItems }) => {
                                 </Link>
                             </li>
                         ))}
-                        <li key="login" className={styles.navbar_menu_item}>
-                                <Link href="/login">
-                                    <a className={styles.navbar_menu_link}>
-                                        Login
-                                    </a>
-                                </Link>
-                            </li>
                     </ul>
                 </div>
             </nav>

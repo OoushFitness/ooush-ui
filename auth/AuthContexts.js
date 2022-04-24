@@ -19,16 +19,11 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		async function loadUserFromCookies() {
 			const token = Cookies.get('token');
-			let user = {};
 			verify(token).then(response => {
+				setUser(response);
 				if (!response.success) {
 					router.push('login');
-				} else {
-					user = response;
-					if (user) {
-						setUser(user);
-					}
-				}
+				};
 			}).catch(error => {
 				console.error(error);
 			});
@@ -47,8 +42,15 @@ export const AuthProvider = ({ children }) => {
 		}
 	}
 
+	const clearUserTokenAndUser = () => {
+		console.log("I'm here")
+		setUser(null);
+		storageService.clearToken();
+		Cookies.remove('token');
+	}
+
 	return (
-		<AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, saveUserTokenAndUser}}>
+		<AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, saveUserTokenAndUser, clearUserTokenAndUser}}>
 			{children}
 		</AuthContext.Provider>
 	)

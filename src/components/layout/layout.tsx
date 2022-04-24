@@ -1,46 +1,25 @@
-import { useRouter } from "next/router";
-import React from "react";
+import React, {useContext, useState} from "react";
 import Navigation, { NavigationProps } from "../navigation/navigation";
+import {NAV_ITEMS} from "../../../utils/constants/ooush-constants";
 import styles from "./layout.module.scss";
+import {AuthContext} from "../../../auth/AuthContexts";
+import AccountDropdown from "../account-dropdown/accountDropdown";
 
 const Layout: React.FC = ({ children }) => {
-    const router = useRouter()
-    const getNavItems = () => {
-        if (router.pathname === "/") {
-            return [
-                {
-                    text: "About",
-                    title: "About",
-                    url: "/about",
-                    icon: "about"
-                },
-            ]
-        } else {
-            return [
-                {
-                    text: "Home",
-                    title: "Home",
-                    url: "/",
-                    icon: "home"
-                },
-                {
-                    text: "Dashboard",
-                    title: "Dashboard",
-                    url: "/dashboard",
-                    icon: "dashboard"
-                },
-                {
-                    text: "Routines",
-                    title: "Routines",
-                    url: "/routines",
-                    icon: "routines"
-                },
-            ]
-        }
+
+    const [showAccountDropdown, setShowAccountDropdown] = useState(false)
+    const toggleAccountDropdown = (showAccountDropdown: boolean) => {
+        setShowAccountDropdown(showAccountDropdown);
     }
+
+    // @ts-ignore
+    const { user } = useContext(AuthContext);
+    const navItems = user?.authenticated ? NAV_ITEMS.filter(navItem => navItem.authenticatedOnly) : NAV_ITEMS.filter(navItem => !navItem.authenticatedOnly)
+
     return (
         <div className={styles.layout}>
-            <Navigation navItems={getNavItems()} />
+            <Navigation navItems={navItems} toggleAccountDropdown={toggleAccountDropdown} />
+            {showAccountDropdown && <AccountDropdown toggleAccountDropdown={toggleAccountDropdown} />}
             {children && children}
         </div>
     )
