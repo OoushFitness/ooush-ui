@@ -18,22 +18,24 @@ export const AuthProvider = ({ children }) => {
 	const router = useRouter();
 
 	useEffect(() => {
-		if(typeof window !== undefined && !UNAUTHENTICATED_URLS.includes(window.location.pathname)) {
-			setLoading(true);
-			async function loadUserFromCookies() {
-				const token = Cookies.get('token');
-				verify(token).then(response => {
-					setUser(response);
-					if (!response.success) {
-						router.push('login');
-					}
-					;
-				}).catch(error => {
-					console.error(error);
-				});
+		setLoading(true);
+		async function loadUserFromCookies() {
+			const token = Cookies.get('token');
+			verify(token).then(response => {
+				setUser(response);
+				if (!response.success) {
+					router.push('login');
+				};
+			}).catch(error => {
+				console.error(error);
+			});
+		};
+		if (typeof window !== undefined && !UNAUTHENTICATED_URLS.includes(window.location.pathname)) {
+			loadUserFromCookies().then(() => {
 				setLoading(false);
-			};
-			loadUserFromCookies();
+			});
+		} else {
+			setLoading(false);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
