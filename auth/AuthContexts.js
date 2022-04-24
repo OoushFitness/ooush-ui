@@ -5,6 +5,7 @@ import LoadingPage from '../pages/loading/loading'
 
 import { useRouter } from "next/router";
 import {login, verify} from "../service/auth/authService";
+import storageService from "../service/storage/storageService";
 
 export const AuthContext = createContext({});
 
@@ -19,41 +20,35 @@ export const AuthProvider = ({ children }) => {
 		async function loadUserFromCookies() {
 			const token = Cookies.get('token');
 			let user = {};
-			if (token) {
-				verify(token).then(response => {
+			verify(token).then(response => {
+				if (!response.success) {
+					router.push('login');
+				} else {
 					user = response;
-				}).catch(error => {
-					console.error(error);
-				});
-				if (user) {
-					setUser(user);
+					if (user) {
+						setUser(user);
+					}
 				}
-			} else {
-				router.push('login');
-			}
+			}).catch(error => {
+				console.error(error);
+			});
 			setLoading(false);
 		}
 		loadUserFromCookies();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const loginUser = (data) => {
-		let userLogin = {};
-		let token = "";
-		login(data).then(response => {
-			userLogin = response;
-			token = response.token;
-			setUser(userLogin);
-			if (token) {
-				Cookies.set('token', token, { expires: 60 });
-			}
-		}).catch(error => {
-			console.error(error);
-		});
+	const saveUserTokenAndUser = (user) => {
+		setUser(user)
+		const token = user.token;
+		storageService.saveToken(token);
+		if (token) {
+			Cookies.set('token', token, { expires: 60 });
+		}
 	}
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, loginUser}}>
+		<AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, saveUserTokenAndUser}}>
 			{children}
 		</AuthContext.Provider>
 	)
