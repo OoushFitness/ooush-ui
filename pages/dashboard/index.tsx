@@ -34,28 +34,28 @@ export default function Dashboard() {
                 <section>
                     <div className={styles.main__overview}>
                         <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Overview</div>
-                            <div className={styles.overviewcard__info}>Card</div>
+                            <div className={styles.overviewcard__icon}>Monday</div>
+                            <div className={styles.overviewcard__info}>Weekday</div>
                         </div>
                         <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Overview</div>
-                            <div className={styles.overviewcard__info}>Card</div>
+                            <div className={styles.overviewcard__icon}>Tuesday</div>
+                            <div className={styles.overviewcard__info}>Weekday</div>
                         </div>
                         <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Overview</div>
-                            <div className={styles.overviewcard__info}>Card</div>
+                            <div className={styles.overviewcard__icon}>Wednesday</div>
+                            <div className={styles.overviewcard__info}>Weekday</div>
                         </div>
                         <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Overview</div>
-                            <div className={styles.overviewcard__info}>Card</div>
+                            <div className={styles.overviewcard__icon}>Thursday</div>
+                            <div className={styles.overviewcard__info}>Weekday</div>
                         </div>
                     </div>
                 </section>
                 <section>
                     <div className={styles.main__cards}>
-                        <div className={styles.card} onClick={(): void => handleClick(0)} style={{ height: `${cardSizes[0]}` }}>Card 1</div>
-                        <div className={styles.card} onClick={(): void => handleClick(1)} style={{ height: `${cardSizes[1]}` }}>Card 2</div>
-                        <div className={styles.card} onClick={(): void => handleClick(2)} style={{ height: `${cardSizes[2]}` }}>Card 3</div>
+                        <div className={styles.card} onClick={(): void => handleClick(0)} style={{ height: `${cardSizes[0]}` }}>Friday</div>
+                        <div className={styles.card} onClick={(): void => handleClick(1)} style={{ height: `${cardSizes[1]}` }}>Saturday</div>
+                        <div className={styles.card} onClick={(): void => handleClick(2)} style={{ height: `${cardSizes[2]}` }}>Sunday</div>
                     </div>
                 </section>
             </main>
