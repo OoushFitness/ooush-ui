@@ -1,0 +1,1 @@
+export const GET_DASHBOARD_WORKOUTS = 'workouts/get-dashboard-workouts';

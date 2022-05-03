@@ -1,5 +1,7 @@
 import Head from 'next/head'
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
+import {getDashboardWorkouts} from "../../service/workouts/workoutService";
+
 import styles from '../../styles/dashboard.module.scss'
 
 export default function Dashboard() {
@@ -9,6 +11,15 @@ export default function Dashboard() {
         large: `${840}px`,
     }
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
+    const [dashboardWorkouts, setDashboardWorkouts] = useState([]);
+
+    useEffect(() => {
+        getDashboardWorkouts().then(response => {
+            setDashboardWorkouts(response);
+        }).catch(error => {
+            console.error(error)
+        });
+    }, [])
 
     const handleClick = (card: number):void => {
         const newCardSizes = [...cardSizes];
