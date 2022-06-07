@@ -1,0 +1,1 @@
+export const FETCH_EXERCISES = 'exercise/fetch';
