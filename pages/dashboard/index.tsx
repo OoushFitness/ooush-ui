@@ -12,10 +12,11 @@ export default function Dashboard() {
     }
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState([]);
+    const [selectedWorkoutDayId, setSelectedWorkoutDayId] = useState(100);
 
     useEffect(() => {
         getDashboardWorkouts().then(response => {
-            setDashboardWorkouts(response);
+            setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
         }).catch(error => {
             console.error(error)
         });
@@ -33,7 +34,12 @@ export default function Dashboard() {
         setCardSizes(newCardSizes);
     }
 
+    const handleViewWorkoutDay = (workoutDayId: number) => {
 
+
+    }
+
+    console.log(selectedWorkoutDayId);
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -44,29 +50,43 @@ export default function Dashboard() {
             <main className={styles.main}>
                 <section>
                     <div className={styles.main__overview}>
-                        <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Monday</div>
-                            <div className={styles.overviewcard__info}>Weekday</div>
-                        </div>
-                        <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Tuesday</div>
-                            <div className={styles.overviewcard__info}>Weekday</div>
-                        </div>
-                        <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Wednesday</div>
-                            <div className={styles.overviewcard__info}>Weekday</div>
-                        </div>
-                        <div className={styles.overviewcard}>
-                            <div className={styles.overviewcard__icon}>Thursday</div>
-                            <div className={styles.overviewcard__info}>Weekday</div>
-                        </div>
+                        {dashboardWorkouts
+                            .filter((workout: any) => workout.weekday)
+                            .map((workout: any) => {
+                                return (
+                                    <div className={styles.overviewcard} key={"workoutDay" + workout.day}>
+                                        <div className={styles.overviewcard__icon}>{workout.day}</div>
+                                        <div className={styles.overviewcard__icon}>Chest Day</div>
+                                        <button
+                                            className={styles.overviewcard__button}
+                                            onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                        >
+                                            View Workout</button>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
                 </section>
                 <section>
                     <div className={styles.main__cards}>
-                        <div className={styles.card} onClick={(): void => handleClick(0)} style={{ height: `${cardSizes[0]}` }}>Friday</div>
-                        <div className={styles.card} onClick={(): void => handleClick(1)} style={{ height: `${cardSizes[1]}` }}>Saturday</div>
-                        <div className={styles.card} onClick={(): void => handleClick(2)} style={{ height: `${cardSizes[2]}` }}>Sunday</div>
+                        {dashboardWorkouts
+                            .filter((workout: any) => !workout.weekday)
+                            .map((workout: any) => {
+                                return (
+                                    <div className={styles.card} onClick={(): void => handleClick(0)} style={{ height: `${cardSizes[3]}` }}>
+                                        <div className={styles.overviewcard__icon}>{workout.day}</div>
+                                        <div className={styles.overviewcard__icon}>Leg Day</div>
+                                        <button
+                                            className={styles.overviewcard__button}
+                                            onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                        >
+                                            View Workout
+                                        </button>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
                 </section>
             </main>

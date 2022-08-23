@@ -7,6 +7,6 @@ module.exports = {
   //   });
   //   return config;
   // },
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
 }
