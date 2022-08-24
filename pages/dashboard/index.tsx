@@ -60,6 +60,21 @@ export default function Dashboard() {
         setDashboardWorkouts(newState);
     }
 
+    const getClassName = (index: number) => {
+        switch(index) {
+            case 0:
+                return styles.overviewcard__0;
+            case 1:
+                return styles.overviewcard__1;
+            case 2:
+                return styles.overviewcard__2;
+            case 3:
+                return styles.overviewcard__3;
+            default:
+                return;
+        };
+    }
+
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -77,13 +92,7 @@ export default function Dashboard() {
                                     <div
                                         className={workout.viewing
                                             ? styles.overviewcard__selected
-                                            : idx === 0
-                                                ? styles.overviewcard__0
-                                                : idx === 1
-                                                    ? styles.overviewcard__1
-                                                    : idx === 2
-                                                        ? styles.overviewcard__2
-                                                        : styles.overviewcard__3} 
+                                            : getClassName(idx)} 
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
