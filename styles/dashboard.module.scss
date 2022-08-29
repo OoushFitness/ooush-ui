@@ -3,6 +3,8 @@
         display: flex;
         height: 300px;
         width: 24vw;
+        left: 0;
+        margin: 0 0.5% 0 0.5%;
         position: absolute;
         flex-direction: column;
         align-items: center;
@@ -48,9 +50,9 @@
             @extend .overviewcard;
             width: 98vw;
             height: 90vh;
+            left: 0;
             transition: all 1s;
             z-index: 999;
-            left: 1%;
             background-color: rgba(221, 51, 221, 1.0);
         }
     }
@@ -64,6 +66,61 @@
         height: 300px;
     }
 
+    .weekendcard {
+        display: flex;
+        left: 0;
+        margin: 0 0.5% 0 0.5%;
+        top: 55vh;
+        height: 300px;
+        width: 24vw;
+        position: absolute;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 20px;
+        background-color: rgba(130, 190, 246, 0.9);
+        border-radius: 10px;
+        transition: all 1s;
+        z-index: 0;
+
+        &__0 {
+            @extend .weekendcard;
+            left: 12%;
+        }
+
+        &__1 {
+            @extend .weekendcard;
+            left: 37%;
+        }
+
+        &__2 {
+            @extend .weekendcard;
+            left: 62%;
+        }
+
+        &__button {
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid;
+            &:hover {
+                background: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        &__selected {
+            @extend .weekendcard;
+            width: 99vw;
+            height: 88vh;
+            top: 10vh;
+            transition: all 1s;
+            z-index: 999;
+            left: 0;
+            background-color: rgba(130, 190, 246, 1.0);
+        }
+    }
+
     &__cards {
         column-count: 1;
         column-gap: 20px;
@@ -75,45 +132,6 @@
 
         @media screen and (min-width: 920px) {
             column-count: 3;
-        }
-
-        .card {
-            display:flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            height: 300px;
-            width: 300px;
-            background-color: rgb(130, 190, 246, 0.6);
-            margin-bottom: 20px;
-            -webkit-column-break-inside: avoid;
-            padding: 24px;
-            box-sizing: border-box;
-            border-radius: 10px;
-            transition: all 1s;
-            z-index: 0;
-
-            &__selected {
-                @extend .card;
-                position: absolute;
-                width: 97vw;
-                height: 90vh;
-                transition: all 1s;
-                background-color: rgba(130, 190, 246, 1.0);
-                z-index: 999;
-            }
-
-            &:first-child {
-                height: 500px;
-            }
-
-            &:nth-child(2) {
-                height: 215px;
-            }
-
-            &:nth-child(3) {
-                height: 265px;
-            }
         }
     }
 }

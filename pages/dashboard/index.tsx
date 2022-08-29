@@ -75,6 +75,19 @@ export default function Dashboard() {
         };
     }
 
+    const getWeekendCardClassName = (index: number) => {
+        switch(index) {
+            case 0:
+                return styles.weekendcard__0;
+            case 1:
+                return styles.weekendcard__1;
+            case 2:
+                return styles.weekendcard__2;
+            default:
+                return;
+        };
+    }
+
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -112,16 +125,18 @@ export default function Dashboard() {
                     <div className={styles.main__cards}>
                         {dashboardWorkouts
                             .filter((workout: DashboardWorkout) => !workout.weekday)
-                            .map((workout: DashboardWorkout) => {
+                            .map((workout: DashboardWorkout, idx: number) => {
                                 return (
                                     <div
-                                        className={workout.viewing ? styles.card__selected : styles.card}
-                                        onClick={(): void => handleClick(0)} style={{ height: `${cardSizes[3]}` }}
+                                        className={workout.viewing
+                                            ? styles.weekendcard__selected
+                                            : getWeekendCardClassName(idx)} 
+                                        key={"workoutDay" + workout.day}
                                     >
-                                        <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        <div className={styles.overviewcard__icon}>Leg Day</div>
+                                        <div className={styles.weekendcard__icon}>{workout.day}</div>
+                                        <div className={styles.weekendcard__icon}>Leg Day</div>
                                         <button
-                                            className={styles.overviewcard__button}
+                                            className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
                                         >
                                             View Workout
