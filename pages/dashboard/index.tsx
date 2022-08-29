@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import {useEffect, useState} from 'react';
 import {getDashboardWorkouts} from "../../service/workouts/workoutService";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 import styles from '../../styles/dashboard.module.scss'
 
@@ -114,7 +116,15 @@ export default function Dashboard() {
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
                                         >
-                                            View Workout</button>
+                                            View Workout
+                                        </button>
+                                        {workout.viewing 
+                                            && <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className={styles.overviewcard__close}
+                                                    onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                                />
+                                        }
                                     </div>
                                 );
                             })

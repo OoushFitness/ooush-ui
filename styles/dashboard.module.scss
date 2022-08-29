@@ -55,6 +55,16 @@
             z-index: 999;
             background-color: rgba(221, 51, 221, 1.0);
         }
+
+        &__close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            &:hover {
+                cursor: pointer;
+                fill: white;
+            }
+        }
     }
 
     &__overview {
