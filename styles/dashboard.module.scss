@@ -1,3 +1,5 @@
+@use "./common.module.scss";
+
 .main {
     .overviewcard {
         display: flex;
@@ -143,5 +145,11 @@
         @media screen and (min-width: 920px) {
             column-count: 3;
         }
+    }
+
+    .dashboardCardCloseButton {
+        position: absolute;
+        right: 10px;
+        top: 10px;
     }
 }

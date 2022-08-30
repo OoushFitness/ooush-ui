@@ -22,7 +22,6 @@ export default function Dashboard() {
     }
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState<DashboardWorkout[]>([]);
-    const [selectedWorkoutDayId, setSelectedWorkoutDayId] = useState(100);
 
     useEffect(() => {
         getDashboardWorkouts().then(response => {
@@ -90,6 +89,10 @@ export default function Dashboard() {
         };
     }
 
+    const closeCard = () => {
+
+    }
+
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -107,7 +110,7 @@ export default function Dashboard() {
                                     <div
                                         className={workout.viewing
                                             ? styles.overviewcard__selected
-                                            : getClassName(idx)} 
+                                            : getClassName(idx)}
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
@@ -115,13 +118,13 @@ export default function Dashboard() {
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                            style={{visibility: workout.viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
                                         </button>
                                         {workout.viewing 
-                                            && <FontAwesomeIcon
-                                                    icon={faCircleXmark}
-                                                    className={styles.overviewcard__close}
+                                            && <div 
+                                                    className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
                                                     onClick={() => handleViewWorkoutDay(workout.dayId)}
                                                 />
                                         }
@@ -148,9 +151,16 @@ export default function Dashboard() {
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                            style={{visibility: workout.viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
                                         </button>
+                                        {workout.viewing 
+                                            && <div 
+                                                    className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
+                                                    onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                                />
+                                        }
                                     </div>
                                 );
                             })
