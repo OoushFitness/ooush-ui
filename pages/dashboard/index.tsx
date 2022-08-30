@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import {useEffect, useState} from 'react';
-import {getDashboardWorkouts} from "../../service/workouts/workoutService";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+    getDashboardWorkouts,
+    setDashboardWorkoutDayTitle,
+} from "../../service/workouts/workoutService";
 
 import styles from '../../styles/dashboard.module.scss'
 
@@ -30,6 +31,18 @@ export default function Dashboard() {
             console.error(error)
         });
     }, []);
+
+    const setUserWorkoutDayTitle = (workoutDayId: number, name: string) => {
+        const params = {
+            workoutDayId: workoutDayId,
+            name: name,
+        };
+        setDashboardWorkoutDayTitle(params).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.error(error);
+        })
+    }
 
     const handleClick = (card: number):void => {
         const newCardSizes = [...cardSizes];
@@ -89,10 +102,6 @@ export default function Dashboard() {
         };
     }
 
-    const closeCard = () => {
-
-    }
-
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -114,7 +123,12 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        <div className={styles.overviewcard__icon}>Chest Day</div>
+                                        <div
+                                            className={styles.overviewcard__icon}
+                                            onClick={() => setUserWorkoutDayTitle(workout.dayId, "Chest Day")}
+                                        >
+                                            Chest Day
+                                        </div>
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
@@ -147,7 +161,12 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        <div className={styles.weekendcard__icon}>Leg Day</div>
+                                        <div
+                                            className={styles.weekendcard__icon}
+                                            onClick={() => setUserWorkoutDayTitle(workout.dayId, "Leg Day")}
+                                        >
+                                            Leg Day
+                                        </div>
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}

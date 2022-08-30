@@ -48,6 +48,13 @@
             }
         }
 
+        &__icon {
+            &:hover {
+                border: 1px solid;
+                cursor: pointer;
+            }
+        }
+
         &__selected {
             @extend .overviewcard;
             width: 98vw;
@@ -118,6 +125,13 @@
             border: 1px solid;
             &:hover {
                 background: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        &__icon {
+            &:hover {
+                border: 1px solid;
+                cursor: pointer;
             }
         }
 
