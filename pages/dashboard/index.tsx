@@ -10,6 +10,7 @@ import styles from '../../styles/dashboard.module.scss'
 interface DashboardWorkout {
     day: String,
     dayId: number,
+    name: String,
     exercises: String[],
     weekday: boolean,
     viewing: boolean,
@@ -67,6 +68,7 @@ export default function Dashboard() {
                     dayId: dashboardWorkout.dayId,
                     exercises: dashboardWorkout.exercises,
                     weekday: dashboardWorkout.weekday,
+                    name: dashboardWorkout.name,
                     viewing: newViewingState,
                 }
             );
@@ -127,7 +129,7 @@ export default function Dashboard() {
                                             className={styles.overviewcard__icon}
                                             onClick={() => setUserWorkoutDayTitle(workout.dayId, "Chest Day")}
                                         >
-                                            Chest Day
+                                            {workout.name}
                                         </div>
                                         <button
                                             className={styles.overviewcard__button}
@@ -165,7 +167,7 @@ export default function Dashboard() {
                                             className={styles.weekendcard__icon}
                                             onClick={() => setUserWorkoutDayTitle(workout.dayId, "Leg Day")}
                                         >
-                                            Leg Day
+                                            {workout.name}
                                         </div>
                                         <button
                                             className={styles.weekendcard__button}
