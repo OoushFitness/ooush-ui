@@ -22,6 +22,7 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 if (handleChangeLabel) {
                     console.log(label)
+                    console.log("Test Pull Request")
                     handleChangeLabel(id, label);
                 }
                 setEditing(false);
