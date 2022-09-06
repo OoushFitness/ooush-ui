@@ -1,6 +1,5 @@
 import React, {MouseEventHandler, useContext, useState} from "react";
 import styles from "./accountDropdown.module.scss";
-import {NAVIGATION_ITEM_ACCOUNT} from "../../../utils/constants/ooush-constants";
 import {logout} from "../../../service/auth/authService";
 import {AuthContext} from "../../../auth/AuthContexts";
 import {useRouter} from "next/router";

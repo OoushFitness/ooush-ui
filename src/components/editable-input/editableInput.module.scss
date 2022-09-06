@@ -1,0 +1,35 @@
+.divEditableLabelContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    border: 1px solid;
+    border-radius: 5px;
+    text-align: center;
+    font-family: inherit;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.inputEditable {
+    height: 100%;
+    width: 100%;
+    border: none;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    background: white;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.divEditableInputStaticLabel {
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding-top: 5px;
+    text-align: center;
+}

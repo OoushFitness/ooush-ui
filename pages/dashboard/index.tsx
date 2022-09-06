@@ -4,14 +4,15 @@ import {
     getDashboardWorkouts,
     setDashboardWorkoutDayTitle,
 } from "../../service/workouts/workoutService";
+import EditableInput from '../../src/components/editable-input/editableInput';
 
 import styles from '../../styles/dashboard.module.scss'
 
 interface DashboardWorkout {
-    day: String,
+    day: string,
     dayId: number,
-    name: String,
-    exercises: String[],
+    name: string,
+    exercises: string[],
     weekday: boolean,
     viewing: boolean,
 };
@@ -25,21 +26,26 @@ export default function Dashboard() {
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState<DashboardWorkout[]>([]);
 
-    useEffect(() => {
+    const loadDashboard = () => {
         getDashboardWorkouts().then(response => {
             setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
         }).catch(error => {
             console.error(error)
         });
+    }
+
+    useEffect(() => {
+        loadDashboard();
     }, []);
 
     const setUserWorkoutDayTitle = (workoutDayId: number, name: string) => {
+        console.log("I'm here")
         const params = {
             workoutDayId: workoutDayId,
             name: name,
         };
         setDashboardWorkoutDayTitle(params).then(response => {
-            console.log(response);
+            loadDashboard();
         }).catch(error => {
             console.error(error);
         })
@@ -127,10 +133,16 @@ export default function Dashboard() {
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
                                         <div
                                             className={styles.overviewcard__icon}
-                                            onClick={() => setUserWorkoutDayTitle(workout.dayId, "Chest Day")}
                                         >
                                             {workout.name}
                                         </div>
+                                        <EditableInput
+                                            displayLabel={workout.name}
+                                            defaultLabel="What kind of workout today?"
+                                            type="text"
+                                            id={workout.dayId}
+                                            handleChangeLabel={setUserWorkoutDayTitle}
+                                        />
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
@@ -165,10 +177,16 @@ export default function Dashboard() {
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
                                         <div
                                             className={styles.weekendcard__icon}
-                                            onClick={() => setUserWorkoutDayTitle(workout.dayId, "Leg Day")}
                                         >
                                             {workout.name}
                                         </div>
+                                        <EditableInput
+                                            displayLabel={workout.name}
+                                            defaultLabel="What kind of workouts today?"
+                                            type="text"
+                                            id={workout.dayId}
+                                            handleChangeLabel={setUserWorkoutDayTitle}
+                                        />
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
