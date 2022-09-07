@@ -17,7 +17,7 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
     const wrapperRef = useRef(null);
 
     useEffect(() => {
-        function handleClickOutside(event: any) {
+        const handleClickOutside = (event: any) => {
             // @ts-ignore
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 if (handleChangeLabel) {
