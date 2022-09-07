@@ -17,11 +17,10 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
     const wrapperRef = useRef(null);
 
     useEffect(() => {
-        function handleClickOutside(event: any) {
+        const handleClickOutside = (event: any) => {
             // @ts-ignore
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 if (handleChangeLabel) {
-                    console.log(label)
                     handleChangeLabel(id, label);
                 }
                 setEditing(false);
@@ -31,7 +30,7 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-      }, [wrapperRef]);
+      }, [wrapperRef, label]);
 
     const toggleEditingStatus = () => {
         setEditing(true);
@@ -40,8 +39,6 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
     const handleInputChange = (event: any) => {
         setLabel(event.target.value);
     }
-
-    console.log(label)
 
     return (
         <div className={styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>
