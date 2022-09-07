@@ -21,8 +21,6 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
             // @ts-ignore
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 if (handleChangeLabel) {
-                    console.log(label)
-                    console.log("Test Pull Request")
                     handleChangeLabel(id, label);
                 }
                 setEditing(false);
@@ -32,7 +30,7 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-      }, [wrapperRef]);
+      }, [wrapperRef, label]);
 
     const toggleEditingStatus = () => {
         setEditing(true);
@@ -41,8 +39,6 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
     const handleInputChange = (event: any) => {
         setLabel(event.target.value);
     }
-
-    console.log(label)
 
     return (
         <div className={styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>

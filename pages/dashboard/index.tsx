@@ -39,7 +39,6 @@ export default function Dashboard() {
     }, []);
 
     const setUserWorkoutDayTitle = (workoutDayId: number, name: string) => {
-        console.log("I'm here")
         const params = {
             workoutDayId: workoutDayId,
             name: name,
@@ -131,11 +130,6 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        <div
-                                            className={styles.overviewcard__icon}
-                                        >
-                                            {workout.name}
-                                        </div>
                                         <EditableInput
                                             displayLabel={workout.name}
                                             defaultLabel="What kind of workout today?"
@@ -175,11 +169,6 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        <div
-                                            className={styles.weekendcard__icon}
-                                        >
-                                            {workout.name}
-                                        </div>
                                         <EditableInput
                                             displayLabel={workout.name}
                                             defaultLabel="What kind of workouts today?"
