@@ -12,6 +12,7 @@ export interface EditableInputProps {
 const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel, type, id, handleChangeLabel}) => {
 
     const [editing, setEditing] = useState(false);
+    const [labelOnLoad, setLabelOnLoad] = useState(displayLabel ?? defaultLabel);
     const [label, setLabel] = useState(displayLabel ?? defaultLabel);
 
     const wrapperRef = useRef(null);
@@ -20,7 +21,7 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
         const handleClickOutside = (event: any) => {
             // @ts-ignore
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-                if (handleChangeLabel) {
+                if (handleChangeLabel && label !== labelOnLoad) {
                     handleChangeLabel(id, label);
                 }
                 setEditing(false);
