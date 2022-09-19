@@ -1,4 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSave } from "@fortawesome/free-regular-svg-icons";
+
 import styles from "./editableInput.module.scss";
 
 export interface EditableInputProps {
@@ -44,13 +47,16 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
     return (
         <div className={styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>
             {editing
-                ? <input
-                        ref={wrapperRef}
-                        onChange={handleInputChange}
-                        type={type}
-                        value={label}
-                        className={styles.inputEditable}
-                    />
+                ? <div className={styles.divInputSaveIconContainer}>
+                        <input
+                            ref={wrapperRef}
+                            onChange={handleInputChange}
+                            type={type}
+                            value={label}
+                            className={styles.inputEditable}
+                        />
+                        <FontAwesomeIcon icon={faSave} title="Save label" className={styles.faIconSave} />
+                    </div>
                 : <div className={styles.divEditableInputStaticLabel}>{label}</div>
             }
         </div>

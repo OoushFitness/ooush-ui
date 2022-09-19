@@ -13,6 +13,20 @@
     }
 }
 
+.divInputSaveIconContainer {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 0 5px 0 0;
+    .faIconSave {
+        height: 20px;
+        width: 20px;
+    }
+}
+
 .inputEditable {
     height: 100%;
     width: 100%;
