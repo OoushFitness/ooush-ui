@@ -130,13 +130,15 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        <EditableInput
-                                            displayLabel={workout.name}
-                                            defaultLabel="What kind of workout today?"
-                                            type="text"
-                                            id={workout.dayId}
-                                            handleChangeLabel={setUserWorkoutDayTitle}
-                                        />
+                                        {!workout.viewing
+                                            && <EditableInput
+                                                    displayLabel={workout.name}
+                                                    defaultLabel="What kind of workout today?"
+                                                    type="text"
+                                                    id={workout.dayId}
+                                                    handleChangeLabel={setUserWorkoutDayTitle}
+                                                />
+                                        }
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
@@ -169,13 +171,15 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        <EditableInput
-                                            displayLabel={workout.name}
-                                            defaultLabel="What kind of workouts today?"
-                                            type="text"
-                                            id={workout.dayId}
-                                            handleChangeLabel={setUserWorkoutDayTitle}
-                                        />
+                                        {!workout.viewing
+                                            && <EditableInput
+                                                    displayLabel={workout.name}
+                                                    defaultLabel="What kind of workouts today?"
+                                                    type="text"
+                                                    id={workout.dayId}
+                                                    handleChangeLabel={setUserWorkoutDayTitle}
+                                                />
+                                        }
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
