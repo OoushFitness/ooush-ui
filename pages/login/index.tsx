@@ -5,6 +5,7 @@ import { AuthContext } from "../../auth/AuthContexts";
 
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
 import Button from "../../src/components/common/button/button";
+import LoadingSpinnerSmall from "../../src/components/loading-spinners/loadingSpinnerSmall";
 
 import { login } from "../../service/auth/authService";
 
@@ -162,6 +163,7 @@ export default function Login() {
                         {loginMessage}
                     </div>
             }
+            <LoadingSpinnerSmall />
         </div>
     )
 }
