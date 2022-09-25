@@ -15,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
     // @ts-ignore
     const { user } = useContext(AuthContext);
     const navItems = user?.authenticated ? NAV_ITEMS.filter(navItem => navItem.authenticatedOnly) : NAV_ITEMS.filter(navItem => !navItem.authenticatedOnly)
-    console.log(navItems)
+
     return (
         <div className={styles.layout}>
             <Navigation navItems={navItems} toggleAccountDropdown={toggleAccountDropdown} />

@@ -5,6 +5,7 @@ import {
     setDashboardWorkoutDayTitle,
 } from "../../service/workouts/workoutService";
 import EditableInput from '../../src/components/editable-input/editableInput';
+import OoushTable from '../../src/components/ooush-table/ooushTable';
 
 import styles from '../../styles/dashboard.module.scss'
 
@@ -130,8 +131,9 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        {!workout.viewing
-                                            && <EditableInput
+                                        {workout.viewing
+                                            ? <OoushTable tableData={workout.exercises} />
+                                            : <EditableInput
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workout today?"
                                                     type="text"
@@ -171,8 +173,9 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        {!workout.viewing
-                                            && <EditableInput
+                                        {workout.viewing
+                                            ? <OoushTable tableData={workout.exercises} />
+                                            : <EditableInput
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workouts today?"
                                                     type="text"
