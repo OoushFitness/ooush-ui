@@ -133,7 +133,6 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
-                                const exercisesPresent = exercises.length > 0;
                                 return (
                                     <div
                                         className={workout.viewing
@@ -146,6 +145,7 @@ export default function Dashboard() {
                                             ? <OoushTable
                                                     tableData={exercises}
                                                     defaultData={emptyWorkOutRow}
+                                                    includeAddRowButton
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}
@@ -180,7 +180,6 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => !workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
-                                const exercisesPresent = exercises.length > 0;
                                 return (
                                     <div
                                         className={workout.viewing
@@ -193,6 +192,7 @@ export default function Dashboard() {
                                             ? <OoushTable
                                                     tableData={exercises}
                                                     defaultData={emptyWorkOutRow}
+                                                    includeAddRowButton
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}

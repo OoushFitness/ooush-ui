@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import OoushTableRow from "../../interfaces/commonInterfaces";
 import EditableInput from "../editable-input/editableInput"
 import styles from "./ooushTable.module.scss"
@@ -8,15 +8,24 @@ import capitalize from "../../../utils/language/language-utils";
 export interface OoushTableProps {
     tableData: Array<OoushTableRow>;
     defaultData: Array<OoushTableRow>;
+    includeAddRowButton?: boolean;
 }
 
-const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData}) => {
+const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData, includeAddRowButton}) => {
 
     const tableDataPresent = tableData.length > 0;
-    const tableHeaders = Object.keys(tableDataPresent ? tableData[0] : defaultData[0]);
+
+    const [tableState, setTableState] = useState(tableDataPresent ? tableData : defaultData);
+
+    const tableHeaders = Object.keys(tableState[0]);
     const tableHeadersCapitalized = tableHeaders.map(string => capitalize(string));
     const tableCellWidth = `calc(100% / ${tableHeaders.length})`;
-    const tableBodyData = tableDataPresent ? tableData : defaultData;
+
+    const addNewBlankTableRow = () => {
+        const newTableState = [...tableState, defaultData[0]];
+        console.log(newTableState)
+        setTableState(newTableState);
+    }
 
     return (
         <table className={styles.ooushTable}>
@@ -36,7 +45,7 @@ const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData}) => {
                 </tr>
             </thead>
             <tbody>
-                {tableBodyData.map((tableRow: OoushTableRow, idx: number) => {
+                {tableState.map((tableRow: OoushTableRow, idx: number) => {
                     return (
                         <tr key={"tableBodyDataRow" + idx} className={styles.ooushTableRow}>
                             {tableHeaders.map((header: string, cellIdx: number) => {
@@ -59,6 +68,15 @@ const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData}) => {
                     );
                 })}
             </tbody>
+            {includeAddRowButton
+                && <div className={styles.ooushTableAddRowButtonContainer}>
+                        <div
+                            className={styles.ooushTableAddRowButton}
+                            title="Add new entry"
+                            onClick={() => addNewBlankTableRow()}
+                        />
+                    </div>
+            }
         </table>
     )
 }
