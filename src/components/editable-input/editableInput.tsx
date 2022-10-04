@@ -5,14 +5,15 @@ import { faSave } from "@fortawesome/free-regular-svg-icons";
 import styles from "./editableInput.module.scss";
 
 export interface EditableInputProps {
+    tableCellInput?: boolean,
     displayLabel: string,
-    defaultLabel: string,
+    defaultLabel?: string,
     id: number,
     type: string,
     handleChangeLabel?: (id: number, label: string) => void,
 }
 
-const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel, type, id, handleChangeLabel}) => {
+const EditableInput: React.FC<EditableInputProps> = ({tableCellInput, displayLabel, defaultLabel, type, id, handleChangeLabel}) => {
 
     const [editing, setEditing] = useState(false);
     const [labelOnLoad, setLabelOnLoad] = useState(displayLabel ?? defaultLabel);
@@ -44,8 +45,12 @@ const EditableInput: React.FC<EditableInputProps> = ({displayLabel, defaultLabel
         setLabel(event.target.value);
     }
 
+    if (tableCellInput) {
+        console.log(tableCellInput)
+    }
+
     return (
-        <div className={styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>
+        <div className={tableCellInput ? styles.divEditableLabelContainerTable : styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>
             {editing
                 ? <div className={styles.divInputSaveIconContainer}>
                         <input
