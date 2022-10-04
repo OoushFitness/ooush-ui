@@ -19,7 +19,7 @@ interface DashboardWorkout {
     viewing: boolean,
 };
 
-const emptyWorkOutTable = [
+const emptyWorkOutRow = [
     {
         name: "Enter exercise",
         weight: 0,
@@ -143,7 +143,10 @@ export default function Dashboard() {
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
                                         {workout.viewing
-                                            ? <OoushTable tableData={exercisesPresent ? exercises : emptyWorkOutTable} />
+                                            ? <OoushTable
+                                                    tableData={exercises}
+                                                    defaultData={emptyWorkOutRow}
+                                                />
                                             : <EditableInput
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workout today?"
@@ -187,7 +190,10 @@ export default function Dashboard() {
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
                                         {workout.viewing
-                                            ? <OoushTable tableData={exercisesPresent ? exercises : emptyWorkOutTable} />
+                                            ? <OoushTable
+                                                    tableData={exercises}
+                                                    defaultData={emptyWorkOutRow}
+                                                />
                                             : <EditableInput
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workouts today?"
