@@ -7,13 +7,16 @@ import capitalize from "../../../utils/language/language-utils";
 
 export interface OoushTableProps {
     tableData: Array<OoushTableRow>;
+    defaultData: Array<OoushTableRow>;
 }
 
-const OoushTable: React.FC<OoushTableProps> = ({tableData}) => {
+const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData}) => {
 
-    const tableHeaders = Object.keys(tableData[0])
+    const tableDataPresent = tableData.length > 0;
+    const tableHeaders = Object.keys(tableDataPresent ? tableData[0] : defaultData[0]);
     const tableHeadersCapitalized = tableHeaders.map(string => capitalize(string));
     const tableCellWidth = `calc(100% / ${tableHeaders.length})`;
+    const tableBodyData = tableDataPresent ? tableData : defaultData;
 
     return (
         <table className={styles.ooushTable}>
@@ -33,7 +36,7 @@ const OoushTable: React.FC<OoushTableProps> = ({tableData}) => {
                 </tr>
             </thead>
             <tbody>
-                {tableData.map((tableRow: OoushTableRow, idx: number) => {
+                {tableBodyData.map((tableRow: OoushTableRow, idx: number) => {
                     return (
                         <tr key={"tableBodyDataRow" + idx} className={styles.ooushTableRow}>
                             {tableHeaders.map((header: string, cellIdx: number) => {
