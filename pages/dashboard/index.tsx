@@ -5,6 +5,8 @@ import {
     setDashboardWorkoutDayTitle,
 } from "../../service/workouts/workoutService";
 import EditableInput from '../../src/components/editable-input/editableInput';
+import OoushTable from '../../src/components/ooush-table/ooushTable';
+import OoushTableRow from '../../src/interfaces/commonInterfaces';
 
 import styles from '../../styles/dashboard.module.scss'
 
@@ -12,10 +14,18 @@ interface DashboardWorkout {
     day: string,
     dayId: number,
     name: string,
-    exercises: string[],
+    exercises: OoushTableRow[],
     weekday: boolean,
     viewing: boolean,
 };
+
+const emptyWorkOutTable = [
+    {
+        name: "Enter exercise",
+        weight: 0,
+        reps: 0
+    }
+];
 
 export default function Dashboard() {
     const sizes = {
@@ -122,6 +132,8 @@ export default function Dashboard() {
                         {dashboardWorkouts
                             .filter((workout: DashboardWorkout) => workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
+                                const exercises = workout.exercises;
+                                const exercisesPresent = exercises.length > 0;
                                 return (
                                     <div
                                         className={workout.viewing
@@ -130,13 +142,16 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        <EditableInput
-                                            displayLabel={workout.name}
-                                            defaultLabel="What kind of workout today?"
-                                            type="text"
-                                            id={workout.dayId}
-                                            handleChangeLabel={setUserWorkoutDayTitle}
-                                        />
+                                        {workout.viewing
+                                            ? <OoushTable tableData={exercisesPresent ? exercises : emptyWorkOutTable} />
+                                            : <EditableInput
+                                                    displayLabel={workout.name}
+                                                    defaultLabel="What kind of workout today?"
+                                                    type="text"
+                                                    id={workout.dayId}
+                                                    handleChangeLabel={setUserWorkoutDayTitle}
+                                                />
+                                        }
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
@@ -161,6 +176,8 @@ export default function Dashboard() {
                         {dashboardWorkouts
                             .filter((workout: DashboardWorkout) => !workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
+                                const exercises = workout.exercises;
+                                const exercisesPresent = exercises.length > 0;
                                 return (
                                     <div
                                         className={workout.viewing
@@ -169,13 +186,16 @@ export default function Dashboard() {
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        <EditableInput
-                                            displayLabel={workout.name}
-                                            defaultLabel="What kind of workouts today?"
-                                            type="text"
-                                            id={workout.dayId}
-                                            handleChangeLabel={setUserWorkoutDayTitle}
-                                        />
+                                        {workout.viewing
+                                            ? <OoushTable tableData={exercisesPresent ? exercises : emptyWorkOutTable} />
+                                            : <EditableInput
+                                                    displayLabel={workout.name}
+                                                    defaultLabel="What kind of workouts today?"
+                                                    type="text"
+                                                    id={workout.dayId}
+                                                    handleChangeLabel={setUserWorkoutDayTitle}
+                                                />
+                                        }
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
