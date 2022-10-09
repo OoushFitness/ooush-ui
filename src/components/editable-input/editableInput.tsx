@@ -11,13 +11,16 @@ export interface EditableInputProps {
     id: number,
     type: string,
     handleChangeLabel?: (id: number, label: string) => void,
+    handleUpdateCell?: (data: object) => any;
 }
 
-const EditableInput: React.FC<EditableInputProps> = ({tableCellInput, displayLabel, defaultLabel, type, id, handleChangeLabel}) => {
+const EditableInput: React.FC<EditableInputProps> = ({tableCellInput, displayLabel, defaultLabel, type, id, handleChangeLabel, handleUpdateCell}) => {
 
     const [editing, setEditing] = useState(false);
     const [labelOnLoad, setLabelOnLoad] = useState(displayLabel ?? defaultLabel);
     const [label, setLabel] = useState(displayLabel ?? defaultLabel);
+
+    console.log(handleUpdateCell)
 
     const wrapperRef = useRef(null);
 
@@ -27,6 +30,9 @@ const EditableInput: React.FC<EditableInputProps> = ({tableCellInput, displayLab
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 if (handleChangeLabel && label !== labelOnLoad) {
                     handleChangeLabel(id, label);
+                }
+                if (handleUpdateCell && label !== labelOnLoad) {
+                    handleUpdateCell({});
                 }
                 setEditing(false);
             }
@@ -43,10 +49,6 @@ const EditableInput: React.FC<EditableInputProps> = ({tableCellInput, displayLab
 
     const handleInputChange = (event: any) => {
         setLabel(event.target.value);
-    }
-
-    if (tableCellInput) {
-        console.log(tableCellInput)
     }
 
     return (

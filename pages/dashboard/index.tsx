@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import {useEffect, useState} from 'react';
+import { updateUserExercise } from '../../service/exercise/exerciseService';
 import {
     getDashboardWorkouts,
     setDashboardWorkoutDayTitle,
@@ -145,6 +146,7 @@ export default function Dashboard() {
                                             ? <OoushTable
                                                     tableData={exercises}
                                                     defaultData={emptyWorkOutRow}
+                                                    updateCellMethod={updateUserExercise}
                                                     includeAddRowButton
                                                 />
                                             : <EditableInput
@@ -192,6 +194,7 @@ export default function Dashboard() {
                                             ? <OoushTable
                                                     tableData={exercises}
                                                     defaultData={emptyWorkOutRow}
+                                                    updateCellMethod={updateUserExercise}
                                                     includeAddRowButton
                                                 />
                                             : <EditableInput

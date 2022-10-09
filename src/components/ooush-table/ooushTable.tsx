@@ -9,9 +9,10 @@ export interface OoushTableProps {
     tableData: Array<OoushTableRow>;
     defaultData: Array<OoushTableRow>;
     includeAddRowButton?: boolean;
+    updateCellMethod?: (data: object) => any;
 }
 
-const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData, includeAddRowButton}) => {
+const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData, includeAddRowButton, updateCellMethod}) => {
 
     const tableDataPresent = tableData.length > 0;
 
@@ -60,6 +61,7 @@ const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData, includeA
                                             displayLabel={tableRow[header as 'name']}
                                             type="text"
                                             id={cellIdx}
+                                            handleUpdateCell={updateCellMethod}
                                         />
                                     </td>
                                 );
@@ -69,13 +71,13 @@ const OoushTable: React.FC<OoushTableProps> = ({tableData, defaultData, includeA
                 })}
             </tbody>
             {includeAddRowButton
-                && <div className={styles.ooushTableAddRowButtonContainer}>
-                        <div
+                && <tfoot className={styles.ooushTableAddRowButtonContainer}>
+                        <tr
                             className={styles.ooushTableAddRowButton}
                             title="Add new entry"
                             onClick={() => addNewBlankTableRow()}
                         />
-                    </div>
+                    </tfoot>
             }
         </table>
     )
