@@ -1,6 +1,10 @@
 import Head from 'next/head'
 import {useEffect, useState} from 'react';
 import {
+    updateUserExercise,
+    removeUserExercise
+} from '../../service/exercise/exerciseService';
+import {
     getDashboardWorkouts,
     setDashboardWorkoutDayTitle,
 } from "../../service/workouts/workoutService";
@@ -23,7 +27,8 @@ const emptyWorkOutRow = [
     {
         name: "Enter exercise",
         weight: 0,
-        reps: 0
+        reps: 0,
+        id: null
     }
 ];
 
@@ -35,17 +40,19 @@ export default function Dashboard() {
     }
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState<DashboardWorkout[]>([]);
+    const [viewedWorkoutDayId, setViewedWorkoutDayId] = useState(-1);
 
-    const loadDashboard = () => {
+    const loadDashboard = (persistCardView: boolean) => {
         getDashboardWorkouts().then(response => {
             setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
+
         }).catch(error => {
             console.error(error)
         });
     }
 
     useEffect(() => {
-        loadDashboard();
+        loadDashboard(false);
     }, []);
 
     const setUserWorkoutDayTitle = (workoutDayId: number, name: string) => {
@@ -54,7 +61,7 @@ export default function Dashboard() {
             name: name,
         };
         setDashboardWorkoutDayTitle(params).then(response => {
-            loadDashboard();
+            loadDashboard(false);
         }).catch(error => {
             console.error(error);
         })
@@ -73,22 +80,7 @@ export default function Dashboard() {
     }
 
     const handleViewWorkoutDay = (workoutDayId: number) => {
-        let newState = [];
-        for (let dashboardWorkout of dashboardWorkouts) {
-            const currentViewingState = dashboardWorkout.viewing;
-            const newViewingState = dashboardWorkout.dayId === workoutDayId ? !currentViewingState : currentViewingState;
-            newState.push(
-                {
-                    day: dashboardWorkout.day,
-                    dayId: dashboardWorkout.dayId,
-                    exercises: dashboardWorkout.exercises,
-                    weekday: dashboardWorkout.weekday,
-                    name: dashboardWorkout.name,
-                    viewing: newViewingState,
-                }
-            );
-        }
-        setDashboardWorkouts(newState);
+        setViewedWorkoutDayId(viewedWorkoutDayId === -1 ? workoutDayId : -1);
     }
 
     const getClassName = (index: number) => {
@@ -133,19 +125,28 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
+                                const viewing = workout.dayId === viewedWorkoutDayId;
                                 return (
                                     <div
-                                        className={workout.viewing
+                                        className={viewing
                                             ? styles.overviewcard__selected
                                             : getClassName(idx)}
                                         key={"workoutDay" + workout.day}
                                     >
-                                        <div className={styles.overviewcard__icon}>{workout.day}</div>
-                                        {workout.viewing
+                                        <div className={styles.overviewcard__iconcontainer}>
+                                            <div className={styles.overviewcard__icon}>{workout.day}</div>
+                                        </div>
+                                        {viewing
                                             ? <OoushTable
                                                     tableData={exercises}
                                                     defaultData={emptyWorkOutRow}
+                                                    workoutDayId={workout.dayId}
+                                                    updateCellMethod={updateUserExercise}
+                                                    removeTableRow={removeUserExercise}
+                                                    refreshTable={loadDashboard}
                                                     includeAddRowButton
+                                                    includeRemoveRowColumn
+                                                    hideIdColumn
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}
@@ -158,11 +159,11 @@ export default function Dashboard() {
                                         <button
                                             className={styles.overviewcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
-                                            style={{visibility: workout.viewing ? 'hidden' : 'visible'}}
+                                            style={{visibility: viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
                                         </button>
-                                        {workout.viewing 
+                                        {viewing
                                             && <div 
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
                                                     onClick={() => handleViewWorkoutDay(workout.dayId)}
@@ -180,19 +181,25 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => !workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
+                                const viewing = workout.dayId === viewedWorkoutDayId;
                                 return (
                                     <div
-                                        className={workout.viewing
+                                        className={viewing
                                             ? styles.weekendcard__selected
                                             : getWeekendCardClassName(idx)} 
                                         key={"workoutDay" + workout.day}
                                     >
                                         <div className={styles.weekendcard__icon}>{workout.day}</div>
-                                        {workout.viewing
+                                        {viewing
                                             ? <OoushTable
                                                     tableData={exercises}
+                                                    workoutDayId={workout.dayId}
+                                                    removeTableRow={removeUserExercise}
+                                                    refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
+                                                    updateCellMethod={updateUserExercise}
                                                     includeAddRowButton
+                                                    hideIdColumn
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}
@@ -205,11 +212,11 @@ export default function Dashboard() {
                                         <button
                                             className={styles.weekendcard__button}
                                             onClick={() => handleViewWorkoutDay(workout.dayId)}
-                                            style={{visibility: workout.viewing ? 'hidden' : 'visible'}}
+                                            style={{visibility: viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
                                         </button>
-                                        {workout.viewing 
+                                        {viewing 
                                             && <div 
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
                                                     onClick={() => handleViewWorkoutDay(workout.dayId)}
