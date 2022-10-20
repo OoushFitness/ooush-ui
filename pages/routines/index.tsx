@@ -10,7 +10,7 @@ export default function Routines() {
 
     useEffect(() => {
         fetchExercises(fetchExerciseParams).then((response: object) => {
-            console.log(response);
+            setExerciseList(response);
         }).catch((error: object) => {
             console.error(error);
         })
