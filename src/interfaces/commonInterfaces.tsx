@@ -4,3 +4,8 @@ export default interface OoushTableRow {
     weight: number,
     reps: number
 }
+
+export default interface OoushExerciseTableRow {
+    id: number | null,
+    name: string
+}
