@@ -45,7 +45,6 @@ export default function Dashboard() {
     const loadDashboard = (persistCardView: boolean) => {
         getDashboardWorkouts().then(response => {
             setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
-
         }).catch(error => {
             console.error(error)
         });
@@ -147,6 +146,7 @@ export default function Dashboard() {
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
                                                     hideIdColumn
+                                                    editableTable
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}

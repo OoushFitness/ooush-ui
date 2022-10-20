@@ -10,6 +10,7 @@ export interface OoushTableProps {
     tableData: Array<OoushTableRow>;
     defaultData: Array<OoushTableRow>;
     includeAddRowButton?: boolean;
+    editableTable?: boolean;
     includeRemoveRowColumn?: boolean;
     workoutDayId?: number,
     hideIdColumn: boolean,
@@ -22,6 +23,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     tableData,
     defaultData,
     includeAddRowButton,
+    editableTable,
     includeRemoveRowColumn,
     workoutDayId,
     hideIdColumn,
@@ -89,18 +91,26 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                             className={styles.ooushTableCellInput}
                                             style={{width: tableCellWidth}}
                                         >   
-                                            <EditableInput
-                                                tableCellInput
-                                                displayLabel={tableRow[header as 'name']}
-                                                rowHeader={header}
-                                                type="text"
-                                                id={cellIdx}
-                                                tableRow={tableRow}
-                                                workoutDayId={workoutDayId}
-                                                handleUpdateCell={updateCellMethod}
-                                                parseTableCellApiParams={parseExerciseTableCellUpdateParams}
-                                                refreshTable={refreshTable}
-                                            />
+                                            {editableTable
+                                                ? <EditableInput
+                                                        tableCellInput
+                                                        // @ts-ignore
+                                                        displayLabel={tableRow[header]}
+                                                        rowHeader={header}
+                                                        type="text"
+                                                        id={cellIdx}
+                                                        tableRow={tableRow}
+                                                        workoutDayId={workoutDayId}
+                                                        handleUpdateCell={updateCellMethod}
+                                                        parseTableCellApiParams={parseExerciseTableCellUpdateParams}
+                                                        refreshTable={refreshTable}
+                                                    />
+                                                : <div>
+                                                        {   // @ts-ignore 
+                                                            tableRow[header]
+                                                        }
+                                                    </div>
+                                            }
                                         </td>
                                     );
                             })}

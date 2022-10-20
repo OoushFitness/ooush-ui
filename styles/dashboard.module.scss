@@ -1,6 +1,8 @@
 @use "./common.module.scss";
 
 .main {
+    height: 100%;
+    width: 100%;
     .overviewcard {
         display: flex;
         height: 290px;
@@ -166,4 +168,10 @@
         right: 10px;
         top: 10px;
     }
+}
+
+.divRoutinesTableContainer {
+    margin-top: 5%;
+    height: 100%;
+    width: 100%;
 }
