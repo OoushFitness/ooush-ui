@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OoushTableRow from "../../interfaces/commonInterfaces";
 import EditableInput from "../editable-input/editableInput";
-import parseExerciseTableCellUpdateParams from "../../../utils/table-cell-helpers/tableCellHelpers";
+import parseExerciseTableCellUpdateParams from "../../../utils/ooush-table-helpers/tableCellHelpers";
 import deepCloneObject from "../../../utils/object-helpers/object-helpers";
 import { capitalize } from "../../../utils/language/language-utils";
 import styles from "./ooushTable.module.scss";
@@ -13,6 +13,7 @@ export interface OoushTableProps {
     editableTable?: boolean;
     includeRemoveRowColumn?: boolean;
     workoutDayId?: number,
+    translucentRows?: boolean,
     hideIdColumn: boolean,
     updateCellMethod?: (data: object) => any;
     removeTableRow?: (id1: number, id2: number) => any;
@@ -27,6 +28,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     includeRemoveRowColumn,
     workoutDayId,
     hideIdColumn,
+    translucentRows,
     updateCellMethod,
     removeTableRow,
     refreshTable
@@ -61,7 +63,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     return (
         <table className={styles.ooushTable}>
             <thead>
-                <tr className={styles.ooushTableRow}>
+                <tr className={translucentRows ? styles.ooushTableRowTranslucent : styles.ooushTableRow}>
                     {tableHeadersCapitalized.map((header: string) => {
                         return (
                             <th
@@ -81,7 +83,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
             <tbody className={styles.ooushTableBody}>
                 {tableState.map((tableRow: OoushTableRow, idx: number) => {
                     return (
-                        <tr key={"tableBodyDataRow" + idx} className={styles.ooushTableRow}>
+                        <tr key={"tableBodyDataRow" + idx} className={translucentRows ? styles.ooushTableRowTranslucent : styles.ooushTableRow}>
                             {tableHeaders
                                 .filter((header: string) => hideIdColumn ? header !== 'id' : header)
                                 .map((header: string, cellIdx: number) => {

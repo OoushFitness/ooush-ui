@@ -1,7 +1,5 @@
 import apiPostHelper from "../../utils/api-helpers/apiPostHelper";
-
 import apiGetHelper from "../../utils/api-helpers/apiGetHelper";
-
 import {LOGIN, LOGOUT, VERIFY} from "./authEndpointUrls";
 
 export const login = (data: object): any => {

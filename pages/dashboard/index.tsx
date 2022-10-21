@@ -143,6 +143,7 @@ export default function Dashboard() {
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
+                                                    translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
                                                     hideIdColumn
@@ -198,8 +199,11 @@ export default function Dashboard() {
                                                     refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
                                                     updateCellMethod={updateUserExercise}
+                                                    translucentRows
                                                     includeAddRowButton
+                                                    includeRemoveRowColumn
                                                     hideIdColumn
+                                                    editableTable
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}
