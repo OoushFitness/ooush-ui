@@ -176,3 +176,14 @@
     height: 100%;
     width: 100%;
 }
+
+.searchParametersContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.searchParameterSelectContainer {
+    display: flex;
+    flex-direction: column;
+}

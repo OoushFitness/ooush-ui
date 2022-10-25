@@ -12,15 +12,15 @@ export interface BitmapSearchOption {
     position: number
 }
 
-export interface BitmapSearchOptions {
-    type: string,
-    options: BitmapSearchOption[]
+export interface BitmapSearchParameter {
+    searchParameter: string,
+    searchOptions: BitmapSearchOption[],
 }
 
 export default function Routines() {
 
     const [exerciseList, setExerciseList] = useState<OoushTableRow[]>([]);
-    const [bitmapSearchOptions, setBitmapSearchOptions] = useState<BitmapSearchOptions>({} as BitmapSearchOptions);
+    const [bitmapSearchParameters, setBitmapSearchParameters] = useState<BitmapSearchParameter[]>([] as BitmapSearchParameter[]);
     const [fetchExerciseParams, setfetchExerciseParams] = useState({});
 
     const defaultData = [{
@@ -47,9 +47,8 @@ export default function Routines() {
     }
 
     const loadSearchOptions = () => {
-        fetchSearchOptions().then((response: BitmapSearchOptions) => {
-            console.log(response)
-            setBitmapSearchOptions(response);
+        fetchSearchOptions().then((response: BitmapSearchParameter[]) => {
+            setBitmapSearchParameters(response);
         }).catch((error: object) => {
             console.error(error);
         });
@@ -65,6 +64,22 @@ export default function Routines() {
             <main className={styles.main}>
                 <div className={styles.divSearchDropdownFieldsContainer}></div>
                 <div className={styles.divRoutinesTableContainer}>
+                    <div className={styles.searchParametersContainer}>
+                        {bitmapSearchParameters.map((bitmapSearchOption: BitmapSearchParameter) => {
+                            return (
+                                <div className={styles.searchParameterSelectContainer}>
+                                    <label htmlFor="pet-select">{bitmapSearchOption.searchParameter}</label>
+                                    <select name="pets" id="pet-select">
+                                        {bitmapSearchOption.searchOptions.map((option: BitmapSearchOption) => {
+                                            return (
+                                                <option value={option.position}>{option.name}</option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <OoushTable
                         tableData={exerciseList}
                         defaultData={defaultData}
