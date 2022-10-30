@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
     updateUserExercise,
     removeUserExercise
@@ -28,7 +28,8 @@ const emptyWorkOutRow = [
         name: "Enter exercise",
         weight: 0,
         reps: 0,
-        id: null
+        id: null,
+        sets: 1
     }
 ];
 

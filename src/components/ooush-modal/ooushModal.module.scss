@@ -1,0 +1,47 @@
+.ooushModalBlurMask {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(8px);
+}
+
+.ooushModalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 80%;
+    background-color: lightblue;
+    border-radius: 20px;
+}
+
+.ooushModalContent {
+    width: 80%;
+    height: 60%;
+}
+
+.ooushModalControls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    width: 80%;
+    height: 20%;
+}
+
+.ooushModalButton {
+    font-family: inherit;
+    height: 80%;
+    border: none;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    &:hover {
+        cursor: pointer;
+        background-color: lightgray;
+    }
+}

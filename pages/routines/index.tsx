@@ -6,7 +6,9 @@ import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tab
 import { deepCloneObject, deepCloneArray } from '../../utils/object-helpers/object-helpers';
 import OoushTableRow from "../../src/interfaces/commonInterfaces";
 import OoushTable from "../../src/components/ooush-table/ooushTable";
+import OooushModal from "../../src/components/ooush-modal/ooushModal"
 import styles from '../../styles/dashboard.module.scss';
+import OoushModal from '../../src/components/ooush-modal/ooushModal';
 
 export interface BitmapSearchOption {
     name: string,
@@ -38,6 +40,7 @@ export default function Routines() {
     const [bitmapPositionCount, setBitmapPositionCount] = useState<number>(0);
     const [fetchExerciseParams, setfetchExerciseParams] = useState<ExerciseSearchParameters>({} as ExerciseSearchParameters);
     const [selectedSearchOptions, setSelectedSearchOptions] = useState<SearchOptions>({} as SearchOptions);
+    const [addingExercise, setAddingExercise] = useState<boolean>(false);
 
     const defaultData = [{
         id: null,
@@ -65,7 +68,7 @@ export default function Routines() {
                 injectAdditionalTableColumn(
                     response,
                     "Add To Workout",
-                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry"/>
+                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" onClick={addExercise}/>
                 ) as OoushTableRow[]
             );
         }).catch((error: object) => {
@@ -99,6 +102,14 @@ export default function Routines() {
         console.log(searchBitmap)
         searchExerciseTable(searchBitmap);
     }
+
+    const addExercise = () => {
+        setAddingExercise(current => !current);
+    }
+
+    useEffect(() => {
+        console.log(addingExercise)
+    }, [addingExercise]);
 
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
@@ -141,6 +152,9 @@ export default function Routines() {
                     />
                 </div>
             </main>
+            {addingExercise
+                && <OoushModal closeModalHandler={addExercise} />
+            }
         </div>
     )
 }
