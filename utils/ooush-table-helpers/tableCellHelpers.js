@@ -4,7 +4,8 @@ const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
         exerciseDayId: exerciseDayId,
         name: tableRow.name,
         weight: tableRow.weight,
-        reps: tableRow.reps
+        reps: tableRow.reps,
+        sets: tableRow.sets
     };
     return params;
 }
