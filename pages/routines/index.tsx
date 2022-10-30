@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchExercises } from "../../service/exercise/exerciseService";
 import { fetchSearchOptions } from '../../service/bitmap/bitmapService';
 import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tableDataHelpers";
+import { deepCloneObject, deepCloneArray } from '../../utils/object-helpers/object-helpers';
 import OoushTableRow from "../../src/interfaces/commonInterfaces";
 import OoushTable from "../../src/components/ooush-table/ooushTable";
 import styles from '../../styles/dashboard.module.scss';
@@ -17,11 +18,26 @@ export interface BitmapSearchParameter {
     searchOptions: BitmapSearchOption[],
 }
 
+export interface ExerciseSearchParameterResponse {
+    parameterList: BitmapSearchParameter[],
+    bitmapPositionCount: number
+}
+
+export interface ExerciseSearchParameters {
+    searchBitmap: number
+}
+
+export interface SearchOptions {
+    [key: string]: string | undefined
+}
+
 export default function Routines() {
 
     const [exerciseList, setExerciseList] = useState<OoushTableRow[]>([]);
     const [bitmapSearchParameters, setBitmapSearchParameters] = useState<BitmapSearchParameter[]>([] as BitmapSearchParameter[]);
-    const [fetchExerciseParams, setfetchExerciseParams] = useState({});
+    const [bitmapPositionCount, setBitmapPositionCount] = useState<number>(0);
+    const [fetchExerciseParams, setfetchExerciseParams] = useState<ExerciseSearchParameters>({} as ExerciseSearchParameters);
+    const [selectedSearchOptions, setSelectedSearchOptions] = useState<SearchOptions>({} as SearchOptions);
 
     const defaultData = [{
         id: null,
@@ -33,7 +49,18 @@ export default function Routines() {
     }, [])
 
     const loadExerciseTable = () => {
-        fetchExercises(fetchExerciseParams).then((response: OoushTableRow[]) => {
+        const params = deepCloneObject(fetchExerciseParams) as ExerciseSearchParameters;
+        fetchExerciseTable(params);
+    }
+
+    const searchExerciseTable = (searchBitmap: number) => {
+        const params = deepCloneObject(fetchExerciseParams) as ExerciseSearchParameters;
+        params.searchBitmap = searchBitmap;
+        fetchExerciseTable(params);
+    }
+
+    const fetchExerciseTable = (params: object) => {
+        fetchExercises(params).then((response: OoushTableRow[]) => {
             setExerciseList(
                 injectAdditionalTableColumn(
                     response,
@@ -47,11 +74,30 @@ export default function Routines() {
     }
 
     const loadSearchOptions = () => {
-        fetchSearchOptions().then((response: BitmapSearchParameter[]) => {
-            setBitmapSearchParameters(response);
+        fetchSearchOptions().then((response: ExerciseSearchParameterResponse) => {
+            setBitmapSearchParameters(response.parameterList);
+            setBitmapPositionCount(response.bitmapPositionCount);
         }).catch((error: object) => {
             console.error(error);
         });
+    }
+
+    const setSearchBitmapAndFetchExercises = (group: string, event: React.ChangeEvent<HTMLSelectElement>) => {
+        let currentSearchOptions: any = deepCloneObject(selectedSearchOptions);
+        currentSearchOptions[group] = Number(event.target.value);
+        setSelectedSearchOptions(currentSearchOptions);
+        const selectedBitmapPositions = Object.values(currentSearchOptions).filter((entry) => entry !== 0);
+        let binarySearchString = "";
+        for (let i = bitmapPositionCount; i > 0; i--) {
+            if (selectedBitmapPositions.includes(i)) {
+                binarySearchString += '1';
+            } else {
+                binarySearchString += '0';
+            }
+        }
+        const searchBitmap = Number.parseInt(binarySearchString, 2);
+        console.log(searchBitmap)
+        searchExerciseTable(searchBitmap);
     }
 
     return (
@@ -66,10 +112,17 @@ export default function Routines() {
                 <div className={styles.divRoutinesTableContainer}>
                     <div className={styles.searchParametersContainer}>
                         {bitmapSearchParameters.map((bitmapSearchOption: BitmapSearchParameter) => {
+                            const searchParameterWidth = `calc(95% / ${bitmapSearchParameters.length})`;
                             return (
-                                <div className={styles.searchParameterSelectContainer}>
-                                    <label htmlFor="pet-select">{bitmapSearchOption.searchParameter}</label>
-                                    <select name="pets" id="pet-select">
+                                <div className={styles.searchParameterSelectContainer} style={{width: searchParameterWidth}}>
+                                    <label htmlFor="exercise-search" className={styles.searchParameterSelectLabel}>{bitmapSearchOption.searchParameter}</label>
+                                    <select
+                                        name="search"
+                                        id="exercise-search"
+                                        className={styles.exerciseSearchDropdown}
+                                        onChange={(event) => setSearchBitmapAndFetchExercises(bitmapSearchOption.searchParameter, event)}
+                                    >
+                                        <option value={0}>Select an option</option>
                                         {bitmapSearchOption.searchOptions.map((option: BitmapSearchOption) => {
                                             return (
                                                 <option value={option.position}>{option.name}</option>

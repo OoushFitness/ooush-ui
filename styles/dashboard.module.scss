@@ -187,3 +187,17 @@
     display: flex;
     flex-direction: column;
 }
+
+.searchParameterSelectLabel {
+    text-align: center;
+}
+
+.exerciseSearchDropdown {
+    font-family: inherit;
+    font-weight: inherit;
+    border-radius: 5px;
+    height: 50px;
+    &:hover {
+        cursor: pointer;
+    }
+}

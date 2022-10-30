@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import OoushTableRow from "../../interfaces/commonInterfaces";
 import EditableInput from "../editable-input/editableInput";
 import parseExerciseTableCellUpdateParams from "../../../utils/ooush-table-helpers/tableCellHelpers";
-import deepCloneObject from "../../../utils/object-helpers/object-helpers";
+import { deepCloneObject } from "../../../utils/object-helpers/object-helpers";
 import { capitalize } from "../../../utils/language/language-utils";
 import styles from "./ooushTable.module.scss";
 
