@@ -1,4 +1,4 @@
-const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
+export const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
     const params = {
         exerciseId: tableRow.id,
         exerciseDayId: exerciseDayId,
@@ -10,4 +10,10 @@ const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
     return params;
 }
 
-export default parseExerciseTableCellUpdateParams;
+export const parseAddExerciseParams = (tableRow) => {
+    const params = {
+        id: tableRow.id,
+        name: tableRow.name
+    };
+    return params;
+}

@@ -1,14 +1,15 @@
 import Head from 'next/head'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchExercises } from "../../service/exercise/exerciseService";
 import { fetchSearchOptions } from '../../service/bitmap/bitmapService';
 import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tableDataHelpers";
-import { deepCloneObject, deepCloneArray } from '../../utils/object-helpers/object-helpers';
+import { parseAddExerciseParams } from '../../utils/ooush-table-helpers/tableCellHelpers';
+import { deepCloneObject } from '../../utils/object-helpers/object-helpers';
 import OoushTableRow from "../../src/interfaces/commonInterfaces";
 import OoushTable from "../../src/components/ooush-table/ooushTable";
-import OooushModal from "../../src/components/ooush-modal/ooushModal"
-import styles from '../../styles/dashboard.module.scss';
 import OoushModal from '../../src/components/ooush-modal/ooushModal';
+
+import styles from '../../styles/dashboard.module.scss';
 
 export interface BitmapSearchOption {
     name: string,
@@ -33,6 +34,11 @@ export interface SearchOptions {
     [key: string]: string | undefined
 }
 
+export interface ModalData {
+    id: number,
+    name: string
+}
+
 export default function Routines() {
 
     const [exerciseList, setExerciseList] = useState<OoushTableRow[]>([]);
@@ -41,6 +47,7 @@ export default function Routines() {
     const [fetchExerciseParams, setfetchExerciseParams] = useState<ExerciseSearchParameters>({} as ExerciseSearchParameters);
     const [selectedSearchOptions, setSelectedSearchOptions] = useState<SearchOptions>({} as SearchOptions);
     const [addingExercise, setAddingExercise] = useState<boolean>(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode>();
 
     const defaultData = [{
         id: null,
@@ -68,7 +75,8 @@ export default function Routines() {
                 injectAdditionalTableColumn(
                     response,
                     "Add To Workout",
-                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" onClick={addExercise}/>
+                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" />,
+                    addExercise
                 ) as OoushTableRow[]
             );
         }).catch((error: object) => {
@@ -99,17 +107,17 @@ export default function Routines() {
             }
         }
         const searchBitmap = Number.parseInt(binarySearchString, 2);
-        console.log(searchBitmap)
         searchExerciseTable(searchBitmap);
     }
 
-    const addExercise = () => {
+    const addExercise = (data: any | null) => {
+        setModalContent(<div>{"Exercise Name: " + data?.name}</div>)
         setAddingExercise(current => !current);
     }
 
-    useEffect(() => {
-        console.log(addingExercise)
-    }, [addingExercise]);
+    const renderModalContent = () => {
+        return modalContent;
+    }
 
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
@@ -148,12 +156,17 @@ export default function Routines() {
                         tableData={exerciseList}
                         defaultData={defaultData}
                         refreshTable={loadExerciseTable}
+                        parseGenericColumnMethodParams={parseAddExerciseParams}
+                        genericColumnMethod={addExercise}
                         hideIdColumn
                     />
                 </div>
             </main>
             {addingExercise
-                && <OoushModal closeModalHandler={addExercise} />
+                && <OoushModal
+                        jsxContent={renderModalContent()}
+                        closeModalHandler={() => addExercise(null)}
+                    />
             }
         </div>
     )

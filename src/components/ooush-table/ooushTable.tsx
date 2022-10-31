@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import OoushTableRow from "../../interfaces/commonInterfaces";
 import EditableInput from "../editable-input/editableInput";
-import parseExerciseTableCellUpdateParams from "../../../utils/ooush-table-helpers/tableCellHelpers";
+import { parseExerciseTableCellUpdateParams } from "../../../utils/ooush-table-helpers/tableCellHelpers";
 import { deepCloneObject } from "../../../utils/object-helpers/object-helpers";
 import { capitalize } from "../../../utils/language/language-utils";
 import styles from "./ooushTable.module.scss";
 
 export interface OoushTableProps {
-    tableData: Array<OoushTableRow>;
-    defaultData: Array<OoushTableRow>;
-    includeAddRowButton?: boolean;
-    editableTable?: boolean;
-    includeRemoveRowColumn?: boolean;
+    tableData: Array<OoushTableRow>,
+    defaultData: Array<OoushTableRow>,
+    includeAddRowButton?: boolean,
+    editableTable?: boolean,
+    includeRemoveRowColumn?: boolean,
     workoutDayId?: number,
     translucentRows?: boolean,
     hideIdColumn: boolean,
-    updateCellMethod?: (data: object) => any;
-    removeTableRow?: (id1: number, id2: number) => any;
-    refreshTable: (persistCardView: boolean) => void;
+    parseGenericColumnMethodParams?: (data: object) => any,
+    genericColumnMethod?: (data: object) => void,
+    updateCellMethod?: (data: object) => any,
+    removeTableRow?: (id1: number, id2: number) => any,
+    refreshTable: (persistCardView: boolean) => void
 }
 
 const OoushTable: React.FC<OoushTableProps> = ({
@@ -29,6 +31,8 @@ const OoushTable: React.FC<OoushTableProps> = ({
     workoutDayId,
     hideIdColumn,
     translucentRows,
+    parseGenericColumnMethodParams,
+    genericColumnMethod,
     updateCellMethod,
     removeTableRow,
     refreshTable
@@ -87,6 +91,8 @@ const OoushTable: React.FC<OoushTableProps> = ({
                             {tableHeaders
                                 .filter((header: string) => hideIdColumn ? header !== 'id' : header)
                                 .map((header: string, cellIdx: number) => {
+                                    const tableCell = tableRow[header] as any;
+                                    const genericColumnMethodParams = parseGenericColumnMethodParams?.(tableRow);
                                     return (
                                         <td
                                             key={"tableBodyDataCell" + cellIdx}
@@ -97,7 +103,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                                 ? <EditableInput
                                                         tableCellInput
                                                         // @ts-ignore
-                                                        displayLabel={tableRow[header]}
+                                                        displayLabel={tableCell}
                                                         rowHeader={header}
                                                         type="text"
                                                         id={cellIdx}
@@ -107,10 +113,8 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                                         parseTableCellApiParams={parseExerciseTableCellUpdateParams}
                                                         refreshTable={refreshTable}
                                                     />
-                                                : <div>
-                                                        {   // @ts-ignore 
-                                                            tableRow[header]
-                                                        }
+                                                : <div onClick={() => genericColumnMethod?.(genericColumnMethodParams)}>
+                                                        {tableCell}
                                                     </div>
                                             }
                                         </td>
