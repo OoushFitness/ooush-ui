@@ -111,7 +111,7 @@ export default function Routines() {
     }
 
     const addExercise = (data: any | null) => {
-        setModalContent(<div>{"Exercise Name: " + data?.name}</div>)
+        setModalContent(<div>{data?.name}</div>)
         setAddingExercise(current => !current);
     }
 
@@ -164,6 +164,7 @@ export default function Routines() {
             </main>
             {addingExercise
                 && <OoushModal
+                        modalTitle={"Add Exercise To Workout Day"}
                         jsxContent={renderModalContent()}
                         closeModalHandler={() => addExercise(null)}
                     />
