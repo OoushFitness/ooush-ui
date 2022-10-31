@@ -111,12 +111,18 @@ export default function Routines() {
     }
 
     const addExercise = (data: any | null) => {
-        setModalContent(<div>{data?.name}</div>)
+        setModalContent(
+            <div>
+                <div>{data?.name}</div>
+                <div>
+                    <label htmlFor="exercise-search">Select Day</label>
+                    <select name="search" id="exercise-search">
+                        <option>Monday</option>
+                    </select>
+                </div>
+            </div>
+        );
         setAddingExercise(current => !current);
-    }
-
-    const renderModalContent = () => {
-        return modalContent;
     }
 
     return (
@@ -165,7 +171,7 @@ export default function Routines() {
             {addingExercise
                 && <OoushModal
                         modalTitle={"Add Exercise To Workout Day"}
-                        jsxContent={renderModalContent()}
+                        jsxContent={modalContent}
                         closeModalHandler={() => addExercise(null)}
                     />
             }
