@@ -134,7 +134,7 @@ export default function Routines() {
                     type={"number"}
                     minValue={0}
                     numberDenomination={"kg"}
-                    incrementStep={.25}
+                    incrementStep={2.5}
                 />
             </div>
         );
