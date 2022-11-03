@@ -8,8 +8,14 @@ import { deepCloneObject } from '../../utils/object-helpers/object-helpers';
 import OoushTableRow from "../../src/interfaces/commonInterfaces";
 import OoushTable from "../../src/components/ooush-table/ooushTable";
 import OoushModal from '../../src/components/ooush-modal/ooushModal';
+import SimpleDropdown from '../../src/components/simple-dropdown/simpleDropdown';
+import SimpleIncrementer from '../../src/components/simple-incrementer/simpleIncrementer';
+import EditableInput from '../../src/components/editable-input/editableInput';
+
+import { WEEKDAYS } from '../../utils/constants/ooush-constants';
 
 import styles from '../../styles/dashboard.module.scss';
+import SimpleInput from '../../src/components/simple-input/simpleInput';
 
 export interface BitmapSearchOption {
     name: string,
@@ -35,6 +41,11 @@ export interface SearchOptions {
 }
 
 export interface ModalData {
+    id: number,
+    name: string
+}
+
+export interface Weekday {
     id: number,
     name: string
 }
@@ -114,12 +125,17 @@ export default function Routines() {
         setModalContent(
             <div>
                 <div>{data?.name}</div>
-                <div>
-                    <label htmlFor="exercise-search">Select Day</label>
-                    <select name="search" id="exercise-search">
-                        <option>Monday</option>
-                    </select>
-                </div>
+                <SimpleDropdown data={WEEKDAYS} labelText={"Select Day"} includeLabel />
+                <SimpleIncrementer labelText={"Select Reps"} includeLabel />
+                <SimpleIncrementer labelText={"Select Sets"} includeLabel />
+                <SimpleInput
+                    labelText={"Enter weight"}
+                    includeLabel
+                    type={"number"}
+                    minValue={0}
+                    numberDenomination={"kg"}
+                    incrementStep={.25}
+                />
             </div>
         );
         setAddingExercise(current => !current);

@@ -1,0 +1,59 @@
+@use "../ooush-table/ooushTable.module.scss";
+
+.simpleIncrementerContainer {
+    display: flex;
+    align-items: center;
+    margin: 2% 0 2% 0;
+    height: 50px;
+}
+
+.simpleIncrementerLabel {
+    margin-right: 20%;
+}
+
+.simpleIncrementerControls {
+    display: flex;
+    position: fixed;
+    left: 39%;
+    align-items: center;
+    background-color: none;
+    font-family: inherit;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.simpleIncrementerIncrement {
+    @extend .ooushTableAddRowButtonSmall;
+    box-shadow: none;
+    transition: all 0.5s;
+    &:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px #888888;
+    }
+    &:focus {
+        outline: none;
+    }
+}
+
+.simpleIncrementerDecrement {
+    @extend .ooushTableAddRowButtonSmall;
+    box-shadow: none;
+    transition: all 0.5s;
+    &::before {
+        content: "-";
+        height: 25px;
+    }
+    &:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px #888888;
+    }
+    &:focus {
+        outline: none;
+    }
+}
+
+.simpleIncrementerCount {
+    width: 40px;
+    text-align: center;
+}

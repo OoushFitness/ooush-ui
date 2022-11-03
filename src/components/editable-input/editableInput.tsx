@@ -20,7 +20,6 @@ export interface EditableInputProps {
     handleUpdateCell?: (data: object) => any;
     parseTableCellApiParams?: (tableRow: object | undefined, id: number | undefined) => object;
     refreshTable?: (persistCardView: boolean) => void;
-    testMethod?: () => void;
 }
 
 const EditableInput: React.FC<EditableInputProps> = ({
@@ -36,7 +35,6 @@ const EditableInput: React.FC<EditableInputProps> = ({
     handleUpdateCell,
     parseTableCellApiParams,
     refreshTable,
-    testMethod
 }) => {
 
     const [editing, setEditing] = useState(false);
