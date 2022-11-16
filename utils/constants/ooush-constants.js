@@ -62,11 +62,11 @@ export const NAV_ITEMS = [
 ];
 
 export const WEEKDAYS = [
-    {id: 1, name: "Monday"},
-    {id: 2, name: "Tuesday"},
-    {id: 3, name: "Wednesday"},
-    {id: 4, name: "Thursday"},
-    {id: 5, name: "Friday"},
-    {id: 6, name: "Saturday"},
-    {id: 7, name: "Sunday"}
+    {id: 0, name: "Monday"},
+    {id: 1, name: "Tuesday"},
+    {id: 2, name: "Wednesday"},
+    {id: 3, name: "Thursday"},
+    {id: 4, name: "Friday"},
+    {id: 5, name: "Saturday"},
+    {id: 6, name: "Sunday"}
 ]

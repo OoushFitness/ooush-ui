@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from "react";
-import { fetchExercises } from "../../service/exercise/exerciseService";
+import { fetchExercises, updateUserExercise } from "../../service/exercise/exerciseService";
 import { fetchSearchOptions } from '../../service/bitmap/bitmapService';
 import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tableDataHelpers";
 import { parseAddExerciseParams } from '../../utils/ooush-table-helpers/tableCellHelpers';
@@ -10,12 +10,11 @@ import OoushTable from "../../src/components/ooush-table/ooushTable";
 import OoushModal from '../../src/components/ooush-modal/ooushModal';
 import SimpleDropdown from '../../src/components/simple-dropdown/simpleDropdown';
 import SimpleIncrementer from '../../src/components/simple-incrementer/simpleIncrementer';
-import EditableInput from '../../src/components/editable-input/editableInput';
+import SimpleInput from '../../src/components/simple-input/simpleInput';
 
 import { WEEKDAYS } from '../../utils/constants/ooush-constants';
 
 import styles from '../../styles/dashboard.module.scss';
-import SimpleInput from '../../src/components/simple-input/simpleInput';
 
 export interface BitmapSearchOption {
     name: string,
@@ -59,6 +58,8 @@ export default function Routines() {
     const [selectedSearchOptions, setSelectedSearchOptions] = useState<SearchOptions>({} as SearchOptions);
     const [addingExercise, setAddingExercise] = useState<boolean>(false);
     const [modalContent, setModalContent] = useState<React.ReactNode>();
+    const [addExerciseParams, setAddExerciseParams] = useState({});
+    const [addExerciseSuccess, setAddExerciseSuccess] = useState(false);
 
     const defaultData = [{
         id: null,
@@ -121,24 +122,54 @@ export default function Routines() {
         searchExerciseTable(searchBitmap);
     }
 
+    const constructAddExerciseParams = (paramKey: string, value: string | number) => {
+        setAddExerciseParams((addExerciseParams) => {
+            let newState = deepCloneObject(addExerciseParams);
+            // @ts-ignore
+            newState[paramKey] = value;
+            return newState;
+        });
+    }
+
     const addExercise = (data: any | null) => {
         setModalContent(
             <div>
                 <div>{data?.name}</div>
-                <SimpleDropdown data={WEEKDAYS} labelText={"Select Day"} includeLabel />
-                <SimpleIncrementer labelText={"Select Reps"} includeLabel />
-                <SimpleIncrementer labelText={"Select Sets"} includeLabel />
+                <SimpleDropdown data={WEEKDAYS} labelText={"Select Day"} includeLabel handleParentState={constructAddExerciseParams} dataTag={"exerciseDayId"} />
+                <SimpleIncrementer labelText={"Select Reps"} includeLabel handleParentState={constructAddExerciseParams} dataTag={"reps"} />
+                <SimpleIncrementer labelText={"Select Sets"} includeLabel handleParentState={constructAddExerciseParams} dataTag={"sets"} />
                 <SimpleInput
-                    labelText={"Enter weight"}
+                    labelText={"Enter Weight"}
                     includeLabel
                     type={"number"}
                     minValue={0}
                     numberDenomination={"kg"}
                     incrementStep={2.5}
+                    handleParentState={constructAddExerciseParams}
+                    dataTag={"weight"}
+                    defaultValue={0}
                 />
             </div>
         );
-        setAddingExercise(current => !current);
+        setAddingExercise(current => {
+            let openingModal = !current;
+            setAddExerciseParams(openingModal
+                ? {exerciseDayId: 0, reps: 1, sets: 1, exerciseId: data.id, weight: 0}
+                : {}
+            );
+            return openingModal;
+        });
+    }
+
+    const handleUpdateUserExercise = () => {
+        setModalContent(<div>Loading Spinner Stub</div>)
+        updateUserExercise(addExerciseParams).then(() => {
+            setModalContent(<div>Success</div>)
+            setAddExerciseParams({});
+            setTimeout(() => setAddingExercise(false), 3000);
+        }).catch((error: any) => {
+            console.error(error)
+        });
     }
 
     return (
@@ -188,6 +219,7 @@ export default function Routines() {
                 && <OoushModal
                         modalTitle={"Add Exercise To Workout Day"}
                         jsxContent={modalContent}
+                        modalApiCall={handleUpdateUserExercise}
                         closeModalHandler={() => addExercise(null)}
                     />
             }

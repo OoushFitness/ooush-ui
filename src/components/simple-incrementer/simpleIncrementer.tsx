@@ -5,24 +5,28 @@ import styles from "./simpleIncrementer.module.scss";
 export interface SimpleIncrementerProps {
     includeLabel: boolean,
     labelText: string,
+    dataTag: string,
+    handleParentState?: (key: string, value: string | number) => void
 }
 
-const SimpleIncrementer: React.FC<SimpleIncrementerProps> = ({labelText, includeLabel}) => {
+const SimpleIncrementer: React.FC<SimpleIncrementerProps> = ({labelText, includeLabel, dataTag, handleParentState}) => {
 
     const [count, setCount] = useState<number>(1);
 
-    const handleIncrement = () => {
+    const handleAdjust = (increment: boolean) => {
         let currentCount = count;
-        currentCount++;
-        setCount(currentCount);
-    }
-
-    const handleDecrement = () => {
-        let currentCount = count;
-        if (currentCount > 1) {
-            currentCount--;
+        if (increment) {
+            currentCount++;
+        } else {
+            if (currentCount > 1) {
+                currentCount--;
+            }
         }
+
         setCount(currentCount);
+        if (handleParentState) {
+            handleParentState(dataTag, currentCount);
+        }
     }
 
     return (
@@ -31,9 +35,9 @@ const SimpleIncrementer: React.FC<SimpleIncrementerProps> = ({labelText, include
                 && <label htmlFor="select-element" className={styles.simpleIncrementerLabel}>{labelText}</label>
             }
             <div className={styles.simpleIncrementerControls}>
-                <div className={styles.simpleIncrementerDecrement} onClick={handleDecrement} />
+                <div className={styles.simpleIncrementerDecrement} onClick={() => handleAdjust(false)} />
                 <div className={styles.simpleIncrementerCount}>{count}</div>
-                <div className={styles.simpleIncrementerIncrement} onClick={handleIncrement} />
+                <div className={styles.simpleIncrementerIncrement} onClick={() => handleAdjust(true)} />
             </div>
         </div>
     );
