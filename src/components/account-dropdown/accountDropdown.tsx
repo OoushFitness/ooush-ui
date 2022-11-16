@@ -1,8 +1,9 @@
-import React, {MouseEventHandler, useContext, useState} from "react";
-import styles from "./accountDropdown.module.scss";
+import React, { useContext } from "react";
 import {logout} from "../../../service/auth/authService";
 import {AuthContext} from "../../../auth/AuthContexts";
 import {useRouter} from "next/router";
+
+import styles from "./accountDropdown.module.scss";
 
 export interface AccountDropdownProps {
     toggleAccountDropdown: (showAccountDropdown : boolean) => void;

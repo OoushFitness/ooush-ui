@@ -1,6 +1,9 @@
 @use "./common.module.scss";
+@use "../src/components/ooush-table/ooushTable.module.scss";
 
 .main {
+    height: 97%;
+    width: 100%;
     .overviewcard {
         display: flex;
         height: 290px;
@@ -165,5 +168,36 @@
         position: absolute;
         right: 10px;
         top: 10px;
+    }
+}
+
+.divRoutinesTableContainer {
+    margin-top: 3%;
+    height: 100%;
+    width: 100%;
+}
+
+.searchParametersContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.searchParameterSelectContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchParameterSelectLabel {
+    text-align: center;
+}
+
+.exerciseSearchDropdown {
+    font-family: inherit;
+    font-weight: inherit;
+    border-radius: 5px;
+    height: 50px;
+    &:hover {
+        cursor: pointer;
     }
 }

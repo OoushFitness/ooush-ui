@@ -1,0 +1,66 @@
+.ooushModalBlurMask {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(8px);
+}
+
+.ooushModalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 80%;
+    background-color: lightblue;
+    border-radius: 20px;
+    font-family: inherit;
+}
+
+.ooushModalTitle {
+    font-size: inherit;
+    font-weight: bold;
+    width: 80%;
+    height: 10%;
+}
+
+.ooushModalContent {
+    font-family: inherit;
+    width: 80%;
+    height: 50%;
+}
+
+.ooushModalControls {
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    width: 80%;
+    height: 20%;
+}
+
+.ooushModalButton {
+    font-family: inherit;
+    height: 80%;
+    border: none;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+    transition: all 0.5s;
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 5px 5px #888888;
+    }
+    &:disabled {
+        cursor: default;
+        background-color: rgba(255, 255, 255, 0.2);
+        box-shadow: none;
+    }
+}

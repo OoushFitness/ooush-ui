@@ -1,0 +1,1 @@
+export const FETCH_SEARCH_OPTIONS = 'bitmap/fetch-search-options';

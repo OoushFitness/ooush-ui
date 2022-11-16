@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from "react";
 import OoushTableRow from "../../interfaces/commonInterfaces";
 import EditableInput from "../editable-input/editableInput";
-import parseExerciseTableCellUpdateParams from "../../../utils/table-cell-helpers/tableCellHelpers";
-import deepCloneObject from "../../../utils/object-helpers/object-helpers";
+import { parseExerciseTableCellUpdateParams } from "../../../utils/ooush-table-helpers/tableCellHelpers";
+import { deepCloneObject } from "../../../utils/object-helpers/object-helpers";
 import { capitalize } from "../../../utils/language/language-utils";
 import styles from "./ooushTable.module.scss";
 
 export interface OoushTableProps {
-    tableData: Array<OoushTableRow>;
-    defaultData: Array<OoushTableRow>;
-    includeAddRowButton?: boolean;
-    includeRemoveRowColumn?: boolean;
+    tableData: Array<OoushTableRow>,
+    defaultData: Array<OoushTableRow>,
+    includeAddRowButton?: boolean,
+    editableTable?: boolean,
+    includeRemoveRowColumn?: boolean,
     workoutDayId?: number,
+    translucentRows?: boolean,
     hideIdColumn: boolean,
-    updateCellMethod?: (data: object) => any;
-    removeTableRow?: (id1: number, id2: number) => any;
-    refreshTable: (persistCardView: boolean) => void;
+    parseGenericColumnMethodParams?: (data: object) => any,
+    genericColumnMethod?: (data: object) => void,
+    updateCellMethod?: (data: object) => any,
+    removeTableRow?: (id1: number, id2: number) => any,
+    refreshTable: (persistCardView: boolean) => void
 }
 
 const OoushTable: React.FC<OoushTableProps> = ({
     tableData,
     defaultData,
     includeAddRowButton,
+    editableTable,
     includeRemoveRowColumn,
     workoutDayId,
     hideIdColumn,
+    translucentRows,
+    parseGenericColumnMethodParams,
+    genericColumnMethod,
     updateCellMethod,
     removeTableRow,
     refreshTable
@@ -59,7 +67,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     return (
         <table className={styles.ooushTable}>
             <thead>
-                <tr className={styles.ooushTableRow}>
+                <tr className={translucentRows ? styles.ooushTableRowTranslucent : styles.ooushTableRow}>
                     {tableHeadersCapitalized.map((header: string) => {
                         return (
                             <th
@@ -79,28 +87,36 @@ const OoushTable: React.FC<OoushTableProps> = ({
             <tbody className={styles.ooushTableBody}>
                 {tableState.map((tableRow: OoushTableRow, idx: number) => {
                     return (
-                        <tr key={"tableBodyDataRow" + idx} className={styles.ooushTableRow}>
+                        <tr key={"tableBodyDataRow" + idx} className={translucentRows ? styles.ooushTableRowTranslucent : styles.ooushTableRow}>
                             {tableHeaders
                                 .filter((header: string) => hideIdColumn ? header !== 'id' : header)
                                 .map((header: string, cellIdx: number) => {
+                                    const tableCell = tableRow[header] as any;
+                                    const genericColumnMethodParams = parseGenericColumnMethodParams?.(tableRow);
                                     return (
                                         <td
                                             key={"tableBodyDataCell" + cellIdx}
                                             className={styles.ooushTableCellInput}
                                             style={{width: tableCellWidth}}
                                         >   
-                                            <EditableInput
-                                                tableCellInput
-                                                displayLabel={tableRow[header as 'name']}
-                                                rowHeader={header}
-                                                type="text"
-                                                id={cellIdx}
-                                                tableRow={tableRow}
-                                                workoutDayId={workoutDayId}
-                                                handleUpdateCell={updateCellMethod}
-                                                parseTableCellApiParams={parseExerciseTableCellUpdateParams}
-                                                refreshTable={refreshTable}
-                                            />
+                                            {editableTable
+                                                ? <EditableInput
+                                                        tableCellInput
+                                                        // @ts-ignore
+                                                        displayLabel={tableCell}
+                                                        rowHeader={header}
+                                                        type="text"
+                                                        id={cellIdx}
+                                                        tableRow={tableRow}
+                                                        workoutDayId={workoutDayId}
+                                                        handleUpdateCell={updateCellMethod}
+                                                        parseTableCellApiParams={parseExerciseTableCellUpdateParams}
+                                                        refreshTable={refreshTable}
+                                                    />
+                                                : <div onClick={() => genericColumnMethod?.(genericColumnMethodParams)}>
+                                                        {tableCell}
+                                                    </div>
+                                            }
                                         </td>
                                     );
                             })}

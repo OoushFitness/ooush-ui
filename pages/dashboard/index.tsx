@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
     updateUserExercise,
     removeUserExercise
@@ -28,7 +28,8 @@ const emptyWorkOutRow = [
         name: "Enter exercise",
         weight: 0,
         reps: 0,
-        id: null
+        id: null,
+        sets: 1
     }
 ];
 
@@ -45,7 +46,6 @@ export default function Dashboard() {
     const loadDashboard = (persistCardView: boolean) => {
         getDashboardWorkouts().then(response => {
             setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
-
         }).catch(error => {
             console.error(error)
         });
@@ -144,9 +144,11 @@ export default function Dashboard() {
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
+                                                    translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
                                                     hideIdColumn
+                                                    editableTable
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}
@@ -198,8 +200,11 @@ export default function Dashboard() {
                                                     refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
                                                     updateCellMethod={updateUserExercise}
+                                                    translucentRows
                                                     includeAddRowButton
+                                                    includeRemoveRowColumn
                                                     hideIdColumn
+                                                    editableTable
                                                 />
                                             : <EditableInput
                                                     displayLabel={workout.name}

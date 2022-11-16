@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-regular-svg-icons";
-import isNumber from "../../../utils/number-helpers/number-helpers";
-import deepCloneObject from "../../../utils/object-helpers/object-helpers";
+import { isNumber } from "../../../utils/number-helpers/number-helpers";
+import { deepCloneObject } from "../../../utils/object-helpers/object-helpers";
 import { isNullorEmptyString } from "../../../utils/language/language-utils";
 
 import styles from "./editableInput.module.scss";
@@ -20,7 +20,6 @@ export interface EditableInputProps {
     handleUpdateCell?: (data: object) => any;
     parseTableCellApiParams?: (tableRow: object | undefined, id: number | undefined) => object;
     refreshTable?: (persistCardView: boolean) => void;
-    testMethod?: () => void;
 }
 
 const EditableInput: React.FC<EditableInputProps> = ({
@@ -36,7 +35,6 @@ const EditableInput: React.FC<EditableInputProps> = ({
     handleUpdateCell,
     parseTableCellApiParams,
     refreshTable,
-    testMethod
 }) => {
 
     const [editing, setEditing] = useState(false);
