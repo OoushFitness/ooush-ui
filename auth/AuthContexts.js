@@ -1,12 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import Cookies from 'js-cookie';
-
-import LoadingPage from '../pages/loading/loading'
-
 import { useRouter } from "next/router";
-import {login, verify} from "../service/auth/authService";
+import { verify } from "../service/auth/authService";
+import { deepCloneObject } from '../utils/object-helpers/object-helpers';
+import { UNAUTHENTICATED_URLS } from "../utils/constants/ooush-constants";
 import storageService from "../service/storage/storageService";
-import {UNAUTHENTICATED_URLS} from "../utils/constants/ooush-constants";
+import Cookies from 'js-cookie';
+import LoadingPage from '../pages/loading/loading'
 
 export const AuthContext = createContext({});
 
@@ -55,8 +54,25 @@ export const AuthProvider = ({ children }) => {
 		Cookies.remove('token');
 	}
 
+    const updateAppUserSettings = (userSettings) => {
+        let statefulUser = deepCloneObject(user);
+        for (let key of Object.keys(userSettings)) {
+            statefulUser[key] = userSettings[key];
+        }
+        setUser(statefulUser);
+    }
+
 	return (
-		<AuthContext.Provider value={{ isAuthenticated: user?.authenticated, user, loading, saveUserTokenAndUser, clearUserTokenAndUser}}>
+		<AuthContext.Provider
+            value={{
+                isAuthenticated: user?.authenticated,
+                user,
+                loading,
+                saveUserTokenAndUser,
+                clearUserTokenAndUser,
+                updateAppUserSettings
+            }}
+        >
 			{children}
 		</AuthContext.Provider>
 	)

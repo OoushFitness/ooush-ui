@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from '../../auth/AuthContexts';
 import { fetchExercises, updateUserExercise } from "../../service/exercise/exerciseService";
 import { fetchSearchOptions } from '../../service/bitmap/bitmapService';
 import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tableDataHelpers";
@@ -64,6 +65,9 @@ export default function Routines() {
     const defaultData = [{
         id: null,
     }];
+
+    //@ts-ignore
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         loadExerciseTable();
@@ -143,7 +147,7 @@ export default function Routines() {
                     includeLabel
                     type={"number"}
                     minValue={0}
-                    numberDenomination={"kg"}
+                    numberDenomination={user.weightDenomination}
                     incrementStep={2.5}
                     handleParentState={constructAddExerciseParams}
                     dataTag={"weight"}

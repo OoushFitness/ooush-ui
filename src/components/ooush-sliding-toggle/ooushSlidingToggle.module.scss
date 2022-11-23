@@ -1,0 +1,47 @@
+.ooushSlidingToggleContainer {
+    display: flex;
+    align-items: center;
+}
+
+.ooushSlidingToggleLabel {
+    height: 30px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.ooushOoushSlidingToggleValues {
+    height: 30px;
+    text-align: center;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    padding: 1px;
+    box-shadow: 2px 2px #888888;
+}
+
+.ooushSlidingToggleBar {
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    border-radius: 2px;
+    background-color: #FFFDFA;
+    margin: 0 5px 0 5px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.ooushSlidingToggle {
+    border: 1px solid grey;
+    border-radius: 2px;
+    height: 30px;
+    width: 30px;
+    margin-left: 0;
+    transition: all ease-in-out 0.7s;
+    background-color: lightblue;
+    &Toggled {
+        @extend .ooushSlidingToggle;
+        margin-left: 40px;
+    }
+}

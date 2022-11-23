@@ -15,6 +15,7 @@ export interface OoushTableProps {
     workoutDayId?: number,
     translucentRows?: boolean,
     hideIdColumn: boolean,
+    denomination?: string,
     parseGenericColumnMethodParams?: (data: object) => any,
     genericColumnMethod?: (data: object) => void,
     updateCellMethod?: (data: object) => any,
@@ -31,6 +32,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     workoutDayId,
     hideIdColumn,
     translucentRows,
+    denomination,
     parseGenericColumnMethodParams,
     genericColumnMethod,
     updateCellMethod,
@@ -75,7 +77,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                 className={styles.ooushTableCell}
                                 style={{width: tableCellWidth}}
                             >
-                                {header}
+                                {header === "Weight" ? header + " (" + denomination + ")" : header}
                             </th>
                         );
                     })}

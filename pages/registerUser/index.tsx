@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 
-import registerUser from "../../service/user/userService";
+import { registerUser } from "../../service/user/userService";
 
 import Button from "../../src/components/common/button/button";
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
