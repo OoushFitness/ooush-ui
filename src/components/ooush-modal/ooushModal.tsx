@@ -5,11 +5,12 @@ import styles from "./ooushModal.module.scss";
 export interface OoushModalProps {
     modalTitle: string,
     jsxContent: React.ReactNode,
-    modalApiCall: () => void,
+    simpleModalControls?: boolean,
+    modalApiCall?: () => void,
     closeModalHandler: (data: object) => void
 }
 
-const OoushModal: React.FC<OoushModalProps> = ({jsxContent, modalTitle, modalApiCall, closeModalHandler}) => {
+const OoushModal: React.FC<OoushModalProps> = ({jsxContent, modalTitle, simpleModalControls, modalApiCall, closeModalHandler}) => {
 
     const [buttonsDisabled, setButtonsDisabled] = useState(false);
 
@@ -23,8 +24,24 @@ const OoushModal: React.FC<OoushModalProps> = ({jsxContent, modalTitle, modalApi
                     {jsxContent}
                 </div>
                 <div className={styles.ooushModalControls}>
-                    <button className={styles.ooushModalButton} onClick={closeModalHandler} disabled={buttonsDisabled}>Cancel</button>
-                    <button className={styles.ooushModalButton} onClick={() => {modalApiCall();setButtonsDisabled(true)}} disabled={buttonsDisabled}>OK</button>
+                    {simpleModalControls
+                        ? <button className={styles.ooushModalButton} onClick={closeModalHandler} disabled={buttonsDisabled}>Done</button>
+                        : <>
+                                <button className={styles.ooushModalButton} onClick={closeModalHandler} disabled={buttonsDisabled}>Cancel</button>
+                                <button
+                                    className={styles.ooushModalButton}
+                                    onClick={() => {
+                                        if (modalApiCall) {
+                                            modalApiCall();
+                                        }
+                                        setButtonsDisabled(true)
+                                    }}
+                                    disabled={buttonsDisabled}
+                                >
+                                    OK
+                                </button>
+                            </>
+                    }
                 </div>
             </div>
         </div>

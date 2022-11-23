@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../auth/AuthContexts';
 import {
     updateUserExercise,
     removeUserExercise
@@ -10,7 +11,7 @@ import {
 } from "../../service/workouts/workoutService";
 import EditableInput from '../../src/components/editable-input/editableInput';
 import OoushTable from '../../src/components/ooush-table/ooushTable';
-import OoushTableRow from '../../src/interfaces/commonInterfaces';
+import OoushTableRow, { OoushUserSettings } from '../../src/interfaces/commonInterfaces';
 
 import styles from '../../styles/dashboard.module.scss'
 
@@ -42,6 +43,9 @@ export default function Dashboard() {
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState<DashboardWorkout[]>([]);
     const [viewedWorkoutDayId, setViewedWorkoutDayId] = useState(-1);
+
+    // @ts-ignore
+    const { user } = useContext(AuthContext);
 
     const loadDashboard = (persistCardView: boolean) => {
         getDashboardWorkouts().then(response => {
@@ -144,6 +148,7 @@ export default function Dashboard() {
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
+                                                    denomination={user.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
@@ -200,6 +205,7 @@ export default function Dashboard() {
                                                     refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
                                                     updateCellMethod={updateUserExercise}
+                                                    denomination={user.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
