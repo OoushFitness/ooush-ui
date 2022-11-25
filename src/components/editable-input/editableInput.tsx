@@ -51,6 +51,8 @@ const EditableInput: React.FC<EditableInputProps> = ({
                 if (handleChangeLabel && label !== labelOnLoad) {
                     handleChangeLabel(id, label);
                 }
+                console.log("label = " + label)
+                console.log("label on load = " + labelOnLoad)
                 if (handleUpdateCell && label !== labelOnLoad) {
                     // @ts-ignore
                     const params = parseTableCellApiParams(tableRowState, workoutDayId);
@@ -89,16 +91,20 @@ const EditableInput: React.FC<EditableInputProps> = ({
         }
     }
 
+    console.log(labelOnLoad)
+
     return (
         <div className={tableCellInput ? styles.divEditableLabelContainerTable : styles.divEditableLabelContainer} onClick={() => toggleEditingStatus()}>
             {editing
                 ? <div className={styles.divInputSaveIconContainer}>
                         <input
+                            autoFocus
                             ref={wrapperRef}
                             onChange={handleInputChange}
                             type={type}
-                            value={label}
+                            value={undefined}
                             className={styles.inputEditable}
+                            placeholder={label}
                         />
                         <FontAwesomeIcon icon={faSave} title="Save label" className={styles.faIconSave} />
                     </div>
