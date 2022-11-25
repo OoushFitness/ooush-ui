@@ -148,7 +148,7 @@ export default function Dashboard() {
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
-                                                    denomination={user.weightDenomination}
+                                                    denomination={user?.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
@@ -205,7 +205,7 @@ export default function Dashboard() {
                                                     refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
                                                     updateCellMethod={updateUserExercise}
-                                                    denomination={user.weightDenomination}
+                                                    denomination={user?.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
                                                     includeRemoveRowColumn
