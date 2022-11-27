@@ -95,6 +95,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                 .map((header: string, cellIdx: number) => {
                                     const tableCell = tableRow[header] as any;
                                     const genericColumnMethodParams = parseGenericColumnMethodParams?.(tableRow);
+                                    const staticCell = (tableRow.id !== null && header == 'name');
                                     return (
                                         <td
                                             key={"tableBodyDataCell" + cellIdx}
@@ -111,6 +112,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                                         id={cellIdx}
                                                         tableRow={tableRow}
                                                         workoutDayId={workoutDayId}
+                                                        staticCell={staticCell}
                                                         handleUpdateCell={updateCellMethod}
                                                         parseTableCellApiParams={parseExerciseTableCellUpdateParams}
                                                         refreshTable={refreshTable}

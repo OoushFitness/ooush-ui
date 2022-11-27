@@ -13,6 +13,13 @@
     &Table {
         @extend .divEditableLabelContainer;
         height: 100%;
+        &Static {
+            @extend .divEditableLabelContainer;
+            cursor: default;
+            &:hover {
+                cursor: default;
+            }
+        }
     }
 }
 

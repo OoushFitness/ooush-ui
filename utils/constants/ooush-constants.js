@@ -69,4 +69,6 @@ export const WEEKDAYS = [
     {id: 4, name: "Friday"},
     {id: 5, name: "Saturday"},
     {id: 6, name: "Sunday"}
-]
+];
+
+export const KEYBOARD_ENTER_KEY = "Enter";
