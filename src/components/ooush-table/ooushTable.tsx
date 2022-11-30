@@ -16,6 +16,7 @@ export interface OoushTableProps {
     translucentRows?: boolean,
     hideIdColumn: boolean,
     denomination?: string,
+    searchApi?: (input: string) => void;
     parseGenericColumnMethodParams?: (data: object) => any,
     genericColumnMethod?: (data: object) => void,
     updateCellMethod?: (data: object) => any,
@@ -33,6 +34,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     hideIdColumn,
     translucentRows,
     denomination,
+    searchApi,
     parseGenericColumnMethodParams,
     genericColumnMethod,
     updateCellMethod,
@@ -113,6 +115,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                                         tableRow={tableRow}
                                                         workoutDayId={workoutDayId}
                                                         staticCell={staticCell}
+                                                        searchApi={searchApi}
                                                         handleUpdateCell={updateCellMethod}
                                                         parseTableCellApiParams={parseExerciseTableCellUpdateParams}
                                                         refreshTable={refreshTable}

@@ -18,6 +18,7 @@ export interface EditableInputProps {
     rowHeader?: string,
     workoutDayId?: number,
     staticCell?: boolean,
+    searchApi?: (input: string) => void;
     handleChangeLabel?: (id: number, label: string) => void,
     handleUpdateCell?: (data: object) => any;
     parseTableCellApiParams?: (tableRow: object | undefined, id: number | undefined) => object;
@@ -34,6 +35,7 @@ const EditableInput: React.FC<EditableInputProps> = ({
     rowHeader,
     workoutDayId,
     staticCell,
+    searchApi,
     handleChangeLabel,
     handleUpdateCell,
     parseTableCellApiParams,
@@ -80,6 +82,9 @@ const EditableInput: React.FC<EditableInputProps> = ({
             // @ts-ignore
             currentTableRow[rowHeader] = parsedValue;
             setTableRowState(currentTableRow);
+            if (searchApi) {
+                searchApi(parsedValue);
+            }
         }
     }
 

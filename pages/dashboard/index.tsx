@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../auth/AuthContexts';
 import {
     updateUserExercise,
-    removeUserExercise
+    removeUserExercise,
+    fetchExercises
 } from '../../service/exercise/exerciseService';
 import {
     getDashboardWorkouts,
@@ -115,6 +116,14 @@ export default function Dashboard() {
         };
     }
 
+    const handleExerciseSearch = (input: string) => {
+        fetchExercises({searchName: input}).then((response: object) => {
+            console.log(response)
+        }).catch((error: Error) => {
+            console.error(error);
+        });
+    }
+
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -148,6 +157,7 @@ export default function Dashboard() {
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
+                                                    searchApi={handleExerciseSearch}
                                                     denomination={user?.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
