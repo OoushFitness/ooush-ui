@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import OoushTableRow from "../../interfaces/commonInterfaces";
+
 import EditableInput from "../editable-input/editableInput";
+
+import { OoushExercise, OoushTableRow } from "../../interfaces/commonInterfaces";
 import { parseExerciseTableCellUpdateParams } from "../../../utils/ooush-table-helpers/tableCellHelpers";
-import { deepCloneObject } from "../../../utils/object-helpers/object-helpers";
+import { deepCloneArray, deepCloneObject } from "../../../utils/object-helpers/object-helpers";
 import { capitalize } from "../../../utils/language/language-utils";
+
 import styles from "./ooushTable.module.scss";
 
 export interface OoushTableProps {
@@ -16,7 +19,9 @@ export interface OoushTableProps {
     translucentRows?: boolean,
     hideIdColumn: boolean,
     denomination?: string,
+    searchResults?: Array<OoushExercise>,
     searchApi?: (input: string) => void;
+    clearSearchResults?: () => void;
     parseGenericColumnMethodParams?: (data: object) => any,
     genericColumnMethod?: (data: object) => void,
     updateCellMethod?: (data: object) => any,
@@ -34,6 +39,8 @@ const OoushTable: React.FC<OoushTableProps> = ({
     hideIdColumn,
     translucentRows,
     denomination,
+    searchResults,
+    clearSearchResults,
     searchApi,
     parseGenericColumnMethodParams,
     genericColumnMethod,
@@ -51,7 +58,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
     }, [tableData])
 
     const tableHeaders = Object.keys(tableState[0]);
-    const tableHeadersCapitalized = tableHeaders.filter((header: string) => hideIdColumn ? header !== 'id' : header).map(string => capitalize(string));
+    const tableHeadersCapitalized = tableHeaders.filter((header: string) => hideIdColumn ? header !== 'exerciseId' : header).map(string => capitalize(string));
     const tableCellWidth = `calc(95% / ${tableHeaders.length})`;
 
     const addNewBlankTableRow = () => {
@@ -65,6 +72,21 @@ const OoushTable: React.FC<OoushTableProps> = ({
             removeTableRow(id1, id2).then(() => {
                 refreshTable(true);
             });
+        }
+    }
+
+    const handleAddSearchedExercise = (exercise: OoushExercise) => {
+        const params = deepCloneArray(defaultData)[0];
+        params.exerciseDayId = workoutDayId;
+        for (let key of Object.keys(exercise)) {
+            //@ts-ignore
+            params[key] = exercise[key]
+        }
+        if (updateCellMethod) {
+            updateCellMethod(params);
+        }
+        if (refreshTable) {
+            refreshTable(true);
         }
     }
 
@@ -93,11 +115,11 @@ const OoushTable: React.FC<OoushTableProps> = ({
                     return (
                         <tr key={"tableBodyDataRow" + idx} className={translucentRows ? styles.ooushTableRowTranslucent : styles.ooushTableRow}>
                             {tableHeaders
-                                .filter((header: string) => hideIdColumn ? header !== 'id' : header)
+                                .filter((header: string) => hideIdColumn ? header !== 'exerciseId' : header)
                                 .map((header: string, cellIdx: number) => {
                                     const tableCell = tableRow[header] as any;
                                     const genericColumnMethodParams = parseGenericColumnMethodParams?.(tableRow);
-                                    const staticCell = (tableRow.id !== null && header == 'name');
+                                    const staticCell = (tableRow.exerciseId !== null && header == 'name');
                                     return (
                                         <td
                                             key={"tableBodyDataCell" + cellIdx}
@@ -119,6 +141,8 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                                         handleUpdateCell={updateCellMethod}
                                                         parseTableCellApiParams={parseExerciseTableCellUpdateParams}
                                                         refreshTable={refreshTable}
+                                                        searchResults={searchResults}
+                                                        clearSearchResults={clearSearchResults}
                                                     />
                                                 : <div onClick={() => genericColumnMethod?.(genericColumnMethodParams)}>
                                                         {tableCell}
@@ -129,11 +153,11 @@ const OoushTable: React.FC<OoushTableProps> = ({
                             })}
                             {includeRemoveRowColumn
                                 && <td className={styles.ooushTableCell} style={{width: '5%'}}>
-                                        {tableRow.id !== null
+                                        {tableRow.exerciseId !== null
                                             && <div
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
                                                     // @ts-ignore
-                                                    onClick={() => handleRemoveTableRow(tableRow.id, workoutDayId)}
+                                                    onClick={() => {handleRemoveTableRow(tableRow.exerciseId, workoutDayId); console.log(tableRow)}}
                                                 />
                                         }
                                     </td>
@@ -141,6 +165,23 @@ const OoushTable: React.FC<OoushTableProps> = ({
                         </tr>
                     );
                 })}
+                {(searchResults && searchResults.length > 0)
+                    && <tr className={styles.searchResultsRow}>
+                            <td className={styles.searchResultsColumn}>
+                                {searchResults.map((result: OoushExercise, idx: number) => {
+                                    return (
+                                        <div
+                                            className={styles.searchResult}
+                                            key={idx}
+                                            onClick={() => handleAddSearchedExercise(result)}
+                                        >
+                                            {result.name}
+                                        </div>
+                                    );
+                                })}
+                            </td>
+                        </tr>
+                }
             </tbody>
             {includeAddRowButton
                 && <tfoot className={styles.ooushTableAddRowButtonContainer}>

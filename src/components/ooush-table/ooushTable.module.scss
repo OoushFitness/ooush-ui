@@ -128,4 +128,38 @@ tbody {
     bottom: 5px;
     z-index: 9;
 }
+
+.searchResultsRow {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-start;
+    border-radius: 5px;
+    transition: all 0.4s;
+    background-color: none;
+}
+
+.searchResultsColumn {
+    display: flex;
+    flex-direction: column;
+    background-color: none;
+    width: 25%;
+    position: absolute;
+}
+
+.searchResult {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 50px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    transition: all 0.4s;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid lightblue;
+    &:hover {
+        background-color: lightblue;
+        cursor: pointer;
+    }
+}
   

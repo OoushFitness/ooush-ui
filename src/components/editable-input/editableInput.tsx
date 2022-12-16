@@ -7,6 +7,7 @@ import { isNullorEmptyString } from "../../../utils/language/language-utils";
 import { enterKeyPressed } from "../../../utils/generic-helpers/genericHelpers"
 
 import styles from "./editableInput.module.scss";
+import { OoushExercise } from "../../interfaces/commonInterfaces";
 
 export interface EditableInputProps {
     tableCellInput?: boolean,
@@ -18,6 +19,8 @@ export interface EditableInputProps {
     rowHeader?: string,
     workoutDayId?: number,
     staticCell?: boolean,
+    searchResults?: OoushExercise[],
+    clearSearchResults?: () => void;
     searchApi?: (input: string) => void;
     handleChangeLabel?: (id: number, label: string) => void,
     handleUpdateCell?: (data: object) => any;
@@ -35,6 +38,8 @@ const EditableInput: React.FC<EditableInputProps> = ({
     rowHeader,
     workoutDayId,
     staticCell,
+    searchResults,
+    clearSearchResults,
     searchApi,
     handleChangeLabel,
     handleUpdateCell,
@@ -54,6 +59,9 @@ const EditableInput: React.FC<EditableInputProps> = ({
             // @ts-ignore
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 updateAndRefreshInput();
+                if (clearSearchResults && searchResults && searchResults.length > 0) {
+                    // clearSearchResults();
+                }
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -98,7 +106,7 @@ const EditableInput: React.FC<EditableInputProps> = ({
         if (handleChangeLabel && label !== labelOnLoad) {
             handleChangeLabel(id, label);
         }
-        if (handleUpdateCell && label !== labelOnLoad) {
+        if (handleUpdateCell && label !== labelOnLoad && searchResults && searchResults.length === 0) {
             // @ts-ignore
             const params = parseTableCellApiParams(tableRowState, workoutDayId);
             handleUpdateCell(params).then(() => {
