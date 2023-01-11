@@ -6,7 +6,7 @@ import { fetchSearchOptions } from '../../service/bitmap/bitmapService';
 import { injectAdditionalTableColumn } from "../../utils/ooush-table-helpers/tableDataHelpers";
 import { parseAddExerciseParams } from '../../utils/ooush-table-helpers/tableCellHelpers';
 import { deepCloneObject } from '../../utils/object-helpers/object-helpers';
-import OoushTableRow from "../../src/interfaces/commonInterfaces";
+import { OoushTableRow } from "../../src/interfaces/commonInterfaces";
 import OoushTable from "../../src/components/ooush-table/ooushTable";
 import OoushModal from '../../src/components/ooush-modal/ooushModal';
 import SimpleDropdown from '../../src/components/simple-dropdown/simpleDropdown';

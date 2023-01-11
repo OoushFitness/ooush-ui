@@ -3,21 +3,23 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../auth/AuthContexts';
 import {
     updateUserExercise,
-    removeUserExercise
+    removeUserExercise,
+    fetchExercises
 } from '../../service/exercise/exerciseService';
+import { deepCloneObject } from '../../utils/object-helpers/object-helpers';
 import {
     getDashboardWorkouts,
     setDashboardWorkoutDayTitle,
 } from "../../service/workouts/workoutService";
 import EditableInput from '../../src/components/editable-input/editableInput';
 import OoushTable from '../../src/components/ooush-table/ooushTable';
-import OoushTableRow, { OoushUserSettings } from '../../src/interfaces/commonInterfaces';
+import { OoushTableRow, OoushExercise } from '../../src/interfaces/commonInterfaces';
 
 import styles from '../../styles/dashboard.module.scss'
 
 interface DashboardWorkout {
     day: string,
-    dayId: number,
+    exerciseDayId: number,
     name: string,
     exercises: OoushTableRow[],
     weekday: boolean,
@@ -29,7 +31,7 @@ const emptyWorkOutRow = [
         name: "Enter exercise",
         weight: 0,
         reps: 0,
-        id: null,
+        exerciseId: null,
         sets: 1
     }
 ];
@@ -43,11 +45,13 @@ export default function Dashboard() {
     const [cardSizes, setCardSizes] = useState([sizes.large, sizes.medium, sizes.small]);
     const [dashboardWorkouts, setDashboardWorkouts] = useState<DashboardWorkout[]>([]);
     const [viewedWorkoutDayId, setViewedWorkoutDayId] = useState(-1);
+    const [exerciseSearchResults, setExerciseSearchResults] = useState<OoushExercise[]>([]);
 
     // @ts-ignore
     const { user } = useContext(AuthContext);
 
-    const loadDashboard = (persistCardView: boolean) => {
+    const loadDashboard = () => {
+        clearSearchResults();
         getDashboardWorkouts().then(response => {
             setDashboardWorkouts(response.map((workoutDay: any) => ({...workoutDay, viewing: false})));
         }).catch(error => {
@@ -56,7 +60,7 @@ export default function Dashboard() {
     }
 
     useEffect(() => {
-        loadDashboard(false);
+        loadDashboard();
     }, []);
 
     const setUserWorkoutDayTitle = (workoutDayId: number, name: string) => {
@@ -65,7 +69,7 @@ export default function Dashboard() {
             name: name,
         };
         setDashboardWorkoutDayTitle(params).then(response => {
-            loadDashboard(false);
+            loadDashboard();
         }).catch(error => {
             console.error(error);
         })
@@ -115,6 +119,18 @@ export default function Dashboard() {
         };
     }
 
+    const handleExerciseSearch = (input: string) => {
+        fetchExercises({searchName: input}).then((response: OoushExercise[]) => {
+            setExerciseSearchResults(input ? response : []);
+        }).catch((error: Error) => {
+            console.error(error);
+        });
+    }
+
+    const clearSearchResults = () => {
+        setExerciseSearchResults([]);
+    }
+
     return (
         <div className={styles.container} style={{ marginTop: "50px" }}>
             <Head>
@@ -129,7 +145,7 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
-                                const viewing = workout.dayId === viewedWorkoutDayId;
+                                const viewing = workout.exerciseDayId === viewedWorkoutDayId;
                                 return (
                                     <div
                                         className={viewing
@@ -143,11 +159,15 @@ export default function Dashboard() {
                                         {viewing
                                             ? <OoushTable
                                                     tableData={exercises}
-                                                    defaultData={emptyWorkOutRow}
-                                                    workoutDayId={workout.dayId}
+                                                    // @ts-ignore
+                                                    defaultData={[deepCloneObject(emptyWorkOutRow[0])]}
+                                                    workoutDayId={workout.exerciseDayId}
+                                                    searchResults={exerciseSearchResults}
                                                     updateCellMethod={updateUserExercise}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
+                                                    searchApi={handleExerciseSearch}
+                                                    clearSearchResults={clearSearchResults}
                                                     denomination={user?.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
@@ -159,13 +179,13 @@ export default function Dashboard() {
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workout today?"
                                                     type="text"
-                                                    id={workout.dayId}
+                                                    id={workout.exerciseDayId}
                                                     handleChangeLabel={setUserWorkoutDayTitle}
                                                 />
                                         }
                                         <button
                                             className={styles.overviewcard__button}
-                                            onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                            onClick={() => handleViewWorkoutDay(workout.exerciseDayId)}
                                             style={{visibility: viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
@@ -173,7 +193,7 @@ export default function Dashboard() {
                                         {viewing
                                             && <div 
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
-                                                    onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                                    onClick={() => handleViewWorkoutDay(workout.exerciseDayId)}
                                                 />
                                         }
                                     </div>
@@ -188,7 +208,7 @@ export default function Dashboard() {
                             .filter((workout: DashboardWorkout) => !workout.weekday)
                             .map((workout: DashboardWorkout, idx: number) => {
                                 const exercises = workout.exercises;
-                                const viewing = workout.dayId === viewedWorkoutDayId;
+                                const viewing = workout.exerciseDayId === viewedWorkoutDayId;
                                 return (
                                     <div
                                         className={viewing
@@ -200,11 +220,13 @@ export default function Dashboard() {
                                         {viewing
                                             ? <OoushTable
                                                     tableData={exercises}
-                                                    workoutDayId={workout.dayId}
+                                                    workoutDayId={workout.exerciseDayId}
                                                     removeTableRow={removeUserExercise}
                                                     refreshTable={loadDashboard}
                                                     defaultData={emptyWorkOutRow}
+                                                    searchResults={exerciseSearchResults}
                                                     updateCellMethod={updateUserExercise}
+                                                    clearSearchResults={clearSearchResults}
                                                     denomination={user?.weightDenomination}
                                                     translucentRows
                                                     includeAddRowButton
@@ -216,13 +238,13 @@ export default function Dashboard() {
                                                     displayLabel={workout.name}
                                                     defaultLabel="What kind of workouts today?"
                                                     type="text"
-                                                    id={workout.dayId}
+                                                    id={workout.exerciseDayId}
                                                     handleChangeLabel={setUserWorkoutDayTitle}
                                                 />
                                         }
                                         <button
                                             className={styles.weekendcard__button}
-                                            onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                            onClick={() => handleViewWorkoutDay(workout.exerciseDayId)}
                                             style={{visibility: viewing ? 'hidden' : 'visible'}}
                                         >
                                             View Workout
@@ -230,7 +252,7 @@ export default function Dashboard() {
                                         {viewing 
                                             && <div 
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
-                                                    onClick={() => handleViewWorkoutDay(workout.dayId)}
+                                                    onClick={() => handleViewWorkoutDay(workout.exerciseDayId)}
                                                 />
                                         }
                                     </div>
