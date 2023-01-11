@@ -6,6 +6,7 @@ import {
     removeUserExercise,
     fetchExercises
 } from '../../service/exercise/exerciseService';
+import { deepCloneObject } from '../../utils/object-helpers/object-helpers';
 import {
     getDashboardWorkouts,
     setDashboardWorkoutDayTitle,
@@ -158,7 +159,8 @@ export default function Dashboard() {
                                         {viewing
                                             ? <OoushTable
                                                     tableData={exercises}
-                                                    defaultData={emptyWorkOutRow}
+                                                    // @ts-ignore
+                                                    defaultData={[deepCloneObject(emptyWorkOutRow[0])]}
                                                     workoutDayId={workout.exerciseDayId}
                                                     searchResults={exerciseSearchResults}
                                                     updateCellMethod={updateUserExercise}

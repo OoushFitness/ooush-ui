@@ -83,10 +83,11 @@ const OoushTable: React.FC<OoushTableProps> = ({
             params[key] = exercise[key]
         }
         if (updateCellMethod) {
-            updateCellMethod(params);
-        }
-        if (refreshTable) {
-            refreshTable(true);
+            updateCellMethod(params).then(() => {
+                if (refreshTable) {
+                    refreshTable(true);
+                }
+            });
         }
     }
 
@@ -157,7 +158,7 @@ const OoushTable: React.FC<OoushTableProps> = ({
                                             && <div
                                                     className={`${styles.divCloseButton} ${styles.dashboardCardCloseButton}`}
                                                     // @ts-ignore
-                                                    onClick={() => {handleRemoveTableRow(tableRow.exerciseId, workoutDayId); console.log(tableRow)}}
+                                                    onClick={() => handleRemoveTableRow(tableRow.exerciseId, workoutDayId)}
                                                 />
                                         }
                                     </td>
