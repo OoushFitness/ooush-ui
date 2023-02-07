@@ -7,7 +7,6 @@ export const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
         reps: tableRow.reps,
         sets: tableRow.sets
     };
-    console.log(params)
     return params;
 }
 
