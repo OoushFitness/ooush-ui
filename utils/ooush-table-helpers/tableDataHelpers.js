@@ -1,6 +1,6 @@
 import { deepCloneObject } from "../object-helpers/object-helpers";
 
-export const injectAdditionalTableColumn = (tableData, additionalColumnName, additionalColumnData, additionalOnClick) => {
+export const injectAdditionalTableColumn = (tableData, additionalColumnName, additionalColumnData) => {
     const updatedData = [];
     for (let tableRow of tableData) {
         let tableRowClone = deepCloneObject(tableRow);

@@ -1,18 +1,19 @@
 export const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
     const params = {
-        exerciseId: tableRow.id,
+        exerciseId: tableRow.exerciseId,
         exerciseDayId: exerciseDayId,
         name: tableRow.name,
         weight: tableRow.weight,
         reps: tableRow.reps,
         sets: tableRow.sets
     };
+    console.log(params)
     return params;
 }
 
 export const parseAddExerciseParams = (tableRow) => {
     const params = {
-        id: tableRow.id,
+        exerciseId: tableRow.exerciseId,
         name: tableRow.name
     };
     return params;
