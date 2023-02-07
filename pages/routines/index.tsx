@@ -208,14 +208,17 @@ export default function Routines() {
                             );
                         })}
                     </div>
-                    <OoushTable
-                        tableData={exerciseList}
-                        defaultData={defaultData}
-                        refreshTable={loadExerciseTable}
-                        parseGenericColumnMethodParams={parseAddExerciseParams}
-                        genericColumnMethod={addExercise}
-                        hideIdColumn
-                    />
+                    {exerciseList.length > 0
+                        ? <OoushTable
+                                tableData={exerciseList}
+                                defaultData={defaultData}
+                                refreshTable={loadExerciseTable}
+                                parseGenericColumnMethodParams={parseAddExerciseParams}
+                                genericColumnMethod={addExercise}
+                                hideIdColumn
+                            />
+                        : <div>No results in our database match your search criteria, please change your filters</div>
+                    }
                 </div>
             </main>
             {addingExercise
