@@ -12,7 +12,7 @@ export const parseExerciseTableCellUpdateParams = (tableRow, exerciseDayId) => {
 
 export const parseAddExerciseParams = (tableRow) => {
     const params = {
-        id: tableRow.id,
+        exerciseId: tableRow.exerciseId,
         name: tableRow.name
     };
     return params;

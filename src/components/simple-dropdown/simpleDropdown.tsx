@@ -38,7 +38,7 @@ const SimpleDropdown: React.FC<SimpleDropdownProps> = ({data, labelText, dataTag
             <select name="select" id="select-element" className={styles.simpleDropdownSelect} onChange={handleChange}>
                 {data.map((dataEntry: DataEntry) => {
                     return (
-                        <option value={dataEntry.id}>{dataEntry.name}</option>
+                        <option key={dataEntry.id} value={dataEntry.id}>{dataEntry.name}</option>
                     );
                 })}
             </select>

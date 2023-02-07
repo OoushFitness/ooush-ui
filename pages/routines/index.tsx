@@ -91,8 +91,7 @@ export default function Routines() {
                 injectAdditionalTableColumn(
                     response,
                     "Add To Workout",
-                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" />,
-                    addExercise
+                    <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" />
                 ) as OoushTableRow[]
             );
         }).catch((error: object) => {
@@ -158,7 +157,7 @@ export default function Routines() {
         setAddingExercise(current => {
             let openingModal = !current;
             setAddExerciseParams(openingModal
-                ? {exerciseDayId: 0, reps: 1, sets: 1, exerciseId: data.id, weight: 0}
+                ? {exerciseDayId: 0, reps: 1, sets: 1, exerciseId: data.exerciseId, weight: 0}
                 : {}
             );
             return openingModal;
@@ -187,10 +186,10 @@ export default function Routines() {
                 <div className={styles.divSearchDropdownFieldsContainer}></div>
                 <div className={styles.divRoutinesTableContainer}>
                     <div className={styles.searchParametersContainer}>
-                        {bitmapSearchParameters.map((bitmapSearchOption: BitmapSearchParameter) => {
+                        {bitmapSearchParameters.map((bitmapSearchOption: BitmapSearchParameter, idx: number) => {
                             const searchParameterWidth = `calc(95% / ${bitmapSearchParameters.length})`;
                             return (
-                                <div className={styles.searchParameterSelectContainer} style={{width: searchParameterWidth}}>
+                                <div className={styles.searchParameterSelectContainer} style={{width: searchParameterWidth}} key={bitmapSearchOption.searchParameter + idx}>
                                     <label htmlFor="exercise-search" className={styles.searchParameterSelectLabel}>{bitmapSearchOption.searchParameter}</label>
                                     <select
                                         name="search"
@@ -201,7 +200,7 @@ export default function Routines() {
                                         <option value={0}>Select an option</option>
                                         {bitmapSearchOption.searchOptions.map((option: BitmapSearchOption) => {
                                             return (
-                                                <option value={option.position}>{option.name}</option>
+                                                <option key={option.position} value={option.position}>{option.name}</option>
                                             );
                                         })}
                                     </select>
