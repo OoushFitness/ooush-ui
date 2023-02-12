@@ -172,7 +172,7 @@ export default function Dashboard() {
                     labelValue="Last Name"
                 />
 				<div className={styles.divFormGroupContainer} onFocus={() => animateLabels("phone")}>
-					<select className={styles.inputFormCountryCodeGroup} id="phone-input" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
+					<select className={styles.inputFormCountryCodeGroup} id="phone-input-country-code" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
 						<option className={styles.hiddenSelectOption} hidden>Country Code</option>
 						<option disabled defaultValue="true">Select Country Code</option>
 						{COUNTRY_CODES.map(countryCode => {
@@ -182,7 +182,7 @@ export default function Dashboard() {
 						})}
 					</select>
                     <label className={fieldInUseOrFocus("phone") ? styles.lblFormGroupPhoneFocus : styles.lblFormGroup}>Phone Number</label>
-                    <input className={styles.inputFormPhoneNumberGroup} id="phone-input" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
+                    <input className={styles.inputFormPhoneNumberGroup} id="phone-input-number" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
 				</div>
                 <OoushFieldInput
                     id="username-input"
@@ -214,6 +214,7 @@ export default function Dashboard() {
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("location")}
                     labelValue="Location"
+                    autoComplete="true"
                 />
                 <OoushFieldInput
                     id="password-input"
