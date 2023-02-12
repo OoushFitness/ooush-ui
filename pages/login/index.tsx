@@ -69,6 +69,12 @@ export default function Login() {
         }
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && !buttonDisabled) {
+            loginPlatformUser();
+        }
+    }
+
     const loginPlatformUser = () => {
         setLoading(true);
         const params = {
@@ -145,6 +151,7 @@ export default function Login() {
                     labelValue="Password"
                     type="password"
                     autoComplete="password"
+                    handleKeyDown={handleKeyDown}
                 />
                 {loading
                     ? <LoadingSpinnerSmall/>
