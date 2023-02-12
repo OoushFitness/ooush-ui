@@ -162,6 +162,12 @@ export default function Dashboard() {
         }
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && !buttonDisabled) {
+            registerNewUser();
+        }
+    }
+
 	return (
 		<div className={styles.container} id="registerUserFormContainer" onClick={(e) => handleClickOutside(e)}>
 			<form className={styles.formRegisterUser}>
@@ -258,6 +264,7 @@ export default function Dashboard() {
                                 handleChange={handleChange}
                                 animateLabels={() => animateLabels("passwordConfirm")}
                                 labelValue="Confirm Password"
+                                handleKeyDown={handleKeyDown}
                             />
                             <Button
                                 text="Register"

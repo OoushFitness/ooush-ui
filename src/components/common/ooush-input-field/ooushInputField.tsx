@@ -13,6 +13,7 @@ export interface FieldProps {
     fieldInFocus: string;
     fieldsWithContent: Set<string>;
     autoComplete?: string;
+    handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const OoushFieldInput: React.FC<FieldProps> = ({
@@ -26,6 +27,7 @@ const OoushFieldInput: React.FC<FieldProps> = ({
     animateLabels,
     autoComplete,
     labelValue,
+    handleKeyDown,
 }) => {
 
     const fieldInUseOrFocus = (fieldName: string) => {
@@ -41,8 +43,18 @@ const OoushFieldInput: React.FC<FieldProps> = ({
 
     return (
         <div className={styles.divFormGroupContainer} onFocus={() => animateLabels(fieldName)}>
-            <label className={fieldInUseOrFocus(fieldName) ? styles.lblFormGroupFocus : styles.lblFormGroup}>{fieldInUseOrFocus(fieldName) ? prettifyDisplayLabel(labelValue) : labelValue}</label>
-            <input className={styles.inputFormGroup} id={id} type={type} value={value} onChange={(e) => handleChange(e, fieldName)} autoComplete={autoComplete}/>
+            <label className={fieldInUseOrFocus(fieldName) ? styles.lblFormGroupFocus : styles.lblFormGroup}>
+                    {fieldInUseOrFocus(fieldName) ? prettifyDisplayLabel(labelValue) : labelValue}
+            </label>
+            <input
+                className={styles.inputFormGroup}
+                id={id}
+                type={type}
+                value={value}
+                onChange={(e) => handleChange(e, fieldName)}
+                autoComplete={autoComplete}
+                onKeyPress={(e) => handleKeyDown &&  handleKeyDown(e)}
+            />
         </div>
 )};
 
