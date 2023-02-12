@@ -16,6 +16,7 @@ import SimpleInput from '../../src/components/simple-input/simpleInput';
 import { WEEKDAYS } from '../../utils/constants/ooush-constants';
 
 import styles from '../../styles/dashboard.module.scss';
+import LoadingSpinnerLarge from '../../src/components/loading-spinners/loadingSpinnerLarge';
 
 export interface BitmapSearchOption {
     name: string,
@@ -61,6 +62,7 @@ export default function Routines() {
     const [modalContent, setModalContent] = useState<React.ReactNode>();
     const [addExerciseParams, setAddExerciseParams] = useState({});
     const [addExerciseSuccess, setAddExerciseSuccess] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const defaultData = [{
         id: null,
@@ -86,6 +88,7 @@ export default function Routines() {
     }
 
     const fetchExerciseTable = (params: object) => {
+        setLoading(true);
         fetchExercises(params).then((response: OoushTableRow[]) => {
             setExerciseList(
                 injectAdditionalTableColumn(
@@ -94,7 +97,9 @@ export default function Routines() {
                     <div className={styles.ooushTableAddRowButtonSmall} title="Add new entry" />
                 ) as OoushTableRow[]
             );
+            setLoading(false);
         }).catch((error: object) => {
+            setLoading(false);
             console.error(error);
         });
     }
@@ -183,7 +188,6 @@ export default function Routines() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
-                <div className={styles.divSearchDropdownFieldsContainer}></div>
                 <div className={styles.divRoutinesTableContainer}>
                     <div className={styles.searchParametersContainer}>
                         {bitmapSearchParameters.map((bitmapSearchOption: BitmapSearchParameter, idx: number) => {
@@ -208,16 +212,18 @@ export default function Routines() {
                             );
                         })}
                     </div>
-                    {exerciseList.length > 0
-                        ? <OoushTable
-                                tableData={exerciseList}
-                                defaultData={defaultData}
-                                refreshTable={loadExerciseTable}
-                                parseGenericColumnMethodParams={parseAddExerciseParams}
-                                genericColumnMethod={addExercise}
-                                hideIdColumn
-                            />
-                        : <div>No results in our database match your search criteria, please change your filters</div>
+                    {loading
+                        ? <LoadingSpinnerLarge />
+                        : exerciseList.length > 0
+                            ? <OoushTable
+                                    tableData={exerciseList}
+                                    defaultData={defaultData}
+                                    refreshTable={loadExerciseTable}
+                                    parseGenericColumnMethodParams={parseAddExerciseParams}
+                                    genericColumnMethod={addExercise}
+                                    hideIdColumn
+                                />
+                            : <div>No results in our database match your search criteria, please change your filters</div>
                     }
                 </div>
             </main>
