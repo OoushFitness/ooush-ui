@@ -4,18 +4,24 @@ import { registerUser } from "../../service/user/userService";
 
 import Button from "../../src/components/common/button/button";
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
+import LoadingSpinnerSmall from "../../src/components/loading-spinners/loadingSpinnerSmall";
 
 import { COUNTRY_CODES } from "../../utils/login/loginUtils";
 import {
     LOGIN_MESSAGE_TIMEOUT_MILLISECONDS,
-    REGISTRATION_FORM_EMAIL_ADDRESS_NOT_VALID, REGISTRATION_FORM_PASSWORD_NOT_VALID
+    REGISTRATION_FORM_EMAIL_ADDRESS_NOT_VALID,
+    REGISTRATION_FORM_PASSWORD_NOT_VALID
 } from "../../utils/constants/ooush-constants";
 
 import { validateEmail } from "../../utils/validation/validateEmail";
 
 import styles from "../../styles/registerUser.module.css";
+import LoadingSpinnerLarge from "../../src/components/loading-spinners/loadingSpinnerLarge";
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
+
+    const router = useRouter();
 
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
@@ -32,12 +38,15 @@ export default function Dashboard() {
 	const [fieldsWithContent, setFieldsWithContent] = useState(new Set<string>());
     const [registrationMessage, setRegistrationMessage] = useState("");
     const [buttonDisabled, setButtonDisabled] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [registrationSuccess, setRegistrationSuccess] = useState(false); 
 
     useEffect(() => {
         validateFieldsForSubmission();
     })
 
 	const registerNewUser = () => {
+        setLoading(true);
 		let data = {
 			email: email,
 			password: password,
@@ -48,9 +57,12 @@ export default function Dashboard() {
 			location: location,
 		};
         registerUser(data).then((response: any) => {
+            setLoading(false);
+            setRegistrationSuccess(true);
             displayNotification(response.body);
         }).catch((error: string)  => {
             displayNotification(error);
+            setLoading(false);
             console.error("Error on registration", error);
         })
 	}
@@ -58,6 +70,8 @@ export default function Dashboard() {
     const displayNotification = (message: string) => {
         setRegistrationMessage(message);
         setTimeout(() => {
+            router.push("/login").then(r => {
+            });
             setRegistrationMessage("");
         }, LOGIN_MESSAGE_TIMEOUT_MILLISECONDS);
     }
@@ -151,110 +165,117 @@ export default function Dashboard() {
 	return (
 		<div className={styles.container} id="registerUserFormContainer" onClick={(e) => handleClickOutside(e)}>
 			<form className={styles.formRegisterUser}>
-                <OoushFieldInput
-                    id="name-input"
-                    fieldName="firstName"
-                    fieldInFocus={fieldInFocus}
-                    value={firstName}
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("firstName")}
-                    labelValue="First Name"
-                />
-                <OoushFieldInput
-                    id="last-name-input"
-                    fieldName="lastName"
-                    fieldInFocus={fieldInFocus}
-                    value={lastName}
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("lastName")}
-                    labelValue="Last Name"
-                />
-				<div className={styles.divFormGroupContainer} onFocus={() => animateLabels("phone")}>
-					<select className={styles.inputFormCountryCodeGroup} id="phone-input-country-code" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
-						<option className={styles.hiddenSelectOption} hidden>Country Code</option>
-						<option disabled defaultValue="true">Select Country Code</option>
-						{COUNTRY_CODES.map(countryCode => {
-							return (
-								<option key={countryCode.country} value={countryCode.countryCodes[0]}>{countryCode.country + " " + countryCode.countryCodes[0]}</option>
-							);
-						})}
-					</select>
-                    <label className={fieldInUseOrFocus("phone") ? styles.lblFormGroupPhoneFocus : styles.lblFormGroup}>Phone Number</label>
-                    <input className={styles.inputFormPhoneNumberGroup} id="phone-input-number" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
-				</div>
-                <OoushFieldInput
-                    id="username-input"
-                    fieldName="userName"
-                    fieldInFocus={fieldInFocus}
-                    value={userName}
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("userName")}
-                    labelValue="User Name"
-                />
-                <OoushFieldInput
-                    id="email-input"
-                    autoComplete="new-password"
-                    fieldName="email" type="email"
-                    fieldInFocus={fieldInFocus}
-                    value={email}
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("email")}
-                    labelValue="Email"
-                />
-                <OoushFieldInput
-                    id="location-input"
-                    fieldName="location"
-                    fieldInFocus={fieldInFocus}
-                    value={location}
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("location")}
-                    labelValue="Location"
-                    autoComplete="true"
-                />
-                <OoushFieldInput
-                    id="password-input"
-                    fieldName="password"
-                    autoComplete="new-password"
-                    fieldInFocus={fieldInFocus}
-                    value={password}
-                    type="password"
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("password")}
-                    labelValue="Password"
-                />
-                <OoushFieldInput
-                    id="confirm-password-input"
-                    fieldName="passwordConfirm"
-                    fieldInFocus={fieldInFocus}
-                    autoComplete="new-password"
-                    value={passwordConfirm}
-                    type="password"
-                    fieldsWithContent={fieldsWithContent}
-                    handleChange={handleChange}
-                    animateLabels={() => animateLabels("passwordConfirm")}
-                    labelValue="Confirm Password"
-                />
-				<Button
-                    text="Register"
-					textColor="white"
-					textSize={20}
-					backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
-					theme="primary"
-					onClick={() => registerNewUser()}
-					type="button"
-					name="Ooush Button"
-					borderRadius={8}
-					height="10%"
-					width="100%"
-                    cursor={buttonDisabled ? "context-menu" : "pointer"}
-                    disabled={buttonDisabled}
-				/>
+                {loading
+                    ? <LoadingSpinnerLarge/>
+                    : registrationSuccess
+                        ? <></>
+                        : <>
+                            <OoushFieldInput
+                                id="name-input"
+                                fieldName="firstName"
+                                fieldInFocus={fieldInFocus}
+                                value={firstName}
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("firstName")}
+                                labelValue="First Name"
+                            />
+                            <OoushFieldInput
+                                id="last-name-input"
+                                fieldName="lastName"
+                                fieldInFocus={fieldInFocus}
+                                value={lastName}
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("lastName")}
+                                labelValue="Last Name"
+                            />
+                            <div className={styles.divFormGroupContainer} onFocus={() => animateLabels("phone")}>
+                                <select className={styles.inputFormCountryCodeGroup} id="phone-input-country-code" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
+                                    <option className={styles.hiddenSelectOption} hidden>Country Code</option>
+                                    <option disabled defaultValue="true">Select Country Code</option>
+                                    {COUNTRY_CODES.map(countryCode => {
+                                        return (
+                                            <option key={countryCode.country} value={countryCode.countryCodes[0]}>{countryCode.country + " " + countryCode.countryCodes[0]}</option>
+                                        );
+                                    })}
+                                </select>
+                                <label className={fieldInUseOrFocus("phone") ? styles.lblFormGroupPhoneFocus : styles.lblFormGroup}>Phone Number</label>
+                                <input className={styles.inputFormPhoneNumberGroup} id="phone-input-number" type="text" value={phoneNumber} onChange={(e) => handleChange(e, "phone")} />
+                            </div>
+                            <OoushFieldInput
+                                id="username-input"
+                                fieldName="userName"
+                                fieldInFocus={fieldInFocus}
+                                value={userName}
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("userName")}
+                                labelValue="User Name"
+                            />
+                            <OoushFieldInput
+                                id="email-input"
+                                autoComplete="new-password"
+                                fieldName="email" type="email"
+                                fieldInFocus={fieldInFocus}
+                                value={email}
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("email")}
+                                labelValue="Email"
+                            />
+                            <OoushFieldInput
+                                id="location-input"
+                                fieldName="location"
+                                fieldInFocus={fieldInFocus}
+                                value={location}
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("location")}
+                                labelValue="Location"
+                                autoComplete="true"
+                            />
+                            <OoushFieldInput
+                                id="password-input"
+                                fieldName="password"
+                                autoComplete="new-password"
+                                fieldInFocus={fieldInFocus}
+                                value={password}
+                                type="password"
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("password")}
+                                labelValue="Password"
+                            />
+                            <OoushFieldInput
+                                id="confirm-password-input"
+                                fieldName="passwordConfirm"
+                                fieldInFocus={fieldInFocus}
+                                autoComplete="new-password"
+                                value={passwordConfirm}
+                                type="password"
+                                fieldsWithContent={fieldsWithContent}
+                                handleChange={handleChange}
+                                animateLabels={() => animateLabels("passwordConfirm")}
+                                labelValue="Confirm Password"
+                            />
+                            <Button
+                                text="Register"
+                                textColor="white"
+                                textSize={20}
+                                backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
+                                theme="primary"
+                                onClick={() => registerNewUser()}
+                                type="button"
+                                name="Ooush Button"
+                                borderRadius={8}
+                                height="10%"
+                                width="100%"
+                                cursor={buttonDisabled ? "context-menu" : "pointer"}
+                                disabled={buttonDisabled}
+                            />
+                        </>
+                }
 			</form>
             {registrationMessage
                 && <div className={styles.registrationMessage}>

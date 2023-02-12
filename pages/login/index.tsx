@@ -14,6 +14,7 @@ import {
 } from "../../utils/constants/ooush-constants";
 
 import styles from "../../styles/login.module.css";
+import LoadingSpinnerSmall from "../../src/components/loading-spinners/loadingSpinnerSmall";
 
 export default function Login() {
     // @ts-ignore
@@ -27,6 +28,7 @@ export default function Login() {
     const [fieldsWithContent, setFieldsWithContent] = useState(new Set<string>());
     const [loginMessage, setLoginMessage] = useState("");
     const [buttonDisabled, setButtonDisabled] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         validateFieldsForLogin();
@@ -68,11 +70,13 @@ export default function Login() {
     }
 
     const loginPlatformUser = () => {
+        setLoading(true);
         const params = {
             userName: email,
             password: password,
         }
         login(params).then((response: any) => {
+            setLoading(false);
             let userLogin = response;
             saveUserTokenAndUser(userLogin);
             if(userLogin) {
@@ -84,6 +88,7 @@ export default function Login() {
                 }
             }
         }).catch((error: any) => {
+            setLoading(false);
             console.error(error);
         });
     }
@@ -141,21 +146,24 @@ export default function Login() {
                     type="password"
                     autoComplete="password"
                 />
-                <Button
-                    text="Login"
-                    textColor="white"
-                    textSize={20}
-                    backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
-                    theme="primary"
-                    onClick={() => loginPlatformUser()}
-                    type="button"
-                    name="Ooush Button"
-                    borderRadius={4}
-                    height="10%"
-                    width="100%"
-                    cursor={buttonDisabled ? "context-menu" : "pointer"}
-                    disabled={buttonDisabled}
-                />
+                {loading
+                    ? <LoadingSpinnerSmall/>
+                    : <Button
+                        text="Login"
+                        textColor="white"
+                        textSize={20}
+                        backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
+                        theme="primary"
+                        onClick={() => loginPlatformUser()}
+                        type="button"
+                        name="Ooush Button"
+                        borderRadius={4}
+                        height="10%"
+                        width="100%"
+                        cursor={buttonDisabled ? "context-menu" : "pointer"}
+                        disabled={buttonDisabled}
+                    />
+                }
             </form>
             {loginMessage
                 && <div className={styles.loginMessage}>
