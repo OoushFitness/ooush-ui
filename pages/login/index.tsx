@@ -138,7 +138,7 @@ export default function Login() {
                     animateLabels={() => animateLabels("username")}
                     labelValue="User Name"
                     type="text"
-                    autoComplete="email"
+                    autoComplete="text"
                 />
                 <OoushFieldInput
                     id="password-input"
