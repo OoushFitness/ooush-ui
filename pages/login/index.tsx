@@ -135,7 +135,7 @@ export default function Login() {
                     value={userName}
                     fieldsWithContent={fieldsWithContent}
                     handleChange={handleChange}
-                    animateLabels={() => animateLabels("email")}
+                    animateLabels={() => animateLabels("username")}
                     labelValue="User Name"
                     type="text"
                     autoComplete="email"
