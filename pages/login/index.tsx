@@ -23,7 +23,7 @@ export default function Login() {
     const router = useRouter();
 
     const [fieldInFocus, setFieldInFocus] = useState("");
-    const [email, setEmail] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [fieldsWithContent, setFieldsWithContent] = useState(new Set<string>());
     const [loginMessage, setLoginMessage] = useState("");
@@ -42,7 +42,7 @@ export default function Login() {
     }, [])
 
     const validateFieldsForLogin = () => {
-        if(email && password) {
+        if(userName && password) {
             setButtonDisabled(false);
         } else {
             setButtonDisabled(true);
@@ -78,7 +78,7 @@ export default function Login() {
     const loginPlatformUser = () => {
         setLoading(true);
         const params = {
-            userName: email,
+            userName: userName,
             password: password,
         }
         login(params).then((response: any) => {
@@ -110,9 +110,9 @@ export default function Login() {
     const handleChange = (event: any, source: string) => {
         const value = event.target.value;
         switch (source) {
-            case "email":
+            case "username":
                 addOrRemoveFieldsWithEntries(value.length, source);
-                setEmail(value);
+                setUserName(value);
                 break;
             case "password":
                 addOrRemoveFieldsWithEntries(value.length, source);
@@ -129,14 +129,14 @@ export default function Login() {
         <div className={styles.loginContainer} id="loginFormContainer" onClick={(e) => handleClickOutside(e)}>
             <form className={styles.formLogin}>
                 <OoushFieldInput
-                    id="email-input"
-                    fieldName="email"
+                    id="username-input"
+                    fieldName="username"
                     fieldInFocus={fieldInFocus}
-                    value={email}
+                    value={userName}
                     fieldsWithContent={fieldsWithContent}
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("email")}
-                    labelValue="Email"
+                    labelValue="User Name"
                     type="email"
                     autoComplete="email"
                 />
