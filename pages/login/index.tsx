@@ -137,7 +137,7 @@ export default function Login() {
                     handleChange={handleChange}
                     animateLabels={() => animateLabels("email")}
                     labelValue="User Name"
-                    type="email"
+                    type="text"
                     autoComplete="email"
                 />
                 <OoushFieldInput
