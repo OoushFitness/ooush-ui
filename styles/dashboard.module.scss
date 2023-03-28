@@ -2,8 +2,11 @@
 @use "../src/components/ooush-table/ooushTable.module.scss";
 
 .main {
-    height: 97%;
+    height: 100%;
     width: 100%;
+    background: var(--ooush-black);
+    color: var(--ooush-red);
+    font-family: var(--ooush-default-font);
     .overviewcard {
         display: flex;
         height: 290px;
@@ -15,10 +18,11 @@
         align-items: center;
         justify-content: space-around;
         padding: 20px;
-        background-color: rgba(221, 51, 221, 0.2);
+        background: var(--ooush-grey);
         border-radius: 10px;
         transition: all 1s;
         z-index: 0;
+        font-family: var(--ooush-default-font);
 
         &__0 {
             @extend .overviewcard;
@@ -41,13 +45,15 @@
         }
 
         &__button {
+            font-family: var(--ooush-default-font);
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            background: none;
+            background: inherit;
+            color: var(--ooush-red);
             border: 1px solid;
             &:hover {
-                background: rgba(0, 0, 0, 0.1);
+                background: var(--ooush-light-grey);
             }
         }
 
@@ -65,7 +71,6 @@
             left: 0;
             transition: all 1s;
             z-index: 997;
-            background-color: rgba(221, 51, 221, 1.0);
         }
 
         &__close {
@@ -100,7 +105,7 @@
         align-items: center;
         justify-content: space-around;
         padding: 20px;
-        background-color: rgba(130, 190, 246, 0.9);
+        background: var(--ooush-grey);
         border-radius: 10px;
         transition: all 1s;
         z-index: 0;
@@ -121,13 +126,15 @@
         }
 
         &__button {
+            font-family: var(--ooush-default-font);
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            background: none;
+            background: inherit;
+            color: var(--ooush-red);
             border: 1px solid;
             &:hover {
-                background: rgba(0, 0, 0, 0.1);
+                background: var(--ooush-light-grey);
             }
         }
 
@@ -146,7 +153,6 @@
             transition: all 1s;
             z-index: 997;
             left: 0;
-            background-color: rgba(130, 190, 246, 1.0);
         }
     }
 

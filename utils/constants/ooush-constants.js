@@ -5,56 +5,56 @@ export const REGISTRATION_FORM_PASSWORD_NOT_VALID = "Please confirm your passwor
 
 export const VERIFICATION_SUCCESS = "Your account has been successfully verified";
 
-export const NAVIGATION_ITEM_ACCOUNT = "Account";
+export const NAVIGATION_ITEM_ACCOUNT = "ACCOUNT";
 
 export const UNAUTHENTICATED_URLS = ['/login', '/registerUser', '/', '/about'];
 
 export const NAV_ITEMS = [
 	{
 		authenticatedOnly: false,
-		text: "About",
+		text: "ABOUT",
 		title: "About",
 		url: "/about",
 		icon: "about"
 	},
 	{
 		authenticatedOnly: false,
-		text: "Home",
+		text: "HOME",
 		title: "Home",
 		url: "/",
 		icon: "home"
 	},
 	{
 		authenticatedOnly: true,
-		text: "Dashboard",
+		text: "DASHBOARD",
 		title: "Dashboard",
 		url: "/dashboard",
 		icon: "dashboard"
 	},
 	{
 		authenticatedOnly: true,
-		text: "Routines",
+		text: "ROUTINES",
 		title: "Routines",
 		url: "/routines",
 		icon: "routines"
 	},
 	{
 		authenticatedOnly: false,
-		text: "Register",
+		text: "REGISTER",
 		title: "Register",
 		url: "/registerUser",
 		icon: "register"
 	},
 	{
 		authenticatedOnly: false,
-		text: "Login",
+		text: "LOGIN",
 		title: "Login",
 		url: "/login",
 		icon: "login"
 	},
 	{
 		authenticatedOnly: true,
-		text: "Account",
+		text: "ACCOUNT",
 		title: "Account",
 		url: "",
 		icon: "account",
@@ -62,13 +62,13 @@ export const NAV_ITEMS = [
 ];
 
 export const WEEKDAYS = [
-    {id: 0, name: "Monday"},
-    {id: 1, name: "Tuesday"},
-    {id: 2, name: "Wednesday"},
-    {id: 3, name: "Thursday"},
-    {id: 4, name: "Friday"},
-    {id: 5, name: "Saturday"},
-    {id: 6, name: "Sunday"}
+    {id: 0, name: "MONDAY"},
+    {id: 1, name: "TUESDAY"},
+    {id: 2, name: "WEDNESDAY"},
+    {id: 3, name: "THURSDAY"},
+    {id: 4, name: "FRIDAY"},
+    {id: 5, name: "SATURDAY"},
+    {id: 6, name: "SUNDAY"}
 ];
 
 export const KEYBOARD_ENTER_KEY = "Enter";

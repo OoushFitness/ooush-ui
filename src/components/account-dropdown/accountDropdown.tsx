@@ -68,10 +68,10 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({toggleAccountDropdown,
     return (
         <div className={styles.accountDropdownContainer} onMouseLeave={handleMouseLeaveAccountDropdown}>
             <div className={styles.accountDropdownItem} onClick={() => openSettingsModal(userSettingsModalContent)}>
-                Settings
+                SETTINGS
             </div>
             <div className={styles.accountDropdownItem} onClick={handleLogout}>
-                Logout
+                LOGOUT
             </div>
         </div>
     )

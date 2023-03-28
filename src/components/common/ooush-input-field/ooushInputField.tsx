@@ -44,7 +44,7 @@ const OoushFieldInput: React.FC<FieldProps> = ({
     return (
         <div className={styles.divFormGroupContainer} onFocus={() => animateLabels(fieldName)}>
             <label className={fieldInUseOrFocus(fieldName) ? styles.lblFormGroupFocus : styles.lblFormGroup}>
-                    {fieldInUseOrFocus(fieldName) ? prettifyDisplayLabel(labelValue) : labelValue}
+                {fieldInUseOrFocus(fieldName) ? prettifyDisplayLabel(labelValue) : labelValue}
             </label>
             <input
                 className={styles.inputFormGroup}

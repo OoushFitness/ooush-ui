@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@100&display=swap');
+
 html,
 body {
   padding: 0;
@@ -13,4 +15,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+:root {
+    --ooush-default-font: 'Anek Gujarati', sans-serif;
+    --ooush-grey: rgb(50, 50, 50);
+    --ooush-light-grey: rgb(70, 70, 70);
+    --ooush-lighter-grey: rgb(90, 90, 90);
+    --ooush-black: rgb(0, 0, 0);
+    --ooush-white: rgb(255, 255, 255);
+    --ooush-red: rgb(165,42,42);
 }

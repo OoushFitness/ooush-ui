@@ -1,4 +1,5 @@
 .accountDropdownContainer {
+    font-family: var(--ooush-default-font);
 	position: fixed;
 	padding: 4px;
 	display: flex;
@@ -6,18 +7,22 @@
 	justify-content: center;
 	width: 300px;
 	z-index: 999;
-	background-color: white;
+	background: var(--ooush-black);
 	right: 0;
 	top: 62px;
 	text-align: center;
 	border-radius: 6px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .accountDropdownItem {
 	width: 100%;
 	border-radius: 6px;
+    background: var(--ooush-grey);
+    color: var(--ooush-red);
+    margin: 2px 0 2px 0;
 	&:hover {
-		background: #82bef6;
+		background: var(--ooush-light-grey);
 		cursor: pointer;
 	}
 }
