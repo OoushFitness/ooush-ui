@@ -6,9 +6,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top:60px;
-    background: var(--ooush-black);
-    color: var(--ooush-red);
+    margin-top: 60px;
+    background: var(--ooush-background);
+    color: var(--ooush-secondary);
 }
 
 .section {
@@ -19,6 +19,6 @@
     justify-content: center;
     align-items: center;
     padding: 32px 0;
-    background: var(--ooush-black);
-    color: var(--ooush-red);
+    background: var(--ooush-background);
+    color: var(--ooush-secondary);
 }

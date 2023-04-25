@@ -4,7 +4,6 @@ import { registerUser } from "../../service/user/userService";
 
 import Button from "../../src/components/common/button/button";
 import OoushFieldInput from "../../src/components/common/ooush-input-field/ooushInputField";
-import LoadingSpinnerSmall from "../../src/components/loading-spinners/loadingSpinnerSmall";
 
 import { COUNTRY_CODES } from "../../utils/login/loginUtils";
 import {
@@ -185,6 +184,8 @@ export default function Dashboard() {
                                 handleChange={handleChange}
                                 animateLabels={() => animateLabels("firstName")}
                                 labelValue="First Name"
+                                type="text"
+                                autoComplete="text"
                             />
                             <OoushFieldInput
                                 id="last-name-input"
@@ -195,10 +196,12 @@ export default function Dashboard() {
                                 handleChange={handleChange}
                                 animateLabels={() => animateLabels("lastName")}
                                 labelValue="Last Name"
+                                type="text"
+                                autoComplete="text"
                             />
                             <div className={styles.divFormGroupContainer} onFocus={() => animateLabels("phone")}>
                                 <select className={styles.inputFormCountryCodeGroup} id="phone-input-country-code" value={countryCode} onChange={(e) => handleChange(e, "countryCode")} >
-                                    <option className={styles.hiddenSelectOption} hidden>Country Code</option>
+                                    <option className={styles.hiddenSelectOption} hidden>Code</option>
                                     <option disabled defaultValue="true">Select Country Code</option>
                                     {COUNTRY_CODES.map(countryCode => {
                                         return (
@@ -270,12 +273,12 @@ export default function Dashboard() {
                                 text="Register"
                                 textColor="white"
                                 textSize={20}
-                                backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
+                                backgroundColor={buttonDisabled ? "#666666" : ""}
                                 theme="primary"
                                 onClick={() => registerNewUser()}
                                 type="button"
                                 name="Ooush Button"
-                                borderRadius={8}
+                                borderRadius={20}
                                 height="10%"
                                 width="100%"
                                 cursor={buttonDisabled ? "context-menu" : "pointer"}

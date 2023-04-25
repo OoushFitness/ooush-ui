@@ -39,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({ navItems , toggleAccountDropdow
                             >
                                 <Link href={item.url}>
                                     <a className={styles.navbar_menu_link}>
-                                        {item.text}
+                                        <h4>{item.text}</h4>
                                     </a>
                                 </Link>
                             </li>

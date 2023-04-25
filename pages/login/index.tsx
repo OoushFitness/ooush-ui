@@ -159,12 +159,12 @@ export default function Login() {
                         text="Login"
                         textColor="white"
                         textSize={20}
-                        backgroundColor={buttonDisabled ? "#666666" : "#0984AB"}
+                        backgroundColor={buttonDisabled ? "#666666" : ""}
                         theme="primary"
                         onClick={() => loginPlatformUser()}
                         type="button"
                         name="Ooush Button"
-                        borderRadius={4}
+                        borderRadius={20}
                         height="10%"
                         width="100%"
                         cursor={buttonDisabled ? "context-menu" : "pointer"}
