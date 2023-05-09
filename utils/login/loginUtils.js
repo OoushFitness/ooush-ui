@@ -1356,19 +1356,19 @@ export const COUNTRY_CODES = [
 		isoCode3: 'UKR',
 	},
 	{
-		country: 'United Arab Emirates',
+		country: 'UAE',
 		countryCodes: ['+971'],
 		isoCode2: 'AE',
 		isoCode3: 'ARE',
 	},
 	{
-		country: 'United Kingdom',
+		country: 'UK',
 		countryCodes: ['+44'],
 		isoCode2: 'GB',
 		isoCode3: 'GBR',
 	},
 	{
-		country: 'United States',
+		country: 'USA',
 		countryCodes: ['+1'],
 		isoCode2: 'US',
 		isoCode3: 'USA',

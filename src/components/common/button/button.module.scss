@@ -1,6 +1,6 @@
 .button {
 	appearance: none;
-	font-family: Trebuchet MS, sans-serif;;
+	font-family: var(--ooush-default-font);
 	display: inline-block;
 	border: none;
 	padding: 8px;
@@ -12,25 +12,23 @@
 	transition: background 250ms ease-in-out, transform 150ms ease;
 	-webkit-appearance: none;
 	-moz-appearance: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 	&:disabled {
 		opacity: 0.5;
 	}
 
 	&_primary {
-		color: var(--color-primary);
-		background: white;
+		color: var(--ooush-secondary);
+        font-family: var(--ooush-default-font);
+		background: var(--ooush-primary);
 		border: 1px solid rgb(81, 81, 253);
-
-		&:hover,
-		&:focus {
-			background: rgb(81, 81, 253);
-			color: rgb(245, 245, 245);
-		}
-		&:active {
-			background: rgb(119, 119, 253);
-			color: white;
-		}
+        transition: background 500ms ease-in-out, transform 500ms ease;
+        &:hover {
+            background-color: var(--ooush-primary-hover);
+        }
 	}
 
 	&_secondary {

@@ -1,5 +1,5 @@
 import React from "react";
-import "./button.module.scss";
+import styles from "./button.module.scss";
 
 export interface ButtonProps {
     text: string;
@@ -16,7 +16,6 @@ export interface ButtonProps {
     borderWidth?: number;
     borderColor?: string;
     borderRadius?: number;
-    customClassName?: string;
     height?: string;
     width?: string;
     cursor?: string;
@@ -37,7 +36,6 @@ const Button: React.FC<ButtonProps> = ({
     borderWidth,
     borderColor,
     borderRadius,
-    customClassName,
     height,
     width,
     cursor,
@@ -49,7 +47,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled={disabled}
         autoFocus={autofocus}
         name={name}
-        className={`button button_${theme} ${customClassName}`}
+        className={[styles.button, styles[`button_${theme}`]].join(" ")}
         style={{
             border: borderColor && `${borderWidth || 1}px solid ${borderColor}`,
             borderRadius: borderRadius && `${borderRadius || 4}px`,
