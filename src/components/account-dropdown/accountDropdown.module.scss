@@ -7,22 +7,25 @@
 	justify-content: center;
 	width: 300px;
 	z-index: 999;
-	background: var(--ooush-black);
+	background: var(--ooush-background);
 	right: 0;
 	top: 62px;
 	text-align: center;
 	border-radius: 6px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    color: var(--ooush-highlight-text);
 }
 
 .accountDropdownItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 	width: 100%;
-	border-radius: 6px;
-    background: var(--ooush-grey);
-    color: var(--ooush-red);
+	border-radius: 20px;
+    background: var(--ooush-primary);
+    color: var(--ooush-highlight-text);
     margin: 2px 0 2px 0;
 	&:hover {
-		background: var(--ooush-light-grey);
+		background: var(--ooush-primary-hover);
 		cursor: pointer;
 	}
 }

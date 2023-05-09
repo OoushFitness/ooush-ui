@@ -30,6 +30,9 @@ a {
     /* backgrounds */
     --ooush-background: #E3F6F5;
 
+    /* dashboard card */
+    --ooush-dashboard-card: #D3D3D3;
+
     /* buttons, headers, and other key elements */
     --ooush-primary: #FF5733;
 
@@ -47,4 +50,7 @@ a {
 
     /* progress bars or checkboxes */
     --ooush-compimentary: #41B883;
+
+    /* secondary text colour */
+    --ooush-highlight-text: #003366;
 }

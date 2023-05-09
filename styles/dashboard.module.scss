@@ -4,8 +4,8 @@
 .main {
     height: 100%;
     width: 100%;
-    background: var(--ooush-black);
-    color: var(--ooush-red);
+    background: var(--ooush-backgroundck);
+    color: var(--ooush-secondary);
     font-family: var(--ooush-default-font);
     .overviewcard {
         display: flex;
@@ -18,7 +18,7 @@
         align-items: center;
         justify-content: space-around;
         padding: 20px;
-        background: var(--ooush-grey);
+        background: var(--ooush-dashboard-card);
         border-radius: 10px;
         transition: all 1s;
         z-index: 0;
@@ -49,19 +49,16 @@
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            background: inherit;
-            color: var(--ooush-red);
-            border: 1px solid;
+            background: var(--ooush-primary);
+            color: var(--ooush-secondary);
+            border: none;
             &:hover {
-                background: var(--ooush-light-grey);
+                background: var(--ooush-primary-hover);
             }
         }
 
         &__icon {
-            &:hover {
-                border: 1px solid;
-                cursor: pointer;
-            }
+            color: var(--ooush-highlight-text);
         }
 
         &__selected {
@@ -105,7 +102,7 @@
         align-items: center;
         justify-content: space-around;
         padding: 20px;
-        background: var(--ooush-grey);
+        background: var(--ooush-dashboard-card);
         border-radius: 10px;
         transition: all 1s;
         z-index: 0;
@@ -130,19 +127,16 @@
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
-            background: inherit;
-            color: var(--ooush-red);
-            border: 1px solid;
+            color: var(--ooush-secondary);
+            background: var(--ooush-primary);
+            border: none;
             &:hover {
-                background: var(--ooush-light-grey);
+                background: var(--ooush-primary-hover);
             }
         }
 
         &__icon {
-            &:hover {
-                border: 1px solid;
-                cursor: pointer;
-            }
+            color: var(--ooush-highlight-text);
         }
 
         &__selected {
